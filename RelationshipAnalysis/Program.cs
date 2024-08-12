@@ -3,7 +3,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using RelationshipAnalysis.Context;
-using RelationshipAnalysis.DTO.JWT;
+using RelationshipAnalysis.Services;
+using RelationshipAnalysis.Services.Abstractions;
+using RelationshipAnalysis.Settings.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
+    .AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>()
+    .AddSingleton<IPasswordHasher, CustomPasswordHasher>()
+    .AddSingleton<IPasswordVerifier, PasswordVerifier>();
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
