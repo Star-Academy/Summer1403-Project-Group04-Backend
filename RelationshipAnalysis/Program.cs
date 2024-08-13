@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using RelationshipAnalysis.Context;
+using RelationshipAnalysis.DTO;
 using RelationshipAnalysis.Services;
 using RelationshipAnalysis.Services.Abstractions;
 using RelationshipAnalysis.Settings.JWT;
@@ -14,8 +15,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>()
+    .AddScoped<ILoginService, LoginService>()
+    .AddScoped<IPermissionService, PermissionService>()
     .AddSingleton<IPasswordHasher, CustomPasswordHasher>()
     .AddSingleton<IPasswordVerifier, PasswordVerifier>();
 
@@ -37,6 +41,8 @@ builder.Services.AddAuthentication(options =>
         {
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
+            ValidateIssuer = false,
+            ValidateAudience = false,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
         };
 
@@ -44,11 +50,12 @@ builder.Services.AddAuthentication(options =>
         {
             OnMessageReceived = context =>
             {
-                var cookie = context.Request.Cookies["jwt"];
+                var cookie = context.Request.Cookies[jwtSettings.CookieName];
                 if (!string.IsNullOrEmpty(cookie))
                 {
                     context.Token = cookie;
                 }
+
                 return Task.CompletedTask;
             }
         };
@@ -67,7 +74,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
+app.UseCors(x => x.AllowCredentials().AllowAnyHeader().AllowAnyMethod()
+    .SetIsOriginAllowed(x => true));
 
 app.Run();
 

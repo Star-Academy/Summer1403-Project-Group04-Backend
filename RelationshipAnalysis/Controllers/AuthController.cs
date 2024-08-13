@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using RelationshipAnalysis.Context;
@@ -12,34 +13,19 @@ namespace RelationshipAnalysis.Controllers;
 [Route("api/[controller]/[action]")]
 public class AuthController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
-    private readonly ICookieSetter _cookieSetter;
-    private readonly IJwtTokenGenerator _jwtTokenGenerator;
-    private readonly IPasswordVerifier _passwordVerifier;
 
-    public AuthController(ApplicationDbContext context, ICookieSetter cookieSetter,
-        IJwtTokenGenerator jwtTokenGenerator, IPasswordVerifier passwordVerifier)
+    private readonly ILoginService _loginService;
+
+    public AuthController(ILoginService loginService)
     {
-        _context = context;
-        _cookieSetter = cookieSetter;
-        _jwtTokenGenerator = jwtTokenGenerator;
-        _passwordVerifier = passwordVerifier;
+        _loginService = loginService;
     }
     
     [HttpPost]
-    public async Task<IActionResult> Login([FromBody] LoginDTO loginModel)
+    public async Task<IActionResult> Login([FromBody] LoginDto loginModel)
     {
-        var user = await _context.Users
-            .SingleOrDefaultAsync(u => u.Username == loginModel.Username);
-        
-        if (user == null || !_passwordVerifier.VerifyPasswordHash(loginModel.Password, user.PasswordHash))
-        {
-            return Unauthorized();
-        }
+        var responce = await _loginService.LoginAsync(loginModel, Response);
 
-        var token = _jwtTokenGenerator.GenerateJwtToken(user);
-        _cookieSetter.SetCookie(Response, token);
-
-        return Ok("Login was successful!");
+        return StatusCode((int)responce.StatusCode, responce.Data);
     }
 }

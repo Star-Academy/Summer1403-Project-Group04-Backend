@@ -10,6 +10,8 @@ public class Role
     [Required]
     [StringLength(50)]
     public string Name { get; set; }
+    
+    public string Permissions { get; set; }
 
-    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+    public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }

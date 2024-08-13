@@ -36,12 +36,16 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private JwtSecurityToken TokenGenerator(List<Claim> claims)
+    private SecurityToken TokenGenerator(List<Claim> claims)
     {
-        var token = new JwtSecurityToken(
-            claims: claims,
-            expires: DateTime.Now.AddMinutes(_jwtSettings.ExpireMinutes),
-            signingCredentials: _creds);
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(claims),
+            Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpireMinutes),
+            SigningCredentials = _creds,
+        };
+
+        var token = new JwtSecurityTokenHandler().CreateToken(tokenDescriptor);
         return token;
     }
 }

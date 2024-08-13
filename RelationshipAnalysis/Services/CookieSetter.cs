@@ -4,14 +4,9 @@ using RelationshipAnalysis.Settings.JWT;
 
 namespace RelationshipAnalysis.Services;
 
-public class CookieSetter : ICookieSetter
+public class CookieSetter(IOptions<JwtSettings> jwtSettings) : ICookieSetter
 {
-    private readonly JwtSettings _jwtSettings;
-
-    public CookieSetter(IOptions<JwtSettings> jwtSettings)
-    {
-        _jwtSettings = jwtSettings.Value;
-    }
+    private readonly JwtSettings _jwtSettings = jwtSettings.Value;
 
     public void SetCookie(HttpResponse response, string token)
     {

@@ -13,7 +13,17 @@ public class User
 
     [Required]
     [StringLength(256)]
-    public string PasswordHash { get; set; } // Store hashed password
+    public string PasswordHash { get; set; }
+    
+    [Required]
+    public string FirstName { get; set; }
 
-    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+    [Required]
+    public string LastName { get; set; }
+    
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; }
+
+    public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }

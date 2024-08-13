@@ -2,17 +2,10 @@
 
 namespace RelationshipAnalysis.Services;
 
-public class PasswordVerifier : IPasswordVerifier
+public class PasswordVerifier(IPasswordHasher passwordHasher) : IPasswordVerifier
 {
-    private readonly IPasswordHasher _passwordHasher;
-
-    public PasswordVerifier(IPasswordHasher passwordHasher)
-    {
-        _passwordHasher = passwordHasher;
-    }
-
     public bool VerifyPasswordHash(string password, string storedHash)
     {
-        return _passwordHasher.HashPassword(password) == storedHash;
+        return passwordHasher.HashPassword(password) == storedHash;
     }
 }
