@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelationshipAnalysis", "Rel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelationshipAnalysis.Test", "RelationshipAnalysis.Test\RelationshipAnalysis.Test.csproj", "{6B8DCA72-B3E9-4BCB-B450-8E08802FBE41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelationshipAnalysis.Integration.Test", "RelationshipAnalysis.Integration.Test\RelationshipAnalysis.Integration.Test.csproj", "{50D5723D-08CE-405C-B989-219F2992B181}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{6B8DCA72-B3E9-4BCB-B450-8E08802FBE41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B8DCA72-B3E9-4BCB-B450-8E08802FBE41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B8DCA72-B3E9-4BCB-B450-8E08802FBE41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50D5723D-08CE-405C-B989-219F2992B181}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50D5723D-08CE-405C-B989-219F2992B181}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50D5723D-08CE-405C-B989-219F2992B181}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50D5723D-08CE-405C-B989-219F2992B181}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

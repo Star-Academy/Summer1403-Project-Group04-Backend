@@ -31,7 +31,7 @@ public class PermissionService(ApplicationDbContext context) : IPermissionServic
         var defaultRole = await context.Roles
             .FirstOrDefaultAsync(r => r.Name == "User");
 
-        var defaultList = JsonConvert.DeserializeObject<List<string>>(defaultRole?.Permissions) ?? new List<string>();
+        var defaultList = JsonConvert.DeserializeObject<List<string>>(defaultRole?.Permissions) ?? [];
         var unionList = new HashSet<string>(defaultList);
         var roleNames = userClaims.FindAll(ClaimTypes.Role).Select(c => c.Value).Distinct();
 
