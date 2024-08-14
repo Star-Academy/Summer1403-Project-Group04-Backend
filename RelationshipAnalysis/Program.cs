@@ -5,6 +5,7 @@ using AutoMapper;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using RelationshipAnalysis.Context;
+using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.DTO;
 using RelationshipAnalysis.Services;
 using RelationshipAnalysis.Services.Abstractions;
@@ -13,7 +14,6 @@ using RelationshipAnalysis.Settings.JWT;
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -26,7 +26,7 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<IPasswordHasher, CustomPasswordHasher>()
     .AddSingleton<IPasswordVerifier, PasswordVerifier>()
     .AddScoped<IUserUpdateManagerService, UserUpdateManagerService>()
-    .AddScoped<IUserReceiver, CookieUserReceiver>()
+    .AddScoped<IUserReceiver, UserReceiver>()
     .AddScoped<IUserPasswordManagerService, UserPasswordManagerService>()
     .AddScoped<IUserInfoManagerService, UserInfoManagerService>();
 

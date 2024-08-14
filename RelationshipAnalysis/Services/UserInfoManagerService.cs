@@ -19,7 +19,12 @@ public class UserInfoManagerService(IUserReceiver userReceiver) : IUserInfoManag
             return result;
         }
 
-        result.Data = new UserOutputInfoDto(user.Username, user.Email);
+        result.Data = new UserOutputInfoDto()
+        {
+            Username = user.Username, Email = user.Email, 
+            FirstName = user.FirstName, LastName = user.LastName,
+            Id = user.Id
+        };
         result.StatusCode = StatusCodeType.Success;
         return result;
     }
