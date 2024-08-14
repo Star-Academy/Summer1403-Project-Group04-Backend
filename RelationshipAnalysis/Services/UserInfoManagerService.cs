@@ -1,31 +1,47 @@
 using System.Security.Claims;
+using AutoMapper;
 using RelationshipAnalysis.Controllers;
 using RelationshipAnalysis.Dto;
+using RelationshipAnalysis.DTO;
 using RelationshipAnalysis.Enums;
+using RelationshipAnalysis.Models;
 using RelationshipAnalysis.Services.Abstractions;
 
 namespace RelationshipAnalysis.Services;
 
 public class UserInfoManagerService(IUserReceiver userReceiver) : IUserInfoManagerService
 {
-    public async Task<ActionResponce<UserOutputInfoDto>> GetUserAsync(ClaimsPrincipal userClaim)
+    public async Task<ActionResponse<UserOutputInfoDto>> GetUserAsync(ClaimsPrincipal userClaim)
     {
-        var result = new ActionResponce<UserOutputInfoDto>();
+        var result = new ActionResponse<UserOutputInfoDto>();
         var user = await userReceiver.ReceiveUserAsync(userClaim);
         if (user is null)
         {
-            result.Data = null;
-            result.StatusCode = StatusCodeType.NotFound;
-            return result;
+            return NotFoundResult();
         }
+        return SuccessResult(user);
+    }
 
-        result.Data = new UserOutputInfoDto()
+    private ActionResponse<UserOutputInfoDto> SuccessResult(User user)
+    {
+        return new ActionResponse<UserOutputInfoDto>()
         {
-            Username = user.Username, Email = user.Email, 
-            FirstName = user.FirstName, LastName = user.LastName,
-            Id = user.Id
+            Data = new UserOutputInfoDto()
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Username = user.Username
+            },
+            StatusCode = StatusCodeType.Success
         };
-        result.StatusCode = StatusCodeType.Success;
-        return result;
+    }
+    
+    private ActionResponse<UserOutputInfoDto> NotFoundResult()
+    {
+        return new ActionResponse<UserOutputInfoDto>()
+        {
+            StatusCode = StatusCodeType.NotFound
+        };
     }
 }

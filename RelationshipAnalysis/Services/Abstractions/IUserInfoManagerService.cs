@@ -6,5 +6,5 @@ namespace RelationshipAnalysis.Services.Abstractions;
 
 public interface IUserInfoManagerService
 {
-    Task<ActionResponce<UserOutputInfoDto>> GetUserAsync(ClaimsPrincipal userClaim);
+    Task<ActionResponse<UserOutputInfoDto>> GetUserAsync(ClaimsPrincipal userClaim);
 }

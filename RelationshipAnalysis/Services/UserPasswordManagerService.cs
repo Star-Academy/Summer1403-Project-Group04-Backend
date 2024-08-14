@@ -10,27 +10,52 @@ namespace RelationshipAnalysis.Services;
 
 public class UserPasswordManagerService(ApplicationDbContext context, IUserReceiver userReceiver, IPasswordVerifier passwordVerifier, IPasswordHasher passwordHasher) : IUserPasswordManagerService
 {
-    public async Task<ActionResponce<MessageDto>> UpdatePasswordAsync(ClaimsPrincipal userClaims, UserPasswordInfoDto passwordInfoDto)
+    public async Task<ActionResponse<MessageDto>> UpdatePasswordAsync(ClaimsPrincipal userClaims, UserPasswordInfoDto passwordInfoDto)
     {
-        var result = new ActionResponce<MessageDto>();
+        var result = new ActionResponse<MessageDto>();
         var user = await userReceiver.ReceiveUserAsync(userClaims);
         if (user is null)
         {
-            result.Data = new MessageDto(Resources.UserNotFoundMessage);
-            result.StatusCode = StatusCodeType.NotFound;
-            return result;
+            return NotFoundResult();
         }
         if (!passwordVerifier.VerifyPasswordHash(passwordInfoDto.OldPassword, user.PasswordHash))
         {
-            result.Data = new MessageDto(Resources.WrongOldPasswordMessage);
-            result.StatusCode = StatusCodeType.BadRequest;
-            return result;
+            return WrongPasswordResult();
         }
         user.PasswordHash = passwordHasher.HashPassword(passwordInfoDto.NewPassword);
         context.Update(user);
         await context.SaveChangesAsync();
-        
-        result.Data = new MessageDto(Resources.SuccessfulUpdateUserMessage);
-        return result;
+
+        return SuccessResult();
     }
+    
+    
+    private ActionResponse<MessageDto> NotFoundResult()
+    {
+        return new ActionResponse<MessageDto>()
+        {
+            Data = new MessageDto(Resources.UserNotFoundMessage),
+            StatusCode = StatusCodeType.NotFound
+        };
+    }
+
+    private ActionResponse<MessageDto> WrongPasswordResult()
+    {
+        return new ActionResponse<MessageDto>()
+        {
+            Data = new MessageDto(Resources.WrongOldPasswordMessage),
+            StatusCode = StatusCodeType.BadRequest
+        };
+    }
+    
+    private ActionResponse<MessageDto> SuccessResult()
+    {
+        return new ActionResponse<MessageDto>()
+        {
+            Data = new MessageDto(Resources.SuccessfulUpdateUserMessage),
+            StatusCode = StatusCodeType.Success
+        };
+    }
+
+
 }

@@ -7,6 +7,6 @@ namespace RelationshipAnalysis.Services.Abstractions;
 
 public interface IUserUpdateManagerService
 {
-    Task<ActionResponce<MessageDto>> UpdateUserAsync(ClaimsPrincipal userClaims, UserUpdateInfoDto userUpdateInfoDto,
+    Task<ActionResponse<MessageDto>> UpdateUserAsync(ClaimsPrincipal userClaims, UserUpdateInfoDto userUpdateInfoDto,
         HttpResponse response);
 }

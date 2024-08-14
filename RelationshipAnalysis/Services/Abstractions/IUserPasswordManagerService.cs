@@ -7,6 +7,6 @@ namespace RelationshipAnalysis.Services.Abstractions;
 
 public interface IUserPasswordManagerService
 {
-    Task<ActionResponce<MessageDto>> UpdatePasswordAsync(ClaimsPrincipal userClaims,
+    Task<ActionResponse<MessageDto>> UpdatePasswordAsync(ClaimsPrincipal userClaims,
         UserPasswordInfoDto passwordInfoDto);
 }
