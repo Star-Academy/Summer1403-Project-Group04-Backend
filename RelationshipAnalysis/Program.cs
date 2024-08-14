@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AutoMapper;
+using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.DTO;
@@ -8,6 +10,7 @@ using RelationshipAnalysis.Services;
 using RelationshipAnalysis.Services.Abstractions;
 using RelationshipAnalysis.Settings.JWT;
 
+Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,13 +24,17 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddScoped<ILoginService, LoginService>()
     .AddScoped<IPermissionService, PermissionService>()
     .AddSingleton<IPasswordHasher, CustomPasswordHasher>()
-    .AddSingleton<IPasswordVerifier, PasswordVerifier>();
-
+    .AddSingleton<IPasswordVerifier, PasswordVerifier>()
+    .AddScoped<IUserUpdateManagerService, UserUpdateManagerService>()
+    .AddScoped<IUserReceiver, CookieUserReceiver>()
+    .AddScoped<IUserPasswordManagerService, UserPasswordManagerService>()
+    .AddScoped<IUserInfoManagerService, UserInfoManagerService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")).UseLazyLoadingProxies());
+    options.UseNpgsql( Environment.GetEnvironmentVariable("CONNECTION_STRING")).UseLazyLoadingProxies());
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
+builder.Services.AddAutoMapper(typeof(UserUpdateInfoMapper));
 
 builder.Services.AddAuthentication(options =>
     {
@@ -55,7 +62,6 @@ builder.Services.AddAuthentication(options =>
                 {
                     context.Token = cookie;
                 }
-
                 return Task.CompletedTask;
             }
         };
