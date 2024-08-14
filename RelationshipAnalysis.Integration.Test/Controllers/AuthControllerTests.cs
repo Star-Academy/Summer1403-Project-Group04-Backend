@@ -26,7 +26,7 @@ public class HomeControllerTests : IClassFixture<CustomWebApplicationFactory<Pro
         var loginModel = new LoginDto
         {
             Username = "admin",
-            Password = "validPassword" // Adjust to match the hashed password in SeedDatabase
+            Password = "validPassword"
         };
 
         // Act

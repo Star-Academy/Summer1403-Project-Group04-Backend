@@ -36,7 +36,7 @@ public class PermissionService(ApplicationDbContext context) : IPermissionServic
             var role = await context.Roles
                 .FirstOrDefaultAsync(r => r.Name == roleName);
 
-            
+
             var newList = JsonConvert.DeserializeObject<List<string>>(role.Permissions) ?? [];
             unionList.UnionWith(newList);
         }

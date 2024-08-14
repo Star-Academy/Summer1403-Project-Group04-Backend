@@ -13,7 +13,7 @@ public class PermissionServiceTests
     private readonly PermissionService _sut;
     private readonly ApplicationDbContext _context;
     private readonly List<string> _userRoles = ["Read", "Write"];
-    private readonly List<string>  _adminRoles = ["Delete", "Write"];
+    private readonly List<string> _adminRoles = ["Delete", "Write"];
 
     public PermissionServiceTests()
     {
@@ -22,7 +22,7 @@ public class PermissionServiceTests
             .Options;
 
         _context = new ApplicationDbContext(options);
-        
+
         SeedDatabase();
 
         _sut = new PermissionService(_context);
@@ -59,7 +59,7 @@ public class PermissionServiceTests
         // Act
         var result = await _sut.GetPermissionsAsync(userClaims);
         var expectedResult = _userRoles.Union(_adminRoles);
-        
+
         // Assert
         var expectedPermissions = JsonConvert.SerializeObject(expectedResult);
         Assert.Equal(expectedPermissions, result.Data.Permissions);

@@ -24,7 +24,7 @@ public class JwtTokenGeneratorTests
         };
         Mock<IOptions<JwtSettings>> mockJwtSettings = new();
         mockJwtSettings.Setup(m => m.Value).Returns(_jwtSettings);
-        
+
         _sut = new JwtTokenGenerator(mockJwtSettings.Object);
     }
 

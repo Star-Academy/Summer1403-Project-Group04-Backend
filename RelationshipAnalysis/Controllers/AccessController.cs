@@ -14,13 +14,13 @@ public class AccessController : ControllerBase
     {
         _permissionService = permissionService;
     }
-    
+
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetPermissions()
     {
         var response = await _permissionService.GetPermissionsAsync(User);
-        
+
         return StatusCode((int)response.StatusCode, response.Data);
     }
 }
