@@ -2,7 +2,7 @@ using RelationshipAnalysis.Models;
 
 namespace RelationshipAnalysis.Enums;
 
-public enum Role
+public enum RoleTypes
 {
     Admin, DataAdmin, DataAnalyst
 }
