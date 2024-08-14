@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.DTO;
 using RelationshipAnalysis.Services.Abstractions;
+using RelationshipAnalysis.Settings.JWT;
 
 namespace RelationshipAnalysis.Controllers;
 
