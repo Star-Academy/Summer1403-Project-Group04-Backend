@@ -1,26 +1,23 @@
-﻿using System.Net;
-using System.Net.Http.Json;
-using System.Text;
+﻿using System.Net.Http.Json;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using Newtonsoft.Json;
 using RelationshipAnalysis.Context;
-using RelationshipAnalysis.Controllers;
 using RelationshipAnalysis.DTO;
-using RelationshipAnalysis.Enums;
-using RelationshipAnalysis.Services.Abstractions;
+using RelationshipAnalysis.Models;
+
 
 namespace RelationshipAnalysis.Integration.Test.Controllers;
 
-public class HomeControllerTests(WebApplicationFactory<Program> factory)
-    : IClassFixture<WebApplicationFactory<Program>>
+public class HomeControllerTests : IClassFixture<CustomWebApplicationFactory<Program>>
 {
-    private readonly HttpClient _client = factory.CreateClient();
+    private readonly HttpClient _client;
 
+    public HomeControllerTests(CustomWebApplicationFactory<Program> factory)
+    {
+        _client = factory.CreateClient();
+    }
 
     [Fact]
     public async Task Login_ShouldReturnSuccess_WhenCredentialsAreValid()
@@ -29,7 +26,7 @@ public class HomeControllerTests(WebApplicationFactory<Program> factory)
         var loginModel = new LoginDto
         {
             Username = "admin",
-            Password = "admin"
+            Password = "validPassword" // Adjust to match the hashed password in SeedDatabase
         };
 
         // Act
@@ -41,15 +38,15 @@ public class HomeControllerTests(WebApplicationFactory<Program> factory)
         Assert.NotNull(responseData);
         Assert.Equal("Login was successful!", responseData.Message);
     }
-    
+
     [Fact]
     public async Task Login_ShouldReturnUnauthorized_WhenCredentialsAreInvalid()
     {
         // Arrange
         var loginModel = new LoginDto
         {
-            Username = "testuser",
-            Password = "invalidpassword" // Ensure this password does not match any hashed password
+            Username = "admin",
+            Password = "invalidPassword"
         };
 
         // Act
@@ -63,7 +60,7 @@ public class HomeControllerTests(WebApplicationFactory<Program> factory)
     public async Task Login_ShouldReturnBadRequest_WhenNoCredentialsAreProvided()
     {
         // Act
-        var loginModel = new LoginDto();
+        var loginModel = new LoginDto { Username = string.Empty, Password = string.Empty };
         var response = await _client.PostAsJsonAsync("/api/auth/login", loginModel);
 
         // Assert

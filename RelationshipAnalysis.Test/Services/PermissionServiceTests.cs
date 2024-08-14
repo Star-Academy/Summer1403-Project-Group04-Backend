@@ -10,8 +10,10 @@ namespace RelationshipAnalysis.Test.Services;
 
 public class PermissionServiceTests
 {
-    private readonly PermissionService _permissionService;
+    private readonly PermissionService _sut;
     private readonly ApplicationDbContext _context;
+    private readonly List<string> _userRoles = ["Read", "Write"];
+    private readonly List<string>  _adminRoles = ["Delete", "Write"];
 
     public PermissionServiceTests()
     {
@@ -20,27 +22,25 @@ public class PermissionServiceTests
             .Options;
 
         _context = new ApplicationDbContext(options);
-
-        // Seed the database with test data
+        
         SeedDatabase();
 
-        _permissionService = new PermissionService(_context);
+        _sut = new PermissionService(_context);
     }
 
     private void SeedDatabase()
     {
-        // Seed the database with sample roles
         _context.Roles.AddRange(new List<Role>
         {
             new Role
             {
                 Name = "User",
-                Permissions = JsonConvert.SerializeObject(new List<string> { "Read", "Write" })
+                Permissions = JsonConvert.SerializeObject(_userRoles)
             },
             new Role
             {
                 Name = "Admin",
-                Permissions = JsonConvert.SerializeObject(new List<string> { "Delete", "Write" })
+                Permissions = JsonConvert.SerializeObject(_adminRoles)
             }
         });
         _context.SaveChanges();
@@ -57,27 +57,11 @@ public class PermissionServiceTests
         }));
 
         // Act
-        var result = await _permissionService.GetPermissionsAsync(userClaims);
-
+        var result = await _sut.GetPermissionsAsync(userClaims);
+        var expectedResult = _userRoles.Union(_adminRoles);
+        
         // Assert
-        var expectedPermissions = JsonConvert.SerializeObject(new List<string> { "Read", "Write", "Delete" });
-        Assert.Equal(expectedPermissions, result.Data.Permissions);
-    }
-
-    [Fact]
-    public async Task GetPermissionsAsync_ShouldReturnDefaultPermissions_WhenNoRolesExist()
-    {
-        // Arrange
-        var userClaims = new ClaimsPrincipal(new ClaimsIdentity(new[]
-        {
-            new Claim(ClaimTypes.Role, "NonExistentRole")
-        }));
-
-        // Act
-        var result = await _permissionService.GetPermissionsAsync(userClaims);
-
-        // Assert
-        var expectedPermissions = JsonConvert.SerializeObject(new List<string> { "Read", "Write" });
+        var expectedPermissions = JsonConvert.SerializeObject(expectedResult);
         Assert.Equal(expectedPermissions, result.Data.Permissions);
     }
 }

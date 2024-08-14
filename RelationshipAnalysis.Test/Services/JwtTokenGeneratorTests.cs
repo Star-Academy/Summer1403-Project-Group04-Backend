@@ -12,7 +12,6 @@ namespace RelationshipAnalysis.Test.Services;
 
 public class JwtTokenGeneratorTests
 {
-    private readonly Mock<IOptions<JwtSettings>> _mockJwtSettings;
     private readonly JwtTokenGenerator _sut;
     private readonly JwtSettings _jwtSettings;
 
@@ -23,10 +22,10 @@ public class JwtTokenGeneratorTests
             Key = "ThisIsASecretKeyForTestingThisIsASecretKeyForTestingThisIsASecretKeyForTesting",
             ExpireMinutes = 60
         };
-        _mockJwtSettings = new Mock<IOptions<JwtSettings>>();
-        _mockJwtSettings.Setup(m => m.Value).Returns(_jwtSettings);
+        Mock<IOptions<JwtSettings>> mockJwtSettings = new();
+        mockJwtSettings.Setup(m => m.Value).Returns(_jwtSettings);
         
-        _sut = new JwtTokenGenerator(_mockJwtSettings.Object);
+        _sut = new JwtTokenGenerator(mockJwtSettings.Object);
     }
 
     [Fact]

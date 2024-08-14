@@ -28,11 +28,7 @@ public class PermissionService(ApplicationDbContext context) : IPermissionServic
 
     private async Task<List<string>?> CreatPrmissionsList(ClaimsPrincipal userClaims)
     {
-        var defaultRole = await context.Roles
-            .FirstOrDefaultAsync(r => r.Name == "User");
-
-        var defaultList = JsonConvert.DeserializeObject<List<string>>(defaultRole?.Permissions) ?? [];
-        var unionList = new HashSet<string>(defaultList);
+        var unionList = new HashSet<string>();
         var roleNames = userClaims.FindAll(ClaimTypes.Role).Select(c => c.Value).Distinct();
 
         foreach (var roleName in roleNames)
@@ -40,7 +36,7 @@ public class PermissionService(ApplicationDbContext context) : IPermissionServic
             var role = await context.Roles
                 .FirstOrDefaultAsync(r => r.Name == roleName);
 
-            if (role == null) continue;
+            
             var newList = JsonConvert.DeserializeObject<List<string>>(role.Permissions) ?? [];
             unionList.UnionWith(newList);
         }

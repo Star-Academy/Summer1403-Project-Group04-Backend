@@ -11,70 +11,53 @@ using RelationshipAnalysis.Services.Abstractions;
 
 namespace RelationshipAnalysis.Test.Services;
 
-public class TestDatabaseFixture : IDisposable
-{
-    public ApplicationDbContext Context { get; private set; }
-
-    public TestDatabaseFixture()
-    {
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase("TestDatabase")
-            .Options;
-        Context = new ApplicationDbContext(options);
-
-        // Seed the database with initial data if necessary
-        SeedDatabase();
-    }
-
-    private void SeedDatabase()
-    {
-        // Add test data to the database
-        var user = new User
-        {
-            Id = 1,
-            Username = "testuser",
-            PasswordHash = "correctPasswordHash", // This should be the hash of "correctPassword"
-            FirstName = "Test",
-            LastName = "User",
-            Email = "testuser@example.com"
-        };
-        Context.Users.Add(user);
-        Context.SaveChanges();
-    }
-
-    public void Dispose()
-    {
-        Context?.Dispose();
-    }
-}
-
-public class LoginServiceTests : IClassFixture<TestDatabaseFixture>
+public class LoginServiceTests
 {
     private readonly ApplicationDbContext _context;
+    private readonly LoginService _sut;
     private readonly Mock<ICookieSetter> _mockCookieSetter;
     private readonly Mock<IJwtTokenGenerator> _mockJwtTokenGenerator;
     private readonly Mock<IPasswordVerifier> _mockPasswordVerifier;
-    private readonly LoginService _loginService;
     private readonly Mock<HttpResponse> _mockHttpResponse;
-    private readonly Mock<IResponseCookies> _mockResponseCookies;
 
-    public LoginServiceTests(TestDatabaseFixture fixture)
+    public LoginServiceTests()
     {
-        _context = fixture.Context;
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
+        _context = new ApplicationDbContext(options);
+        
+        SeedDatabase();
+
         _mockCookieSetter = new Mock<ICookieSetter>();
         _mockJwtTokenGenerator = new Mock<IJwtTokenGenerator>();
         _mockPasswordVerifier = new Mock<IPasswordVerifier>();
         
-        _mockResponseCookies = new Mock<IResponseCookies>();
+        Mock<IResponseCookies> mockResponseCookies = new();
         _mockHttpResponse = new Mock<HttpResponse>();
-        _mockHttpResponse.SetupGet(r => r.Cookies).Returns(_mockResponseCookies.Object);
+        _mockHttpResponse.SetupGet(r => r.Cookies).Returns(mockResponseCookies.Object);
 
-        _loginService = new LoginService(
+        _sut = new LoginService(
             _context,
             _mockCookieSetter.Object,
             _mockJwtTokenGenerator.Object,
             _mockPasswordVerifier.Object
         );
+    }
+
+    private void SeedDatabase()
+    {
+        var user = new User
+        {
+            Id = 1,
+            Username = "testuser",
+            PasswordHash = "correctPasswordHash",
+            FirstName = "Test",
+            LastName = "User",
+            Email = "testuser@example.com"
+        };
+        _context.Users.Add(user);
+        _context.SaveChanges();
     }
 
     [Fact]
@@ -90,7 +73,7 @@ public class LoginServiceTests : IClassFixture<TestDatabaseFixture>
             .Returns(token);
 
         // Act
-        var result = await _loginService.LoginAsync(loginDto, _mockHttpResponse.Object);
+        var result = await _sut.LoginAsync(loginDto, _mockHttpResponse.Object);
 
         // Assert
         Assert.Equal(StatusCodeType.Success, result.StatusCode);
@@ -105,7 +88,7 @@ public class LoginServiceTests : IClassFixture<TestDatabaseFixture>
         var loginDto = new LoginDto { Username = "nonexistentuser", Password = "password" };
 
         // Act
-        var result = await _loginService.LoginAsync(loginDto, _mockHttpResponse.Object);
+        var result = await _sut.LoginAsync(loginDto, _mockHttpResponse.Object);
 
         // Assert
         Assert.Equal(StatusCodeType.Unauthorized, result.StatusCode);
@@ -121,7 +104,7 @@ public class LoginServiceTests : IClassFixture<TestDatabaseFixture>
             .Returns(false);
 
         // Act
-        var result = await _loginService.LoginAsync(loginDto, _mockHttpResponse.Object);
+        var result = await _sut.LoginAsync(loginDto, _mockHttpResponse.Object);
 
         // Assert
         Assert.Equal(StatusCodeType.Unauthorized, result.StatusCode);
