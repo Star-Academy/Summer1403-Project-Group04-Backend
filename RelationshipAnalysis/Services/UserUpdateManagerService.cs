@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Controllers;
 using RelationshipAnalysis.Dto;
@@ -19,18 +20,36 @@ public class UserUpdateManagerService(ApplicationDbContext context, IUserReceive
         var user = await userReceiver.ReceiveUserAsync(userClaims);
         if (user is null)
         {
-            result.Data = new MessageDto(Resources.UserNotFoundMessage);
-            result.StatusCode = StatusCodeType.NotFound;
-            return result;
+            return NotFoundResult();
         }
         mapper.Map(userUpdateInfoDto, user);
         context.Update(user);
         await context.SaveChangesAsync();
-        
+        SetCookie(user, response);
+        return SuccessResult();
+    }
+
+    private ActionResponce<MessageDto> NotFoundResult()
+    {
+        return new ActionResponce<MessageDto>()
+        {
+            Data = new MessageDto(Resources.UserNotFoundMessage),
+            StatusCode = StatusCodeType.NotFound
+        };
+    }
+
+    private ActionResponce<MessageDto> SuccessResult()
+    {
+        return new ActionResponce<MessageDto>()
+        {
+            Data = new MessageDto(Resources.SuccessfulUpdateUserMessage),
+            StatusCode = StatusCodeType.Success
+        };
+    }
+
+    private void SetCookie(User user, HttpResponse response)
+    {
         var token = jwtTokenGenerator.GenerateJwtToken(user);
         cookieSetter.SetCookie(response, token);
-        
-        result.Data = new MessageDto(Resources.SuccessfulUpdateUserMessage);
-        return result;
     }
 }

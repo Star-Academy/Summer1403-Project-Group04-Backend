@@ -16,9 +16,7 @@ public class UserPasswordManagerService(ApplicationDbContext context, IUserRecei
         var user = await userReceiver.ReceiveUserAsync(userClaims);
         if (user is null)
         {
-            result.Data = new MessageDto(Resources.UserNotFoundMessage);
-            result.StatusCode = StatusCodeType.NotFound;
-            return result;
+            return 
         }
         if (!passwordVerifier.VerifyPasswordHash(passwordInfoDto.OldPassword, user.PasswordHash))
         {
@@ -32,5 +30,15 @@ public class UserPasswordManagerService(ApplicationDbContext context, IUserRecei
         
         result.Data = new MessageDto(Resources.SuccessfulUpdateUserMessage);
         return result;
+    }
+    
+    
+    private ActionResponce<MessageDto> NotFoundResult()
+    {
+        return new ActionResponce<MessageDto>()
+        {
+            Data = new MessageDto(Resources.UserNotFoundMessage),
+            StatusCode = StatusCodeType.NotFound
+        };
     }
 }
