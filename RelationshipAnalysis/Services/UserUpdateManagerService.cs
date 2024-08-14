@@ -14,9 +14,9 @@ namespace RelationshipAnalysis.Services;
 public class UserUpdateManagerService(ApplicationDbContext context, IUserReceiver userReceiver, IMapper mapper, ICookieSetter cookieSetter,
     IJwtTokenGenerator jwtTokenGenerator) : IUserUpdateManagerService
 {
-    public async Task<ActionResponce<MessageDto>> UpdateUserAsync(ClaimsPrincipal userClaims, UserUpdateInfoDto userUpdateInfoDto, HttpResponse response)
+    public async Task<ActionResponse<MessageDto>> UpdateUserAsync(ClaimsPrincipal userClaims, UserUpdateInfoDto userUpdateInfoDto, HttpResponse response)
     {
-        var result = new ActionResponce<MessageDto>();
+        var result = new ActionResponse<MessageDto>();
         var user = await userReceiver.ReceiveUserAsync(userClaims);
         if (user is null)
         {
@@ -29,18 +29,18 @@ public class UserUpdateManagerService(ApplicationDbContext context, IUserReceive
         return SuccessResult();
     }
 
-    private ActionResponce<MessageDto> NotFoundResult()
+    private ActionResponse<MessageDto> NotFoundResult()
     {
-        return new ActionResponce<MessageDto>()
+        return new ActionResponse<MessageDto>()
         {
             Data = new MessageDto(Resources.UserNotFoundMessage),
             StatusCode = StatusCodeType.NotFound
         };
     }
 
-    private ActionResponce<MessageDto> SuccessResult()
+    private ActionResponse<MessageDto> SuccessResult()
     {
-        return new ActionResponce<MessageDto>()
+        return new ActionResponse<MessageDto>()
         {
             Data = new MessageDto(Resources.SuccessfulUpdateUserMessage),
             StatusCode = StatusCodeType.Success
