@@ -14,10 +14,8 @@ namespace RelationshipAnalysis.Services;
 public class UserUpdateManagerService(ApplicationDbContext context, IUserReceiver userReceiver, IMapper mapper, ICookieSetter cookieSetter,
     IJwtTokenGenerator jwtTokenGenerator) : IUserUpdateManagerService
 {
-    public async Task<ActionResponse<MessageDto>> UpdateUserAsync(ClaimsPrincipal userClaims, UserUpdateInfoDto userUpdateInfoDto, HttpResponse response)
+    public async Task<ActionResponse<MessageDto>> UpdateUserAsync(User user, UserUpdateInfoDto userUpdateInfoDto, HttpResponse response)
     {
-        var result = new ActionResponse<MessageDto>();
-        var user = await userReceiver.ReceiveUserAsync(userClaims);
         if (user is null)
         {
             return NotFoundResult();

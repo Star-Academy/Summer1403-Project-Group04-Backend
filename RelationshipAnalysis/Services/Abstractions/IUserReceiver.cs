@@ -6,4 +6,5 @@ namespace RelationshipAnalysis.Services.Abstractions;
 public interface IUserReceiver
 {
     Task<User> ReceiveUserAsync(ClaimsPrincipal userClaims);
+    Task<User> ReceiveUserAsync(int id);
 }

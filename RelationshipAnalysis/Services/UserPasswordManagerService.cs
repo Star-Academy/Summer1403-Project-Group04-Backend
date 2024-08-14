@@ -4,16 +4,15 @@ using RelationshipAnalysis.Controllers;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.DTO;
 using RelationshipAnalysis.Enums;
+using RelationshipAnalysis.Models;
 using RelationshipAnalysis.Services.Abstractions;
 
 namespace RelationshipAnalysis.Services;
 
-public class UserPasswordManagerService(ApplicationDbContext context, IUserReceiver userReceiver, IPasswordVerifier passwordVerifier, IPasswordHasher passwordHasher) : IUserPasswordManagerService
+public class UserPasswordManagerService(ApplicationDbContext context, IPasswordVerifier passwordVerifier, IPasswordHasher passwordHasher) : IUserPasswordManagerService
 {
-    public async Task<ActionResponse<MessageDto>> UpdatePasswordAsync(ClaimsPrincipal userClaims, UserPasswordInfoDto passwordInfoDto)
+    public async Task<ActionResponse<MessageDto>> UpdatePasswordAsync(User user, UserPasswordInfoDto passwordInfoDto)
     {
-        var result = new ActionResponse<MessageDto>();
-        var user = await userReceiver.ReceiveUserAsync(userClaims);
         if (user is null)
         {
             return NotFoundResult();
@@ -28,7 +27,6 @@ public class UserPasswordManagerService(ApplicationDbContext context, IUserRecei
 
         return SuccessResult();
     }
-    
     
     private ActionResponse<MessageDto> NotFoundResult()
     {

@@ -11,10 +11,8 @@ namespace RelationshipAnalysis.Services;
 
 public class UserInfoManagerService(IUserReceiver userReceiver) : IUserInfoManagerService
 {
-    public async Task<ActionResponse<UserOutputInfoDto>> GetUserAsync(ClaimsPrincipal userClaim)
+    public async Task<ActionResponse<UserOutputInfoDto>> GetUserAsync(User user)
     {
-        var result = new ActionResponse<UserOutputInfoDto>();
-        var user = await userReceiver.ReceiveUserAsync(userClaim);
         if (user is null)
         {
             return NotFoundResult();

@@ -6,36 +6,37 @@ using RelationshipAnalysis.Services.Abstractions;
 
 namespace RelationshipAnalysis.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class UserController(
     IUserInfoManagerService userInfoManagerService,
     IUserUpdateManagerService userUpdateManagerService,
-    IUserPasswordManagerService passwordManagerService)
+    IUserPasswordManagerService passwordManagerService,
+    IUserReceiver userReceiver)
     : ControllerBase
 {
-    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetUser()
     {
-        var result = await userInfoManagerService.GetUserAsync(User);
+        var user = await userReceiver.ReceiveUserAsync(User);
+        var result = await userInfoManagerService.GetUserAsync(user);
         return StatusCode((int)result.StatusCode, result.Data);
     }
-
-    [Authorize]
+    
     [HttpPut]
     public async Task<IActionResult> UpdateUser(UserUpdateInfoDto userUpdateInfoDto)
     {
-        var result = await userUpdateManagerService.UpdateUserAsync(User, userUpdateInfoDto, Response);
+        var user = await userReceiver.ReceiveUserAsync(User);
+        var result = await userUpdateManagerService.UpdateUserAsync(user, userUpdateInfoDto, Response);
         return StatusCode((int)result.StatusCode, result.Data);
     }
-
-    [Authorize]
+    
     [HttpPut]
     public async Task<IActionResult> UpdatePassword(UserPasswordInfoDto passwordInfoDto)
     {
-
-        var result = await passwordManagerService.UpdatePasswordAsync(User, passwordInfoDto);
+        var user = await userReceiver.ReceiveUserAsync(User);
+        var result = await passwordManagerService.UpdatePasswordAsync(user, passwordInfoDto);
         return StatusCode((int)result.StatusCode, result.Data);
     }
 }
