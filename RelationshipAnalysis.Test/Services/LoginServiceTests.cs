@@ -26,13 +26,13 @@ public class LoginServiceTests
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         _context = new ApplicationDbContext(options);
-        
+
         SeedDatabase();
 
         _mockCookieSetter = new Mock<ICookieSetter>();
         _mockJwtTokenGenerator = new Mock<IJwtTokenGenerator>();
         _mockPasswordVerifier = new Mock<IPasswordVerifier>();
-        
+
         Mock<IResponseCookies> mockResponseCookies = new();
         _mockHttpResponse = new Mock<HttpResponse>();
         _mockHttpResponse.SetupGet(r => r.Cookies).Returns(mockResponseCookies.Object);

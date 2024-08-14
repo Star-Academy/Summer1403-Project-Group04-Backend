@@ -19,10 +19,10 @@ public class LoginService(
     public async Task<ActionResponse<MessageDto>> LoginAsync(LoginDto loginModel, HttpResponse response)
     {
         var result = new ActionResponse<MessageDto>();
-        
+
         var user = await context.Users
             .SingleOrDefaultAsync(u => u.Username == loginModel.Username);
-        
+
         if (user == null || !passwordVerifier.VerifyPasswordHash(loginModel.Password, user.PasswordHash))
         {
             result.Data = new MessageDto("Login failed!");
@@ -32,7 +32,7 @@ public class LoginService(
 
         var token = jwtTokenGenerator.GenerateJwtToken(user);
         cookieSetter.SetCookie(response, token);
-        
+
         result.Data = new MessageDto("Login was successful!");
         return result;
     }

@@ -8,7 +8,7 @@ public class CustomPasswordHasherTests
 
     public CustomPasswordHasherTests()
     {
-        _sut = new ();
+        _sut = new();
     }
 
     [Fact]

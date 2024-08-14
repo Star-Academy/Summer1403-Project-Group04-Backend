@@ -9,43 +9,33 @@ namespace RelationshipAnalysis.Integration.Test.Controllers;
 
 public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
 {
-    private readonly string _databaseName;
-
-    public CustomWebApplicationFactory()
-    {
-        _databaseName = Guid.NewGuid().ToString(); // استفاده از یک نام پایگاه داده منحصر به فرد
-    }
+    private readonly string _databaseName = Guid.NewGuid().ToString();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>
         {
-            // حذف DbContext موجود
-            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
+            var descriptor =
+                services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
             if (descriptor != null)
             {
                 services.Remove(descriptor);
             }
 
-            // اضافه کردن DbContext با پایگاه داده In-Memory جدید
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseInMemoryDatabase(_databaseName);
-            });
 
-            // ساخت ارائه‌دهنده خدمات
+            services.AddDbContext<ApplicationDbContext>(options => { options.UseInMemoryDatabase(_databaseName); });
+
+
             var serviceProvider = services.BuildServiceProvider();
 
-            // ایجاد دامنه برای دسترسی به DbContext
-            using (var scope = serviceProvider.CreateScope())
-            {
-                var scopedServices = scope.ServiceProvider;
-                var dbContext = scopedServices.GetRequiredService<ApplicationDbContext>();
 
-                // اطمینان از ایجاد پایگاه داده و تزریق داده‌ها
-                dbContext.Database.EnsureCreated();
-                SeedDatabase(dbContext);
-            }
+            using var scope = serviceProvider.CreateScope();
+            var scopedServices = scope.ServiceProvider;
+            var dbContext = scopedServices.GetRequiredService<ApplicationDbContext>();
+
+
+            dbContext.Database.EnsureCreated();
+            SeedDatabase(dbContext);
         });
     }
 

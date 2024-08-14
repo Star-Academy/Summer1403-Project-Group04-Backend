@@ -12,18 +12,16 @@ namespace RelationshipAnalysis.Controllers;
 [Route("api/[controller]/[action]")]
 public class AuthController : ControllerBase
 {
-
     private readonly ILoginService _loginService;
 
     public AuthController(ILoginService loginService)
     {
         _loginService = loginService;
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] LoginDto loginModel)
     {
-        
         var responce = await _loginService.LoginAsync(loginModel, Response);
 
         return StatusCode((int)responce.StatusCode, responce.Data);

@@ -43,17 +43,15 @@ public class AccessControllerTests : IClassFixture<CustomWebApplicationFactory<P
         };
         Mock<IOptions<JwtSettings>> mockJwtSettings = new();
         mockJwtSettings.Setup(m => m.Value).Returns(jwtSettings);
-        
-        
+
 
         var user = new User()
         {
             Username = "Test",
-            UserRoles = new List<UserRole>(){new UserRole(){Role = new Role(){Name = "admin"}}}
+            UserRoles = new List<UserRole>() { new UserRole() { Role = new Role() { Name = "admin" } } }
         };
-        
-        // Set the JWT token for authenticated requests
-        var token = new JwtTokenGenerator(mockJwtSettings.Object).GenerateJwtToken(user);// Generate or mock a valid token
+
+        var token = new JwtTokenGenerator(mockJwtSettings.Object).GenerateJwtToken(user);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         // Act
@@ -63,13 +61,13 @@ public class AccessControllerTests : IClassFixture<CustomWebApplicationFactory<P
         response.EnsureSuccessStatusCode();
         var responseData = await response.Content.ReadFromJsonAsync<PermissionDto>();
         Assert.NotNull(responseData);
-        Assert.NotEmpty(responseData.Permissions); // Assuming PermissionsDto has a Permissions list
+        Assert.NotEmpty(responseData.Permissions);
     }
 
     [Fact]
     public async Task GetPermissions_ShouldReturnUnauthorized_WhenUserIsNotAuthorized()
     {
-        // Remove the JWT token for unauthorized requests
+        // Arrange
         _client.DefaultRequestHeaders.Authorization = null;
 
         // Act
@@ -78,5 +76,4 @@ public class AccessControllerTests : IClassFixture<CustomWebApplicationFactory<P
         // Assert
         Assert.Equal(System.Net.HttpStatusCode.Unauthorized, response.StatusCode);
     }
-    
 }
