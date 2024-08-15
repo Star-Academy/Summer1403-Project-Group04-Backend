@@ -6,7 +6,7 @@ using RelationshipAnalysis.Models;
 
 namespace RelationshipAnalysis.Services.Abstractions;
 
-public interface IUserPasswordManagerService
+public interface IUserPasswordService
 {
     Task<ActionResponse<MessageDto>> UpdatePasswordAsync(User user,
         UserPasswordInfoDto passwordInfoDto);

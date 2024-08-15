@@ -5,7 +5,7 @@ using RelationshipAnalysis.Models;
 
 namespace RelationshipAnalysis.Services.Abstractions;
 
-public interface IUserInfoManagerService
+public interface IUserInfoService
 {
     Task<ActionResponse<UserOutputInfoDto>> GetUserAsync(User user);
 }

@@ -10,9 +10,9 @@ namespace RelationshipAnalysis.Controllers;
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class UserController(
-    IUserInfoManagerService userInfoManagerService,
-    IUserUpdateManagerService userUpdateManagerService,
-    IUserPasswordManagerService passwordManagerService,
+    IUserInfoService userInfoService,
+    IUserUpdateInfoService userUpdateInfoService,
+    IUserPasswordService passwordService,
     IUserReceiver userReceiver)
     : ControllerBase
 {
@@ -20,7 +20,7 @@ public class UserController(
     public async Task<IActionResult> GetUser()
     {
         var user = await userReceiver.ReceiveUserAsync(User);
-        var result = await userInfoManagerService.GetUserAsync(user);
+        var result = await userInfoService.GetUserAsync(user);
         return StatusCode((int)result.StatusCode, result.Data);
     }
     
@@ -28,7 +28,7 @@ public class UserController(
     public async Task<IActionResult> UpdateUser(UserUpdateInfoDto userUpdateInfoDto)
     {
         var user = await userReceiver.ReceiveUserAsync(User);
-        var result = await userUpdateManagerService.UpdateUserAsync(user, userUpdateInfoDto, Response);
+        var result = await userUpdateInfoService.UpdateUserAsync(user, userUpdateInfoDto, Response);
         return StatusCode((int)result.StatusCode, result.Data);
     }
     
@@ -36,7 +36,7 @@ public class UserController(
     public async Task<IActionResult> UpdatePassword(UserPasswordInfoDto passwordInfoDto)
     {
         var user = await userReceiver.ReceiveUserAsync(User);
-        var result = await passwordManagerService.UpdatePasswordAsync(user, passwordInfoDto);
+        var result = await passwordService.UpdatePasswordAsync(user, passwordInfoDto);
         return StatusCode((int)result.StatusCode, result.Data);
     }
 }

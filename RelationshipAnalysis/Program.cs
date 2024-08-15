@@ -25,10 +25,10 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddScoped<IPermissionService, PermissionService>()
     .AddSingleton<IPasswordHasher, CustomPasswordHasher>()
     .AddSingleton<IPasswordVerifier, PasswordVerifier>()
-    .AddScoped<IUserUpdateManagerService, UserUpdateManagerService>()
+    .AddScoped<IUserUpdateInfoService, UserUpdateInfoService>()
     .AddScoped<IUserReceiver, UserReceiver>()
-    .AddScoped<IUserPasswordManagerService, UserPasswordManagerService>()
-    .AddScoped<IUserInfoManagerService, UserInfoManagerService>()
+    .AddScoped<IUserPasswordService, UserPasswordService>()
+    .AddScoped<IUserInfoService, UserInfoService>()
     .AddSingleton<IPasswordVerifier, PasswordVerifier>();
 
 

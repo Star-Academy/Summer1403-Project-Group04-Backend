@@ -6,7 +6,7 @@ using RelationshipAnalysis.Models;
 
 namespace RelationshipAnalysis.Services.Abstractions;
 
-public interface IUserUpdateManagerService
+public interface IUserUpdateInfoService
 {
     Task<ActionResponse<MessageDto>> UpdateUserAsync(User user, UserUpdateInfoDto userUpdateInfoDto,
         HttpResponse response);
