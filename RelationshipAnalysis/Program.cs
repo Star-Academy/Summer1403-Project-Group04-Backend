@@ -29,8 +29,8 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddScoped<IUserReceiver, UserReceiver>()
     .AddScoped<IUserPasswordService, UserPasswordService>()
     .AddScoped<IUserInfoService, UserInfoService>()
-    .AddSingleton<IPasswordVerifier, PasswordVerifier>();
-
+    .AddSingleton<IPasswordVerifier, PasswordVerifier>()
+    .AddScoped<IUserRolesReceiver, UserRolesReceiver>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql( Environment.GetEnvironmentVariable("CONNECTION_STRING")).UseLazyLoadingProxies());

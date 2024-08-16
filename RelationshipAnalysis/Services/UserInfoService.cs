@@ -9,7 +9,7 @@ using RelationshipAnalysis.Services.Abstractions;
 
 namespace RelationshipAnalysis.Services;
 
-public class UserInfoService(IUserReceiver userReceiver) : IUserInfoService
+public class UserInfoService(IUserReceiver userReceiver, IUserRolesReceiver rolesReceiver) : IUserInfoService
 {
     public async Task<ActionResponse<UserOutputInfoDto>> GetUserAsync(User user)
     {
@@ -29,7 +29,8 @@ public class UserInfoService(IUserReceiver userReceiver) : IUserInfoService
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Username = user.Username
+                Username = user.Username,
+                Roles = rolesReceiver.ReceiveRoles(user.Id)
             },
             StatusCode = StatusCodeType.Success
         };
