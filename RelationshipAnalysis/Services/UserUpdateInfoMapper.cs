@@ -11,5 +11,7 @@ public class UserUpdateInfoMapper : Profile
         CreateMap<UserUpdateInfoDto, User>()
             .ForMember(dest => dest.Id, opt => opt.Ignore()) 
             .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
+        CreateMap<User, UserOutputInfoDto>()
+            .ForMember(dest => dest.Roles, opt => opt.Ignore());
     }
 }

@@ -9,7 +9,7 @@ using RelationshipAnalysis.Services.Abstractions;
 
 namespace RelationshipAnalysis.Services;
 
-public class UserInfoService(IUserReceiver userReceiver, IUserRolesReceiver rolesReceiver) : IUserInfoService
+public class UserInfoService(IUserReceiver userReceiver, IUserRolesReceiver rolesReceiver, IMapper mapper) : IUserInfoService
 {
     public async Task<ActionResponse<UserOutputInfoDto>> GetUserAsync(User user)
     {
@@ -22,16 +22,13 @@ public class UserInfoService(IUserReceiver userReceiver, IUserRolesReceiver role
 
     private ActionResponse<UserOutputInfoDto> SuccessResult(User user)
     {
+        var result = new UserOutputInfoDto();
+        mapper.Map(user, result);
+        result.Roles = rolesReceiver.ReceiveRoles(user.Id);
+        
         return new ActionResponse<UserOutputInfoDto>()
         {
-            Data = new UserOutputInfoDto()
-            {
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Username = user.Username,
-                Roles = rolesReceiver.ReceiveRoles(user.Id)
-            },
+            Data = result,
             StatusCode = StatusCodeType.Success
         };
     }
