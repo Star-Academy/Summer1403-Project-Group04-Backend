@@ -51,6 +51,22 @@ namespace RelationshipAnalysis {
             }
         }
         
+        internal static string SuccessfulLogoutMessage {
+            get {
+                return ResourceManager.GetString("SuccessfulLogoutMessage", resourceCulture);
+            }
+        }
+        internal static string EmailExistsMessage {
+            get {
+                return ResourceManager.GetString("EmailExistsMessage", resourceCulture);
+            }
+        }
+        internal static string UsernameExistsMessage {
+            get {
+                return ResourceManager.GetString("UsernameExistsMessage", resourceCulture);
+            }
+        }
+
         internal static string UserNotFoundMessage {
             get {
                 return ResourceManager.GetString("UserNotFoundMessage", resourceCulture);

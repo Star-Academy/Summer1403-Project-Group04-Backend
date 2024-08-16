@@ -13,7 +13,8 @@ public class UserController(
     IUserInfoService userInfoService,
     IUserUpdateInfoService userUpdateInfoService,
     IUserPasswordService passwordService,
-    IUserReceiver userReceiver)
+    IUserReceiver userReceiver,
+    ILogoutService logoutService)
     : ControllerBase
 {
     [HttpGet]
@@ -38,5 +39,12 @@ public class UserController(
         var user = await userReceiver.ReceiveUserAsync(User);
         var result = await passwordService.UpdatePasswordAsync(user, passwordInfoDto);
         return StatusCode((int)result.StatusCode, result.Data);
+    }
+
+    [HttpPost]
+    public IActionResult Logout()
+    {
+        logoutService.Logout(Response);
+        return Ok(Resources.SuccessfulLogoutMessage);
     }
 }

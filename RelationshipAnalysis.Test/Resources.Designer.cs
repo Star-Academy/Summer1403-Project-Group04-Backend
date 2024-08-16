@@ -45,6 +45,24 @@ namespace RelationshipAnalysis.Test {
             }
         }
         
+        internal static string UsernameExistsMessage {
+            get {
+                return ResourceManager.GetString("UsernameExistsMessage", resourceCulture);
+            }
+        }
+        
+        internal static string EmailExistsMessage {
+            get {
+                return ResourceManager.GetString("EmailExistsMessage", resourceCulture);
+            }
+        }
+        
+        internal static string SuccessfulLogoutMessage {
+            get {
+                return ResourceManager.GetString("SuccessfulLogoutMessage", resourceCulture);
+            }
+        }
+        
         internal static string InvalidPasswordMessage {
             get {
                 return ResourceManager.GetString("InvalidPasswordMessage", resourceCulture);

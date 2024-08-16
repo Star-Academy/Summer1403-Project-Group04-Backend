@@ -36,7 +36,7 @@ namespace RelationshipAnalysis.Test.Services
 
         private void SeedDatabase()
         {
-            _context.Users.Add(new User
+            _context.Users.AddRange(new User
             {
                 Id = 1,
                 Username = "ExistingUser",
@@ -44,8 +44,59 @@ namespace RelationshipAnalysis.Test.Services
                 FirstName = "",
                 LastName = "",
                 PasswordHash = "HashedPassword"
+            },
+            new User
+            {
+                Id = 2,
+                Username = "NewUserName",
+                Email = "newemail@example.com",
+                FirstName = "",
+                LastName = "",
+                PasswordHash = "HashedPassword"
             });
             _context.SaveChanges();
+        }
+
+        [Fact]
+        public async Task UpdateUserAsync_ReturnsBadRequest_WhenEmailAlreadyExists()
+        {
+            // Arrange
+            var user = await _context.Users.FindAsync(1);
+            var userUpdateInfoDto = new UserUpdateInfoDto
+            {
+                Username = "ExistingUser", 
+                Email = "newemail@example.com"
+            };
+            var response = Substitute.For<HttpResponse>();
+
+            // Act
+            var result = await _sut.UpdateUserAsync(user, userUpdateInfoDto, response);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodeType.BadRequest, result.StatusCode);
+            Assert.Equal(Resources.EmailExistsMessage, result.Data.Message);
+        }
+
+        [Fact]
+        public async Task UpdateUserAsync_ReturnsBadRequest_WhenUsernameAlreadyExists()
+        {
+            // Arrange
+            var user = await _context.Users.FindAsync(1);
+            var userUpdateInfoDto = new UserUpdateInfoDto
+            {
+                Username = "NewUserName",
+                Email = "user@example.com" 
+            };
+            var response = Substitute.For<HttpResponse>();
+
+            // Act
+            var result = await _sut.UpdateUserAsync(user, userUpdateInfoDto, response);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodeType.BadRequest, result.StatusCode);
+            Assert.Equal(Resources.UsernameExistsMessage, result.Data.Message);
         }
 
         [Fact]

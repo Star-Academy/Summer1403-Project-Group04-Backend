@@ -2,6 +2,16 @@
 
 <root>
 
+    <data name="UsernameExistsMessage">
+        <value>Chosen username already exists</value>
+    </data>
+
+    <data name="EmailExistsMessage">
+        <value>Chosen email already exists</value>
+    </data>
+    <data name="SuccessfulLogoutMessage">
+        <value>Logout was successful!</value>
+    </data>
     <data name="InvalidPasswordMessage">
         <value>Password must be at least 8 characters long and contain one uppercase letter, one lowercase letter, one number, and one special character.</value>
     </data>
