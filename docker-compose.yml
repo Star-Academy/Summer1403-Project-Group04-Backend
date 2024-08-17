@@ -29,10 +29,10 @@ services:
     command: >
       bash -c "dotnet tool install --global dotnet-ef &&
                export PATH=\"$PATH:/root/.dotnet/tools\" &&
-               dotnet ef database update --project AnalysisData/AnalysisData/AnalysisData.csproj"
+               dotnet ef database update --project RelationshipAnalysis/RelationshipAnalysis.csproj"
 
-  web:
-    image: mhchah/negar-backend:latest
+  build:
+    build: .
     depends_on:
       migrate:
         condition: service_completed_successfully
