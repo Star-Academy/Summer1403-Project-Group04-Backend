@@ -5,11 +5,11 @@ WORKDIR /app
 
 COPY . .
 
-RUN dotnet clean
-
 RUN dotnet restore ./RelationshipAnalysis.sln
 
 RUN dotnet test
+
+RUN dotnet clean
 
 RUN dotnet publish ./RelationshipAnalysis/RelationshipAnalysis.csproj -c Release -o out
 
