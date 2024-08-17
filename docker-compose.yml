@@ -32,7 +32,7 @@ services:
                dotnet ef database update --project AnalysisData/AnalysisData/AnalysisData.csproj"
 
   web:
-    image: yaghooli/dotnetdev:latest
+    image: mhchah/negar-backend:latest
     depends_on:
       migrate:
         condition: service_completed_successfully
