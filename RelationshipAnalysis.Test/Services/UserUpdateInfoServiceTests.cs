@@ -28,7 +28,7 @@ namespace RelationshipAnalysis.Test.Services
             _mapper = Substitute.For<IMapper>();
             _cookieSetter = Substitute.For<ICookieSetter>();
             _jwtTokenGenerator = Substitute.For<IJwtTokenGenerator>();
-            _sut = new UserUpdateInfoService(_context, _mapper, _cookieSetter, _jwtTokenGenerator);
+            _sut = new UserUpdateInfoService(_context, _mapper);
             SeedDatabase();
         }
 
@@ -147,22 +147,6 @@ namespace RelationshipAnalysis.Test.Services
             Assert.Equal("ExistingUser", user.Username);
             Assert.Equal("user@example.com", user.Email);
         }
-
-        [Fact]
-        public async Task UpdateUserAsync_SetsJwtCookie_WhenUserIsUpdated()
-        {
-            // Arrange
-            var user = await _context.Users.FindAsync(1);
-            var userUpdateInfoDto = new UserUpdateInfoDto();
-            var response = Substitute.For<HttpResponse>();
-            var token = "fake-jwt-token";
-            _jwtTokenGenerator.GenerateJwtToken(user).Returns(token);
-
-            // Act
-            await _sut.UpdateUserAsync(user, userUpdateInfoDto, response);
-
-            // Assert
-            _cookieSetter.Received(1).SetCookie(response, token);
-        }
+        
     }
 }

@@ -11,8 +11,7 @@ using RelationshipAnalysis.Services.Abstractions;
 
 namespace RelationshipAnalysis.Services;
 
-public class UserUpdateInfoService(ApplicationDbContext context, IMapper mapper, ICookieSetter cookieSetter,
-    IJwtTokenGenerator jwtTokenGenerator) : IUserUpdateInfoService
+public class UserUpdateInfoService(ApplicationDbContext context, IMapper mapper) : IUserUpdateInfoService
 {
     public async Task<ActionResponse<MessageDto>> UpdateUserAsync(User user, UserUpdateInfoDto userUpdateInfoDto, HttpResponse response)
     {
@@ -33,7 +32,6 @@ public class UserUpdateInfoService(ApplicationDbContext context, IMapper mapper,
         mapper.Map(userUpdateInfoDto, user);
         context.Update(user);
         await context.SaveChangesAsync();
-        SetCookie(user, response);
         return SuccessResult();
     }
 
@@ -71,11 +69,5 @@ public class UserUpdateInfoService(ApplicationDbContext context, IMapper mapper,
             Data = new MessageDto(Resources.SuccessfulUpdateUserMessage),
             StatusCode = StatusCodeType.Success
         };
-    }
-
-    private void SetCookie(User user, HttpResponse response)
-    {
-        var token = jwtTokenGenerator.GenerateJwtToken(user);
-        cookieSetter.SetCookie(response, token);
     }
 }

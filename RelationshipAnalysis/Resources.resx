@@ -66,4 +66,10 @@
     <data name="SuccessfulUpdateRolesMessage" xml:space="preserve">
         <value>User roles updated successfuly!</value>
     </data>
+    <data name="LoginFailedMessage" xml:space="preserve">
+        <value>Login Failed!</value>
+    </data>
+    <data name="SuccessfulLoginMessage" xml:space="preserve">
+        <value>Login was successful!</value>
+    </data>
 </root>

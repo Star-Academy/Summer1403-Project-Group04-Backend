@@ -110,5 +110,17 @@ namespace RelationshipAnalysis.Test {
                 return ResourceManager.GetString("SuccessfulUpdateUserMessage", resourceCulture);
             }
         }
+        internal static string LoginFailedMessage {
+            get {
+                return ResourceManager.GetString("LoginFailedMessage", resourceCulture);
+            }
+        }
+        
+        internal static string SuccessfulLoginMessage {
+            get {
+                return ResourceManager.GetString("SuccessfulLoginMessage", resourceCulture);
+            }
+        }
+        
     }
 }

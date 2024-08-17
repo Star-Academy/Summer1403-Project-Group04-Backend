@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using AutoMapper;
+using Microsoft.IdentityModel.Tokens;
 using RelationshipAnalysis.Controllers;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Enums;
@@ -7,7 +8,7 @@ using RelationshipAnalysis.Services.Abstractions;
 
 namespace RelationshipAnalysis.Services;
 
-public class AllUserService(IRoleReceiver rolesReceiver) : IAllUserService
+public class AllUserService(IMapper mapper, IRoleReceiver rolesReceiver) : IAllUserService
 {
     public ActionResponse<List<UserOutputInfoDto>> GetAllUser(List<User> users)
     {
@@ -26,14 +27,9 @@ public class AllUserService(IRoleReceiver rolesReceiver) : IAllUserService
         var userOutputs = new List<UserOutputInfoDto>();
         foreach (var user in users)
         {
-            var data = new UserOutputInfoDto()
-            {
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Username = user.Username,
-                Roles = rolesReceiver.ReceiveRoles(user.Id)
-            };
+            var data = new UserOutputInfoDto();
+            mapper.Map(user, data);
+            
             userOutputs.Add(data);
         }
 
