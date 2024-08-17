@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN dotnet restore
+RUN dotnet restore ./RelationshipAnalysis.sln
 
 RUN dotnet test
 
