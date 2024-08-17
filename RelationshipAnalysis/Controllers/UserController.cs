@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RelationshipAnalysis.Dto;
+using RelationshipAnalysis.DTO;
 using RelationshipAnalysis.Services.Abstractions;
 
 namespace RelationshipAnalysis.Controllers;
@@ -45,6 +46,6 @@ public class UserController(
     public IActionResult Logout()
     {
         logoutService.Logout(Response);
-        return Ok(Resources.SuccessfulLogoutMessage);
+        return Ok(new MessageDto(Resources.SuccessfulLogoutMessage));
     }
 }

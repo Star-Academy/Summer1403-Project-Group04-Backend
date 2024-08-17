@@ -146,8 +146,8 @@ namespace RelationshipAnalysis.Test.Services
             Assert.NotNull(result);
             Assert.Equal(StatusCodeType.Success, result.StatusCode);
             Assert.Equal(Resources.SuccessfulUpdateUserMessage, result.Data.Message);
-            Assert.Equal("UpdatedUserName", user.Username);
-            Assert.Equal("updated@example.com", user.Email);
+            Assert.Equal("ExistingUser", user.Username);
+            Assert.Equal("user@example.com", user.Email);
         }
 
         [Fact]

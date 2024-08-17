@@ -25,7 +25,7 @@ public class LoginService(
 
         if (user == null || !passwordVerifier.VerifyPasswordHash(loginModel.Password, user.PasswordHash))
         {
-            result.Data = new MessageDto("Login failed!");
+            result.Data = new MessageDto("Login failed bozo!");
             result.StatusCode = StatusCodeType.Unauthorized;
             return result;
         }
