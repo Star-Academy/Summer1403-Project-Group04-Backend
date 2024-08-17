@@ -25,12 +25,15 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddScoped<IPermissionService, PermissionService>()
     .AddSingleton<IPasswordHasher, CustomPasswordHasher>()
     .AddSingleton<IPasswordVerifier, PasswordVerifier>()
+    .AddScoped<IAllUserService, AllUserService>()
     .AddScoped<IUserUpdateInfoService, UserUpdateInfoService>()
+    .AddScoped<IUserDeleteService, UserDeleteService>()
     .AddScoped<IUserReceiver, UserReceiver>()
     .AddScoped<IUserPasswordService, UserPasswordService>()
     .AddScoped<IUserInfoService, UserInfoService>()
-    .AddSingleton<IPasswordVerifier, PasswordVerifier>()
-    .AddScoped<IUserRolesReceiver, UserRolesReceiver>();
+    .AddScoped<IUserCreateService, UserCreateService>()
+    .AddScoped<IUserUpdateRolesService, UserUpdateRolesService>()
+    .AddScoped<IRoleReceiver, RoleReceiver>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql( Environment.GetEnvironmentVariable("CONNECTION_STRING")).UseLazyLoadingProxies());

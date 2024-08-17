@@ -9,9 +9,9 @@ using RelationshipAnalysis.Services.Abstractions;
 
 namespace RelationshipAnalysis.Services;
 
-public class UserInfoService(IUserReceiver userReceiver, IUserRolesReceiver rolesReceiver) : IUserInfoService
+public class UserInfoService(IRoleReceiver rolesReceiver) : IUserInfoService
 {
-    public async Task<ActionResponse<UserOutputInfoDto>> GetUserAsync(User user)
+    public ActionResponse<UserOutputInfoDto> GetUser(User user)
     {
         if (user is null)
         {
@@ -19,7 +19,7 @@ public class UserInfoService(IUserReceiver userReceiver, IUserRolesReceiver role
         }
         return SuccessResult(user);
     }
-
+    
     private ActionResponse<UserOutputInfoDto> SuccessResult(User user)
     {
         return new ActionResponse<UserOutputInfoDto>()

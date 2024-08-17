@@ -2,7 +2,9 @@ using RelationshipAnalysis.Models;
 
 namespace RelationshipAnalysis.Services.Abstractions;
 
-public interface IUserRolesReceiver
+public interface IRoleReceiver
 {
     List<string> ReceiveRoles(int userId);
+
+    List<string> ReceiveAllRoles();
 }
