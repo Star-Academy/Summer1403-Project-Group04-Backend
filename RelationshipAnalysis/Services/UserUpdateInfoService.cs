@@ -11,7 +11,7 @@ using RelationshipAnalysis.Services.Abstractions;
 
 namespace RelationshipAnalysis.Services;
 
-public class UserUpdateInfoService(ApplicationDbContext context, IUserReceiver userReceiver, IMapper mapper, ICookieSetter cookieSetter,
+public class UserUpdateInfoService(ApplicationDbContext context, IMapper mapper, ICookieSetter cookieSetter,
     IJwtTokenGenerator jwtTokenGenerator) : IUserUpdateInfoService
 {
     public async Task<ActionResponse<MessageDto>> UpdateUserAsync(User user, UserUpdateInfoDto userUpdateInfoDto, HttpResponse response)

@@ -29,4 +29,10 @@
       <Folder Include="Settings\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="RelationshipAnalysis">
+        <HintPath>..\RelationshipAnalysis.Integration.Test\bin\Debug\net8.0\RelationshipAnalysis.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

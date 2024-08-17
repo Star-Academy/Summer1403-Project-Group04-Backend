@@ -10,27 +10,25 @@ namespace RelationshipAnalysis.Test.Services
 {
     public class UserInfoServiceTests
     {
-        private readonly IUserReceiver _userReceiver;
-        private readonly IUserRolesReceiver _rolesReceiver;
+        private readonly IRoleReceiver _rolesReceiver;
         private readonly IMapper _mapper;
         private readonly UserInfoService _service;
 
         public UserInfoServiceTests()
         {
-            _userReceiver = Substitute.For<IUserReceiver>();
-            _rolesReceiver = Substitute.For<IUserRolesReceiver>();
+            _rolesReceiver = Substitute.For<IRoleReceiver>();
             _mapper = Substitute.For<IMapper>();
-            _service = new UserInfoService(_userReceiver, _rolesReceiver, _mapper);
+            _service = new UserInfoService(_rolesReceiver, _mapper);
         }
 
         [Fact]
-        public async Task GetUserAsync_ReturnsNotFound_WhenUserIsNull()
+        public void GetUserAsync_ReturnsNotFound_WhenUserIsNull()
         {
             // Arrange
             User user = null;
 
             // Act
-            var result = await _service.GetUserAsync(user);
+            var result = _service.GetUser(user);
 
             // Assert
             Assert.Equal(StatusCodeType.NotFound, result.StatusCode);
@@ -38,7 +36,7 @@ namespace RelationshipAnalysis.Test.Services
         }
 
         [Fact]
-        public async Task GetUserAsync_ReturnsSuccess_WhenUserIsNotNull_()
+        public void GetUserAsync_ReturnsSuccess_WhenUserIsNotNull_()
         {
             // Arrange
             var user = new User { Username = "Admin" };
@@ -50,7 +48,7 @@ namespace RelationshipAnalysis.Test.Services
             _rolesReceiver.ReceiveRoles(user.Id).Returns(roles);
 
             // Act
-            var result = await _service.GetUserAsync(user);
+            var result = _service.GetUser(user);
 
             // Assert
             Assert.Equal(StatusCodeType.Success, result.StatusCode);

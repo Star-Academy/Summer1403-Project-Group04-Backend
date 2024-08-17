@@ -1,17 +1,16 @@
-using System.Security.Claims;
+
 using AutoMapper;
 using RelationshipAnalysis.Controllers;
 using RelationshipAnalysis.Dto;
-using RelationshipAnalysis.DTO;
 using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Models;
 using RelationshipAnalysis.Services.Abstractions;
 
 namespace RelationshipAnalysis.Services;
 
-public class UserInfoService(IUserReceiver userReceiver, IUserRolesReceiver rolesReceiver, IMapper mapper) : IUserInfoService
+public class UserInfoService(IRoleReceiver rolesReceiver, IMapper mapper) : IUserInfoService
 {
-    public async Task<ActionResponse<UserOutputInfoDto>> GetUserAsync(User user)
+    public ActionResponse<UserOutputInfoDto> GetUser(User user)
     {
         if (user is null)
         {

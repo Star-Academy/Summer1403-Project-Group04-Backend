@@ -22,7 +22,7 @@ public class UserController(
     public async Task<IActionResult> GetUser()
     {
         var user = await userReceiver.ReceiveUserAsync(User);
-        var result = await userInfoService.GetUserAsync(user);
+        var result = userInfoService.GetUser(user);
         return StatusCode((int)result.StatusCode, result.Data);
     }
     

@@ -9,13 +9,13 @@ namespace RelationshipAnalysis.Test.Services
     public class UserRolesReceiverTests
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserRolesReceiver _sut;
+        private readonly RoleReceiver _sut;
 
         public UserRolesReceiverTests()
         {
             _context = new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options);
-            _sut = new UserRolesReceiver(_context);
+            _sut = new RoleReceiver(_context);
             SeedDatabase();
         }
 

@@ -56,16 +56,6 @@ namespace RelationshipAnalysis {
                 return ResourceManager.GetString("SuccessfulLogoutMessage", resourceCulture);
             }
         }
-        internal static string EmailExistsMessage {
-            get {
-                return ResourceManager.GetString("EmailExistsMessage", resourceCulture);
-            }
-        }
-        internal static string UsernameExistsMessage {
-            get {
-                return ResourceManager.GetString("UsernameExistsMessage", resourceCulture);
-            }
-        }
 
         internal static string UserNotFoundMessage {
             get {
@@ -106,6 +96,48 @@ namespace RelationshipAnalysis {
         internal static string SuccessfulUpdateUserMessage {
             get {
                 return ResourceManager.GetString("SuccessfulUpdateUserMessage", resourceCulture);
+            }
+        }
+        
+        internal static string SuccessfulDeleteUserMessage {
+            get {
+                return ResourceManager.GetString("SuccessfulDeleteUserMessage", resourceCulture);
+            }
+        }
+        
+        internal static string UsernameExistsMessage {
+            get {
+                return ResourceManager.GetString("UsernameExistsMessage", resourceCulture);
+            }
+        }
+        
+        internal static string EmailExistsMessage {
+            get {
+                return ResourceManager.GetString("EmailExistsMessage", resourceCulture);
+            }
+        }
+        
+        internal static string SucceddfulCreateUser {
+            get {
+                return ResourceManager.GetString("SucceddfulCreateUser", resourceCulture);
+            }
+        }
+        
+        internal static string EmptyRolesMessage {
+            get {
+                return ResourceManager.GetString("EmptyRolesMessage", resourceCulture);
+            }
+        }
+        
+        internal static string InvalidRolesListMessage {
+            get {
+                return ResourceManager.GetString("InvalidRolesListMessage", resourceCulture);
+            }
+        }
+        
+        internal static string SuccessfulUpdateRolesMessage {
+            get {
+                return ResourceManager.GetString("SuccessfulUpdateRolesMessage", resourceCulture);
             }
         }
     }

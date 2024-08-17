@@ -18,7 +18,6 @@ namespace RelationshipAnalysis.Test.Services
         private readonly IMapper _mapper;
         private readonly ICookieSetter _cookieSetter;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
-        private readonly IUserReceiver _userReceiver;
         private readonly UserUpdateInfoService _sut;
 
         public UserUpdateInfoServiceTests()
@@ -29,8 +28,7 @@ namespace RelationshipAnalysis.Test.Services
             _mapper = Substitute.For<IMapper>();
             _cookieSetter = Substitute.For<ICookieSetter>();
             _jwtTokenGenerator = Substitute.For<IJwtTokenGenerator>();
-            _userReceiver = Substitute.For<IUserReceiver>();
-            _sut = new UserUpdateInfoService(_context, _userReceiver, _mapper, _cookieSetter, _jwtTokenGenerator);
+            _sut = new UserUpdateInfoService(_context, _mapper, _cookieSetter, _jwtTokenGenerator);
             SeedDatabase();
         }
 
