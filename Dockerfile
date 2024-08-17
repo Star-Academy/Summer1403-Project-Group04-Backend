@@ -9,7 +9,7 @@ RUN dotnet restore
 
 RUN dotnet test
 
-RUN dotnet publish -c Release -o out
+RUN dotnet publish ./RelationshipAnalysis/RelationshipAnalysis.csproj -c Release -o out
 
 
 # Run
