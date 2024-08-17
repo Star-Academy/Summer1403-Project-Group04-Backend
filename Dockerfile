@@ -1,5 +1,5 @@
 # Build
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/runtime:8.0 AS build
 
 WORKDIR /app
 
@@ -21,4 +21,4 @@ COPY --from=build /app/out .
 
 ENV ASPNETCORE_URLS=http://*:80
 
-CMD dotnet App.dll
+CMD dotnet RelationshipAnalysis.dll
