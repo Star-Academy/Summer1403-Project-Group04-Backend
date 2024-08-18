@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using DotNetEnv;
 using RelationshipAnalysis.Context;
 
 namespace RelationAnalysis.Migrations
@@ -8,6 +9,7 @@ namespace RelationAnalysis.Migrations
     {
         static void Main(string[] args)
         {
+            Env.Load();
             Console.WriteLine("Applying migrations");
             var webHost = new WebHostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory())

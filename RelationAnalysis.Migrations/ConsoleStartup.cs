@@ -1,3 +1,5 @@
+using DotNetEnv;
+using DotNetEnv.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +13,10 @@ namespace RelationAnalysis.Migrations
     {
         public ConsoleStartup()
         {
+            Env.Load();
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddDotNetEnv()
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
             

@@ -36,7 +36,7 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddScoped<IRoleReceiver, RoleReceiver>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql( Environment.GetEnvironmentVariable("CONNECTION_STRING")).UseLazyLoadingProxies());
+    options.UseNpgsql(Environment.GetEnvironmentVariable("CONNECTION_STRING")).UseLazyLoadingProxies());
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddAutoMapper(typeof(UserUpdateInfoMapper));
