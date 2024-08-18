@@ -10,7 +10,7 @@ public class NodeCategory
     [Key]
     public int NodeCategoryId { get; set; }
     
-    [Required] public required string NodeCategoryName { get; set; }
+    [Required] public string NodeCategoryName { get; set; }
 
     
     public virtual ICollection<Node> Nodes { get; set; }

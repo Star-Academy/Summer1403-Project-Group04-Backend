@@ -16,7 +16,7 @@ public class NodeValue
     [ForeignKey("NodeAttribute")]
     public int NodeAttributeId { get; set; }
     
-    [Required] public required string ValueData { get; set; }
+    [Required] public string ValueData { get; set; }
 
     
     public virtual Node Node { get; set; }

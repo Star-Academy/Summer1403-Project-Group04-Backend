@@ -16,7 +16,7 @@ public class EdgeValue
     [ForeignKey("EdgeAttribute")]
     public int EdgeAttributeId { get; set; }
     
-    [Required] public required string ValueData { get; set; }
+    [Required] public string ValueData { get; set; }
 
     public virtual Edge Edge { get; set; }
     public virtual EdgeAttribute EdgeAttribute { get; set; }
