@@ -13,10 +13,8 @@ namespace RelationAnalysis.Migrations
     {
         public ConsoleStartup()
         {
-            Env.Load();
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddDotNetEnv()
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
             

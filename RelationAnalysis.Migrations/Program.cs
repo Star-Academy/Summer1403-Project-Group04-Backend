@@ -9,7 +9,6 @@ namespace RelationAnalysis.Migrations
     {
         static void Main(string[] args)
         {
-            Env.Load();
             Console.WriteLine("Applying migrations");
             var webHost = new WebHostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory())
