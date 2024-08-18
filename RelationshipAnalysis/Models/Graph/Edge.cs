@@ -19,7 +19,7 @@ public class Edge
     [ForeignKey("EdgeCategory")] 
     public int EdgeCategoryId { get; set; }
     
-    public string EdgeUniqueString { get; set; }
+    [Required] public required string EdgeUniqueString { get; set; }
 
     public virtual EdgeCategory EdgeCategory { get; set; }
     public virtual Node NodeSource { get; set; }

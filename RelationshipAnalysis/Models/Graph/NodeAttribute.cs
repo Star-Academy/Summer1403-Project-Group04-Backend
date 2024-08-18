@@ -10,7 +10,7 @@ public class NodeAttribute
     [Key]
     public int NodeAttributeId { get; set; }
     
-    public string NodeAttributeName { get; set; }
+    [Required] public required string NodeAttributeName { get; set; }
 
     
     public virtual ICollection<NodeValue> Values { get; set; }

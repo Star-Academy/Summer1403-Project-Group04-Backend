@@ -9,7 +9,7 @@ public class EdgeAttribute
     [Key]
     public int EdgeAttributeId { get; set; }
     
-    public string EdgeAttributeName { get; set; }
+    [Required] public required string EdgeAttributeName { get; set; }
 
     
     public virtual ICollection<EdgeValue> EdgeValues { get; set; }

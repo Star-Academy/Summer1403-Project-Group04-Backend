@@ -11,7 +11,7 @@ public class Node
     [Key]
     public int NodeId { get; set; }
     
-    public string NodeUniqueString { get; set; }
+    [Required] public required string NodeUniqueString { get; set; }
 
     [ForeignKey("NodeCategory")]
     public int NodeCategoryId { get; set; }

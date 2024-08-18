@@ -10,7 +10,7 @@ public class EdgeCategory
     [Key]
     public int EdgeCategoryId { get; set; }
     
-    public string EdgeCategoryName { get; set; }
+    [Required] public required string EdgeCategoryName { get; set; }
 
     
     public virtual ICollection<Edge> Edges { get; set; }
