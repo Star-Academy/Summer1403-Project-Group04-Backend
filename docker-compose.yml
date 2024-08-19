@@ -17,10 +17,11 @@ services:
 
 
   migrate:
-    build:  
-      context: .
-      dockerfile: Dockerfile
-      target: migrate
+    image: mhchah/negar-migration:latest
+    # build:  
+    #   context: .
+    #   dockerfile: Dockerfile
+    #   target: migrate
     depends_on:
       postgres:
         condition: service_healthy
@@ -29,9 +30,10 @@ services:
 
 
   build:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: mhchah/negar-backend:latest
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     depends_on:
       migrate:
         condition: service_completed_successfully
