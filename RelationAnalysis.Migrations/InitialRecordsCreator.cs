@@ -1,17 +1,13 @@
+using Microsoft.Extensions.Configuration;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Models.Auth;
-using Microsoft.Extensions.Configuration;
+using RelationshipAnalysis.Services.UserPanelServices.Abstraction.AuthServices;
 
 namespace RelationAnalysis.Migrations;
 
-public class InitialRecordsCreator
+public class InitialRecordsCreator(ApplicationDbContext context, IConfiguration configuration)
 {
-    private IConfiguration Configuration { get; } = new ConfigurationBuilder()
-        .AddEnvironmentVariables()
-        .AddJsonFile("appsettings.json")
-        .Build();
-
-    public void AddInitialRecords(ApplicationDbContext context)
+    public async Task AddInitialRecords()
     {
         var roles = new List<Role>()
         {
@@ -42,17 +38,24 @@ public class InitialRecordsCreator
             new User()
             {
                 Username = "admin",
-                PasswordHash = Configuration["admin"],
+                PasswordHash = new CustomPasswordHasher()
+                    .HashPassword(configuration.GetValue<string>("DefaultPassword")),
                 FirstName = "FirstName",
                 LastName = "LastName",
                 Email = "admin@gmail.com",
                 Id = 1,
             }
         };
-
-        context.AddRangeAsync(roles);
-        context.AddRangeAsync(users);
-        context.AddRangeAsync(userRoles);
-        context.SaveChangesAsync();
+        try
+        {
+            await context.Roles.AddRangeAsync(roles);
+            await context.Users.AddRangeAsync(users);
+            await context.UserRoles.AddRangeAsync(userRoles);
+            await context.SaveChangesAsync();
+        }
+        catch
+        {
+            Console.WriteLine("Data already exists!");
+        }
     }
 }
