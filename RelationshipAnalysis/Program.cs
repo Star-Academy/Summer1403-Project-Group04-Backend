@@ -27,7 +27,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>()
     .AddSingleton<ILoginService, LoginService>()
-    .AddScoped<IPermissionService, PermissionService>()
+    .AddSingleton<IPermissionService, PermissionService>()
     .AddSingleton<IPasswordHasher, CustomPasswordHasher>()
     .AddSingleton<IPasswordVerifier, PasswordVerifier>()
     .AddScoped<IAllUserService, AllUserService>()
