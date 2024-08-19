@@ -111,6 +111,13 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
         
         dbContext.Edges.Add(edge);
 
+        
+        dbContext.Add(new NodeCategory()
+        {
+            NodeCategoryName = "Account",
+            NodeCategoryId = 1
+        });
+        
         dbContext.SaveChangesAsync();
 
     }
