@@ -40,7 +40,9 @@ public class GraphControllerTests : IClassFixture<CustomWebApplicationFactory<Pr
             PasswordHash = "74b2c5bd3a8de69c8c7c643e8b5c49d6552dc636aeb0995aff6f01a1f661a979",
             FirstName = "Admin",
             LastName = "User",
-            Email = "admin@example.com"
+            Email = "admin@example.com",
+            UserRoles = new List<UserRole>() { new UserRole() { Role = new Role() { Name = "admin" } } }
+
         };
 
         var token = new JwtTokenGenerator(mockJwtSettings.Object).GenerateJwtToken(user);

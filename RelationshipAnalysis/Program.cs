@@ -8,6 +8,8 @@ using RelationshipAnalysis.Services.AccessServices;
 using RelationshipAnalysis.Services.AccessServices.Abstraction;
 using RelationshipAnalysis.Services.AdminPanelServices;
 using RelationshipAnalysis.Services.AdminPanelServices.Abstraction;
+using RelationshipAnalysis.Services.GraphServices;
+using RelationshipAnalysis.Services.GraphServices.Abstraction;
 using RelationshipAnalysis.Services.UserPanelServices;
 using RelationshipAnalysis.Services.UserPanelServices.Abstraction;
 using RelationshipAnalysis.Services.UserPanelServices.Abstraction.AuthServices;
@@ -37,7 +39,8 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<IRoleReceiver, RoleReceiver>()
     .AddSingleton<ILogoutService, LogoutService>()
     .AddSingleton<IUserCreateService, UserCreateService>()
-    .AddSingleton<IUserUpdateRolesService, UserUpdateRolesService>();
+    .AddSingleton<IUserUpdateRolesService, UserUpdateRolesService>()
+    .AddSingleton<IGraphReceiver, GraphReceiver>();
 
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
