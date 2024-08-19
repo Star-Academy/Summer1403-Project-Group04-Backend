@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using DotNetEnv;
 using RelationshipAnalysis.Context;
+using RelationshipAnalysis.Models.Auth;
 
 namespace RelationAnalysis.Migrations
 {
@@ -18,6 +19,7 @@ namespace RelationAnalysis.Migrations
             using (var context = (ApplicationDbContext) webHost.Services.GetService(typeof(ApplicationDbContext)))
             {
                 context.Database.Migrate();
+                new InitialRecordsCreator().AddInitialRecords(context);
             }
             Console.WriteLine("Done");
         }
