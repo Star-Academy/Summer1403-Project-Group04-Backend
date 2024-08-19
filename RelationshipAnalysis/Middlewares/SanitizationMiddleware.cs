@@ -27,7 +27,7 @@ public class SanitizationMiddleware
             if (type != null)
             {
                 object sanitizedDto;
-                if (type == typeof(IEnumerable<string>))
+                if (type == typeof(List<string>))
                 {
                     var dto = JsonConvert.DeserializeObject<IEnumerable<string>>(body);
                     sanitizedDto = SanitizeEnumerable(dto);
