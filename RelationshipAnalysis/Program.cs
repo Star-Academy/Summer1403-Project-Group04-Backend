@@ -1,11 +1,9 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using DotNetEnv;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Middlewares;
-using RelationshipAnalysis.Services;
 using RelationshipAnalysis.Services.AccessServices;
 using RelationshipAnalysis.Services.AccessServices.Abstraction;
 using RelationshipAnalysis.Services.AdminPanelServices;
@@ -93,6 +91,9 @@ app.UseCors(x => x.AllowCredentials().AllowAnyHeader().AllowAnyMethod()
 app.UseMiddleware<SanitizationMiddleware>();
 app.Run();
 
-public partial class Program
+namespace RelationshipAnalysis
 {
+    public partial class Program
+    {
+    }
 }
