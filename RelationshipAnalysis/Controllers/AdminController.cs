@@ -32,19 +32,12 @@ public class AdminController(
         return StatusCode((int)result.StatusCode, result.Data);
     }
     
-    [HttpGet()]
+    [HttpGet]
     public IActionResult GetAllUser([FromQuery] int page, [FromQuery] int size)
     {
         var users = userReceiver.ReceiveAllUser(page, size);
         var result = allUserService.GetAllUser(users);
         return StatusCode((int)result.StatusCode, result.Data);
-    }
-    
-    [HttpGet()]
-    public IActionResult GetAllUserCount()
-    {
-        var usersCount = userReceiver.ReceiveAllUserCount();
-        return Ok(usersCount);
     }
     
     [HttpGet]
