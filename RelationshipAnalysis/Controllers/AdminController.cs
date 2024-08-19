@@ -32,8 +32,8 @@ public class AdminController(
         return StatusCode((int)result.StatusCode, result.Data);
     }
     
-    [HttpGet("{page:int}/{size:int}")]
-    public IActionResult GetAllUser(int page, int size)
+    [HttpGet()]
+    public IActionResult GetAllUser([FromQuery] int page, [FromQuery] int size)
     {
         var users = userReceiver.ReceiveAllUser(page, size);
         var result = allUserService.GetAllUser(users);
