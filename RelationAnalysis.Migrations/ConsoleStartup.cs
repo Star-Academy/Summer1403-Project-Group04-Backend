@@ -1,5 +1,3 @@
-using DotNetEnv;
-using DotNetEnv.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +9,7 @@ namespace RelationAnalysis.Migrations
 {
     public class ConsoleStartup
     {
-        public IConfiguration Configuration { get; } = new ConfigurationBuilder()
+        private IConfiguration Configuration { get; } = new ConfigurationBuilder()
             .AddEnvironmentVariables()
             .Build();
         public ConsoleStartup()
