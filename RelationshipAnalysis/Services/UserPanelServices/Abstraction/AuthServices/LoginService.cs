@@ -8,14 +8,17 @@ using RelationshipAnalysis.Services.UserPanelServices.Abstraction.AuthServices.A
 namespace RelationshipAnalysis.Services.UserPanelServices.Abstraction.AuthServices;
 
 public class LoginService(
+    IServiceProvider serviceProvider,
     ICookieSetter cookieSetter,
     IJwtTokenGenerator jwtTokenGenerator,
     IPasswordVerifier passwordVerifier)
     : ILoginService
 {
-    public async Task<ActionResponse<MessageDto>> LoginAsync(LoginDto loginModel, HttpResponse response, [FromServices] ApplicationDbContext context)
+    public async Task<ActionResponse<MessageDto>> LoginAsync(LoginDto loginModel, HttpResponse response)
     {
         var result = new ActionResponse<MessageDto>();
+        using var scope = serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var user = await context.Users
             .SingleOrDefaultAsync(u => u.Username == loginModel.Username);
 

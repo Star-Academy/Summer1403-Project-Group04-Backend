@@ -6,6 +6,5 @@ namespace RelationshipAnalysis.Services.UserPanelServices.Abstraction.AuthServic
 
 public interface ILoginService
 {
-    Task<ActionResponse<MessageDto>> LoginAsync(LoginDto loginModel, HttpResponse response,
-        [FromServices] ApplicationDbContext context);
+    Task<ActionResponse<MessageDto>> LoginAsync(LoginDto loginModel, HttpResponse response);
 }
