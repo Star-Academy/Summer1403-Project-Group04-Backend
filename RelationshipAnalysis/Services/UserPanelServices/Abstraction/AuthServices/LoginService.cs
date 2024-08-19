@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Enums;
@@ -7,16 +8,14 @@ using RelationshipAnalysis.Services.UserPanelServices.Abstraction.AuthServices.A
 namespace RelationshipAnalysis.Services.UserPanelServices.Abstraction.AuthServices;
 
 public class LoginService(
-    ApplicationDbContext context,
     ICookieSetter cookieSetter,
     IJwtTokenGenerator jwtTokenGenerator,
     IPasswordVerifier passwordVerifier)
     : ILoginService
 {
-    public async Task<ActionResponse<MessageDto>> LoginAsync(LoginDto loginModel, HttpResponse response)
+    public async Task<ActionResponse<MessageDto>> LoginAsync(LoginDto loginModel, HttpResponse response, [FromServices] ApplicationDbContext context)
     {
         var result = new ActionResponse<MessageDto>();
-
         var user = await context.Users
             .SingleOrDefaultAsync(u => u.Username == loginModel.Username);
 

@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Services.UserPanelServices.Abstraction.AuthServices.Abstraction;
-using RelationshipAnalysis.Settings.JWT;
 
 namespace RelationshipAnalysis.Controllers;
 
@@ -21,9 +18,9 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login([FromBody] LoginDto loginModel)
+    public async Task<IActionResult> Login([FromBody] LoginDto loginModel, [FromServices] ApplicationDbContext context)
     {
-        var response = await _loginService.LoginAsync(loginModel, Response);
+        var response = await _loginService.LoginAsync(loginModel, Response, context);
 
         return StatusCode((int)response.StatusCode, response.Data);
     }
