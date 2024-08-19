@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
@@ -21,7 +22,7 @@ namespace RelationshipAnalysis.Test.Services
         private readonly ICookieSetter _cookieSetter;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly UserUpdateInfoService _sut;
-
+        private readonly IServiceProvider _serviceProvider;
         public UserUpdateInfoServiceTests()
         {
             _context = new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -30,7 +31,14 @@ namespace RelationshipAnalysis.Test.Services
             _mapper = Substitute.For<IMapper>();
             _cookieSetter = Substitute.For<ICookieSetter>();
             _jwtTokenGenerator = Substitute.For<IJwtTokenGenerator>();
-            _sut = new UserUpdateInfoService(_context, _mapper);
+            
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddScoped(_ => _context);
+
+            _serviceProvider = serviceCollection.BuildServiceProvider();
+
+            
+            _sut = new UserUpdateInfoService(_serviceProvider, _mapper);
             SeedDatabase();
         }
 

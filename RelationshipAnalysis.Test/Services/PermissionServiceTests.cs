@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Newtonsoft.Json;
 using RelationshipAnalysis.Context;
@@ -16,6 +17,7 @@ public class PermissionServiceTests
     private readonly ApplicationDbContext _context;
     private readonly List<string> _userRoles = ["Read", "Write"];
     private readonly List<string> _adminRoles = ["Delete", "Write"];
+    private readonly IServiceProvider _serviceProvider;
 
     public PermissionServiceTests()
     {
@@ -25,9 +27,14 @@ public class PermissionServiceTests
 
         _context = new ApplicationDbContext(options);
 
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddScoped(_ => _context);
+
+        _serviceProvider = serviceCollection.BuildServiceProvider();
+
         SeedDatabase();
 
-        _sut = new PermissionService(_context);
+        _sut = new PermissionService(_serviceProvider);
     }
 
     private void SeedDatabase()
