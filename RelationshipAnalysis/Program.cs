@@ -8,6 +8,10 @@ using RelationshipAnalysis.Services.AccessServices;
 using RelationshipAnalysis.Services.AccessServices.Abstraction;
 using RelationshipAnalysis.Services.AdminPanelServices;
 using RelationshipAnalysis.Services.AdminPanelServices.Abstraction;
+using RelationshipAnalysis.Services.CategoryServices.EdgeCategory;
+using RelationshipAnalysis.Services.CategoryServices.EdgeCategory.Abstraction;
+using RelationshipAnalysis.Services.CategoryServices.NodeCategory;
+using RelationshipAnalysis.Services.CategoryServices.NodeCategory.Abstraction;
 using RelationshipAnalysis.Services.GraphServices;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
 using RelationshipAnalysis.Services.UserPanelServices;
@@ -40,6 +44,10 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<ILogoutService, LogoutService>()
     .AddSingleton<IUserCreateService, UserCreateService>()
     .AddSingleton<IUserUpdateRolesService, UserUpdateRolesService>()
+    .AddSingleton<INodeCategoryReceiver, NodeCategoryReceiver>()
+    .AddSingleton<IEdgeCategoryReceiver, EdgeCategoryReceiver>()
+    .AddSingleton<ICreateNodeCategoryService, CreateNodeCategoryService>()
+    .AddSingleton<ICreateEdgeCategoryService, CreateEdgeCategoryService>()
     .AddSingleton<IGraphReceiver, GraphReceiver>();
 
 
