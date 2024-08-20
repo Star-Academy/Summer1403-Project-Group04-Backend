@@ -1,6 +1,11 @@
-﻿namespace RelationshipAnalysis.Services.CategoryServices.NodeCategory;
+﻿using RelationshipAnalysis.Services.CategoryServices.NodeCategory.Abstraction;
 
-public class NodeCategoryReceiver
+namespace RelationshipAnalysis.Services.CategoryServices.NodeCategory;
+
+public class NodeCategoryReceiver : INodeCategoryReceiver
 {
-    
+    public Task<List<string>> GetAllNodeCategories()
+    {
+        throw new NotImplementedException();
+    }
 }

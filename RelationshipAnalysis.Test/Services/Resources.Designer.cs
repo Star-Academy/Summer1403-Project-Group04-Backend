@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RelationshipAnalysis.Test {
+namespace RelationshipAnalysis {
     using System;
     
     
@@ -28,7 +28,7 @@ namespace RelationshipAnalysis.Test {
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("RelationshipAnalysis.Test.Resources", typeof(Resources).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("RelationshipAnalysis.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,15 +45,9 @@ namespace RelationshipAnalysis.Test {
             }
         }
         
-        internal static string UsernameExistsMessage {
+        internal static string InvalidPasswordMessage {
             get {
-                return ResourceManager.GetString("UsernameExistsMessage", resourceCulture);
-            }
-        }
-        
-        internal static string EmailExistsMessage {
-            get {
-                return ResourceManager.GetString("EmailExistsMessage", resourceCulture);
+                return ResourceManager.GetString("InvalidPasswordMessage", resourceCulture);
             }
         }
         
@@ -62,13 +56,7 @@ namespace RelationshipAnalysis.Test {
                 return ResourceManager.GetString("SuccessfulLogoutMessage", resourceCulture);
             }
         }
-        
-        internal static string InvalidPasswordMessage {
-            get {
-                return ResourceManager.GetString("InvalidPasswordMessage", resourceCulture);
-            }
-        }
-        
+
         internal static string UserNotFoundMessage {
             get {
                 return ResourceManager.GetString("UserNotFoundMessage", resourceCulture);
@@ -110,6 +98,49 @@ namespace RelationshipAnalysis.Test {
                 return ResourceManager.GetString("SuccessfulUpdateUserMessage", resourceCulture);
             }
         }
+        
+        internal static string SuccessfulDeleteUserMessage {
+            get {
+                return ResourceManager.GetString("SuccessfulDeleteUserMessage", resourceCulture);
+            }
+        }
+        
+        internal static string UsernameExistsMessage {
+            get {
+                return ResourceManager.GetString("UsernameExistsMessage", resourceCulture);
+            }
+        }
+        
+        internal static string EmailExistsMessage {
+            get {
+                return ResourceManager.GetString("EmailExistsMessage", resourceCulture);
+            }
+        }
+        
+        internal static string SucceddfulCreateUser {
+            get {
+                return ResourceManager.GetString("SucceddfulCreateUser", resourceCulture);
+            }
+        }
+        
+        internal static string EmptyRolesMessage {
+            get {
+                return ResourceManager.GetString("EmptyRolesMessage", resourceCulture);
+            }
+        }
+        
+        internal static string InvalidRolesListMessage {
+            get {
+                return ResourceManager.GetString("InvalidRolesListMessage", resourceCulture);
+            }
+        }
+        
+        internal static string SuccessfulUpdateRolesMessage {
+            get {
+                return ResourceManager.GetString("SuccessfulUpdateRolesMessage", resourceCulture);
+            }
+        }
+        
         internal static string LoginFailedMessage {
             get {
                 return ResourceManager.GetString("LoginFailedMessage", resourceCulture);
@@ -119,6 +150,29 @@ namespace RelationshipAnalysis.Test {
         internal static string SuccessfulLoginMessage {
             get {
                 return ResourceManager.GetString("SuccessfulLoginMessage", resourceCulture);
+            }
+        }
+        internal static string DeleteAccountAccessErrorMessage {
+            get {
+                return ResourceManager.GetString("DeleteAccountAccessErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string NullDtoErrorMessage {
+            get {
+                return ResourceManager.GetString("NullDtoErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string NotUniqueCategoryNameErrorMessage {
+            get {
+                return ResourceManager.GetString("NotUniqueCategoryNameErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string SuccessfulCreateCategory {
+            get {
+                return ResourceManager.GetString("SuccessfulCreateCategory", resourceCulture);
             }
         }
         

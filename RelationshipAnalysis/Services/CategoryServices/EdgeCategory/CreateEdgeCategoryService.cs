@@ -1,6 +1,13 @@
-﻿namespace RelationshipAnalysis.Services.CategoryServices.EdgeCategory;
+﻿using RelationshipAnalysis.Dto;
+using RelationshipAnalysis.Dto.Category;
+using RelationshipAnalysis.Services.CategoryServices.EdgeCategory.Abstraction;
 
-public class CreateEdgeCategoryService
+namespace RelationshipAnalysis.Services.CategoryServices.EdgeCategory;
+
+public class CreateEdgeCategoryService : ICreateEdgeCategoryService
 {
-    
+    public Task<ActionResponse<MessageDto>> CreateEdgeCategory(CreateEdgeCategoryDto createEdgeCategoryDto)
+    {
+        throw new NotImplementedException();
+    }
 }

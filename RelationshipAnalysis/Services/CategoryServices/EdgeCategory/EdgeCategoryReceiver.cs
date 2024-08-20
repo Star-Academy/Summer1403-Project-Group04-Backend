@@ -1,6 +1,13 @@
-﻿namespace RelationshipAnalysis.Services.CategoryServices.EdgeCategory;
+﻿using RelationshipAnalysis.Dto;
+using RelationshipAnalysis.Dto.Category;
+using RelationshipAnalysis.Services.CategoryServices.EdgeCategory.Abstraction;
 
-public class EdgeCategoryReceiver
+namespace RelationshipAnalysis.Services.CategoryServices.EdgeCategory;
+
+public class EdgeCategoryReceiver : IEdgeCategoryReceiver
 {
-    
+    public Task<List<string>> GetAllEdgeCategories()
+    {
+        throw new NotImplementedException();
+    }
 }

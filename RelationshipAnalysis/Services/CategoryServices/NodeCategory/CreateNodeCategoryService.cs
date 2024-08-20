@@ -1,6 +1,13 @@
-﻿namespace RelationshipAnalysis.Services.CategoryServices.NodeCategory;
+﻿using RelationshipAnalysis.Dto;
+using RelationshipAnalysis.Dto.Category;
+using RelationshipAnalysis.Services.CategoryServices.NodeCategory.Abstraction;
 
-public class CreateNodeCategoryService
+namespace RelationshipAnalysis.Services.CategoryServices.NodeCategory;
+
+public class CreateNodeCategoryService : ICreateNodeCategoryService 
 {
-    
+    public Task<ActionResponse<MessageDto>> CreateNodeCategory(CreateNodeCategoryDto createNodeCategoryDto)
+    {
+        throw new NotImplementedException();
+    }
 }
