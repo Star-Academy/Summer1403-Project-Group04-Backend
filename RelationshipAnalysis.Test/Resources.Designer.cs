@@ -45,27 +45,33 @@ namespace RelationshipAnalysis.Test {
             }
         }
         
-        internal static string TwoSameHeadersMessage {
-            get {
-                return ResourceManager.GetString("TwoSameHeadersMessage", resourceCulture);
-            }
-        }
-        
         internal static string ValidFileMessage {
             get {
                 return ResourceManager.GetString("ValidFileMessage", resourceCulture);
             }
         }
         
-        internal static string InvalidNodeCategory {
+        internal static string FailedAddRecordsMessage {
             get {
-                return ResourceManager.GetString("InvalidNodeCategory", resourceCulture);
+                return ResourceManager.GetString("FailedAddRecordsMessage", resourceCulture);
             }
         }
         
         internal static string InvalidHeaderAttribute {
             get {
                 return ResourceManager.GetString("InvalidHeaderAttribute", resourceCulture);
+            }
+        }
+        
+        internal static string TwoSameHeadersMessage {
+            get {
+                return ResourceManager.GetString("TwoSameHeadersMessage", resourceCulture);
+            }
+        }
+        
+        internal static string InvalidNodeCategory {
+            get {
+                return ResourceManager.GetString("InvalidNodeCategory", resourceCulture);
             }
         }
         
@@ -81,28 +87,15 @@ namespace RelationshipAnalysis.Test {
             }
         }
         
-        internal static string UsernameExistsMessage {
-        /// <summary>
-        ///   Looks up a localized string similar to You cant delete your account!.
-        /// </summary>
-        internal static string DeleteAccountAccessErrorMessage {
-            get {
-                return ResourceManager.GetString("DeleteAccountAccessErrorMessage", resourceCulture);
-            }
-        }
-        
         internal static string EmailExistsMessage {
             get {
                 return ResourceManager.GetString("EmailExistsMessage", resourceCulture);
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to Roles cant be empty!.
-        /// </summary>
-        internal static string EmptyRolesMessage {
+        internal static string SuccessfulLogoutMessage {
             get {
-                return ResourceManager.GetString("EmptyRolesMessage", resourceCulture);
+                return ResourceManager.GetString("SuccessfulLogoutMessage", resourceCulture);
             }
         }
         
@@ -112,21 +105,21 @@ namespace RelationshipAnalysis.Test {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to Roles are invalid!.
-        /// </summary>
-        internal static string InvalidRolesListMessage {
+        internal static string UserNotFoundMessage {
             get {
-                return ResourceManager.GetString("InvalidRolesListMessage", resourceCulture);
+                return ResourceManager.GetString("UserNotFoundMessage", resourceCulture);
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to Login Failed!.
-        /// </summary>
-        internal static string LoginFailedMessage {
+        internal static string WrongOldPasswordMessage {
             get {
-                return ResourceManager.GetString("LoginFailedMessage", resourceCulture);
+                return ResourceManager.GetString("WrongOldPasswordMessage", resourceCulture);
+            }
+        }
+        
+        internal static string OldPasswordRequired {
+            get {
+                return ResourceManager.GetString("OldPasswordRequired", resourceCulture);
             }
         }
         
@@ -136,138 +129,93 @@ namespace RelationshipAnalysis.Test {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to Category Name is not unique!.
-        /// </summary>
-        internal static string NotUniqueCategoryNameErrorMessage {
-            get {
-                return ResourceManager.GetString("NotUniqueCategoryNameErrorMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Input Dto can not be null!.
-        /// </summary>
-        internal static string NullDtoErrorMessage {
-            get {
-                return ResourceManager.GetString("NullDtoErrorMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Old password is required.
-        /// </summary>
-        internal static string OldPasswordRequired {
-            get {
-                return ResourceManager.GetString("OldPasswordRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password is required!.
-        /// </summary>
-        internal static string PasswordRequired {
-            get {
-                return ResourceManager.GetString("PasswordRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User Created Successfuly!.
-        /// </summary>
-        internal static string SucceddfulCreateUser {
-            get {
-                return ResourceManager.GetString("SucceddfulCreateUser", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Category Created successfylly!.
-        /// </summary>
-        internal static string SuccessfulCreateCategory {
-            get {
-                return ResourceManager.GetString("SuccessfulCreateCategory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User Deleted successfully!.
-        /// </summary>
-        internal static string SuccessfulDeleteUserMessage {
-            get {
-                return ResourceManager.GetString("SuccessfulDeleteUserMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Login was successful!.
-        /// </summary>
-        internal static string SuccessfulLoginMessage {
-            get {
-                return ResourceManager.GetString("SuccessfulLoginMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Logout was successful!.
-        /// </summary>
-        internal static string SuccessfulLogoutMessage {
-            get {
-                return ResourceManager.GetString("SuccessfulLogoutMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User roles updated successfuly!.
-        /// </summary>
-        internal static string SuccessfulUpdateRolesMessage {
-            get {
-                return ResourceManager.GetString("SuccessfulUpdateRolesMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User updated successfully!.
-        /// </summary>
-        internal static string SuccessfulUpdateUserMessage {
-            get {
-                return ResourceManager.GetString("SuccessfulUpdateUserMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Chosen username already exists.
-        /// </summary>
-        internal static string UsernameExistsMessage {
-            get {
-                return ResourceManager.GetString("UsernameExistsMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Username is required!.
-        /// </summary>
         internal static string UsernameRequired {
             get {
                 return ResourceManager.GetString("UsernameRequired", resourceCulture);
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to Could not find user!.
-        /// </summary>
-        internal static string UserNotFoundMessage {
+        internal static string PasswordRequired {
             get {
-                return ResourceManager.GetString("UserNotFoundMessage", resourceCulture);
+                return ResourceManager.GetString("PasswordRequired", resourceCulture);
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to Entered old password is wrong.
-        /// </summary>
-        internal static string WrongOldPasswordMessage {
+        internal static string SuccessfulUpdateUserMessage {
             get {
-                return ResourceManager.GetString("WrongOldPasswordMessage", resourceCulture);
+                return ResourceManager.GetString("SuccessfulUpdateUserMessage", resourceCulture);
+            }
+        }
+        
+        internal static string SuccessfulDeleteUserMessage {
+            get {
+                return ResourceManager.GetString("SuccessfulDeleteUserMessage", resourceCulture);
+            }
+        }
+        
+        internal static string UsernameExistsMessage {
+            get {
+                return ResourceManager.GetString("UsernameExistsMessage", resourceCulture);
+            }
+        }
+        
+        internal static string SucceddfulCreateUser {
+            get {
+                return ResourceManager.GetString("SucceddfulCreateUser", resourceCulture);
+            }
+        }
+        
+        internal static string EmptyRolesMessage {
+            get {
+                return ResourceManager.GetString("EmptyRolesMessage", resourceCulture);
+            }
+        }
+        
+        internal static string InvalidRolesListMessage {
+            get {
+                return ResourceManager.GetString("InvalidRolesListMessage", resourceCulture);
+            }
+        }
+        
+        internal static string SuccessfulUpdateRolesMessage {
+            get {
+                return ResourceManager.GetString("SuccessfulUpdateRolesMessage", resourceCulture);
+            }
+        }
+        
+        internal static string LoginFailedMessage {
+            get {
+                return ResourceManager.GetString("LoginFailedMessage", resourceCulture);
+            }
+        }
+        
+        internal static string SuccessfulLoginMessage {
+            get {
+                return ResourceManager.GetString("SuccessfulLoginMessage", resourceCulture);
+            }
+        }
+        
+        internal static string DeleteAccountAccessErrorMessage {
+            get {
+                return ResourceManager.GetString("DeleteAccountAccessErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string NullDtoErrorMessage {
+            get {
+                return ResourceManager.GetString("NullDtoErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string NotUniqueCategoryNameErrorMessage {
+            get {
+                return ResourceManager.GetString("NotUniqueCategoryNameErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string SuccessfulCreateCategory {
+            get {
+                return ResourceManager.GetString("SuccessfulCreateCategory", resourceCulture);
             }
         }
     }

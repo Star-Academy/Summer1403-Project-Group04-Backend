@@ -10,8 +10,6 @@ public class SingleNodeAdditionService(IServiceProvider serviceProvider) : ISing
 {
     public async Task AddSingleNode(IDictionary<string, object> record, string uniqueHeaderName, int nodeCategoryId)
     {
-        // TODO : unique key is not empty
-        // TODO : unique key value doesn't exist
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         if (((string)record[uniqueHeaderName]).IsNullOrEmpty())
@@ -24,7 +22,7 @@ public class SingleNodeAdditionService(IServiceProvider serviceProvider) : ISing
             NodeCategoryId = nodeCategoryId,
         };
         await context.AddAsync(newNode);
-        
+        await context.SaveChangesAsync();
 
         foreach (var kvp in record)
         {
@@ -39,7 +37,7 @@ public class SingleNodeAdditionService(IServiceProvider serviceProvider) : ISing
                         NodeAttributeName = kvp.Key
                     };
                     await context.AddAsync(newNodeAttribute);
-
+                    await context.SaveChangesAsync();
                 }
 
                 // var v = context.NodeValues.SingleOrDefaultAsync(nv =>
@@ -54,10 +52,10 @@ public class SingleNodeAdditionService(IServiceProvider serviceProvider) : ISing
                 };
 
                 await context.AddAsync(newNodeValue);
+                await context.SaveChangesAsync();
+
             }
         }
-
-        await context.SaveChangesAsync();
 
     }
 }
