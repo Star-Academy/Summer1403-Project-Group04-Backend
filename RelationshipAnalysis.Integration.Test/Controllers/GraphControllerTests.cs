@@ -54,6 +54,7 @@ public class GraphControllerTests : IClassFixture<CustomWebApplicationFactory<Pr
         
         var node1 = new Node 
         {
+            NodeId = 1,
             NodeUniqueString = "Node1",
             NodeCategory = nodeCategory1,
             NodeCategoryId = nodeCategory1.NodeCategoryId
@@ -61,6 +62,7 @@ public class GraphControllerTests : IClassFixture<CustomWebApplicationFactory<Pr
 
         var node2 = new Node
         {
+            NodeId = 2,
             NodeUniqueString = "Node2",
             NodeCategory = nodeCategory2,
             NodeCategoryId = nodeCategory2.NodeCategoryId
@@ -86,6 +88,7 @@ public class GraphControllerTests : IClassFixture<CustomWebApplicationFactory<Pr
         
         var edge = new Edge
         {
+            EdgeId = 1,
             EdgeSourceNodeId = node1.NodeId,
             EdgeDestinationNodeId = node2.NodeId,
             EdgeCategory = edgeCategory,
