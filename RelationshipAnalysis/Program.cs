@@ -10,6 +10,12 @@ using RelationshipAnalysis.Services.AdminPanelServices;
 using RelationshipAnalysis.Services.AdminPanelServices.Abstraction;
 using RelationshipAnalysis.Services.GraphServices;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
+using RelationshipAnalysis.Services.CategoryServices.EdgeCategory;
+using RelationshipAnalysis.Services.CategoryServices.EdgeCategory.Abstraction;
+using RelationshipAnalysis.Services.CategoryServices.NodeCategory;
+using RelationshipAnalysis.Services.CategoryServices.NodeCategory.Abstraction;
+using RelationshipAnalysis.Services.GraphServices;
+using RelationshipAnalysis.Services.GraphServices.Abstraction;
 using RelationshipAnalysis.Services.UserPanelServices;
 using RelationshipAnalysis.Services.UserPanelServices.Abstraction;
 using RelationshipAnalysis.Services.UserPanelServices.Abstraction.AuthServices;
@@ -39,6 +45,12 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<IRoleReceiver, RoleReceiver>()
     .AddSingleton<ILogoutService, LogoutService>()
     .AddSingleton<IUserCreateService, UserCreateService>()
+    .AddSingleton<IUserUpdateRolesService, UserUpdateRolesService>()
+    .AddSingleton<INodeCategoryReceiver, NodeCategoryReceiver>()
+    .AddSingleton<IEdgeCategoryReceiver, EdgeCategoryReceiver>()
+    .AddSingleton<ICreateNodeCategoryService, CreateNodeCategoryService>()
+    .AddSingleton<ICreateEdgeCategoryService, CreateEdgeCategoryService>()
+    .AddSingleton<IGraphReceiver, GraphReceiver>()
     .AddSingleton<IUserUpdateRolesService, UserUpdateRolesService>()
     .AddSingleton<IGraphReceiver, GraphReceiver>()
     .AddSingleton<INodesAdditionService, NodesAdditionService>()
@@ -99,9 +111,6 @@ app.UseCors(x => x.AllowCredentials().AllowAnyHeader().AllowAnyMethod()
 app.UseMiddleware<SanitizationMiddleware>();
 app.Run();
 
-namespace RelationshipAnalysis
+public partial class Program
 {
-    public partial class Program
-    {
-    }
 }
