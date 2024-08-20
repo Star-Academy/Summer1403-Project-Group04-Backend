@@ -33,9 +33,9 @@ public class CreateNodeCategoryServiceTests
     {
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        context.EdgeCategories.Add(new Models.Graph.EdgeCategory()
+        context.NodeCategories.Add(new Models.Graph.NodeCategory()
         {
-            EdgeCategoryName = "ExistName"
+            NodeCategoryName = "ExistName"
         });
         context.SaveChanges();
     }

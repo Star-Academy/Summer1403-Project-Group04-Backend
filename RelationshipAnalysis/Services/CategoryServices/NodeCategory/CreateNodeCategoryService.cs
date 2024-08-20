@@ -45,7 +45,7 @@ public class CreateNodeCategoryService(IServiceProvider serviceProvider) : ICrea
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        return context.EdgeCategories.Any(c => c.EdgeCategoryName == dto.NodeCategoryName);
+        return context.NodeCategories.Any(c => c.NodeCategoryName == dto.NodeCategoryName);
     }
 
     private ActionResponse<MessageDto> BadRequestResult(string message)
