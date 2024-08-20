@@ -1,12 +1,19 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
 using Moq;
+using Newtonsoft.Json;
+using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph;
 using RelationshipAnalysis.Models.Auth;
 using RelationshipAnalysis.Models.Graph;
 using RelationshipAnalysis.Services.UserPanelServices.Abstraction.AuthServices;
 using RelationshipAnalysis.Settings.JWT;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace RelationshipAnalysis.Integration.Test.Controllers;
 
@@ -115,5 +122,80 @@ public class GraphControllerTests : IClassFixture<CustomWebApplicationFactory<Pr
         Assert.Equivalent(responseData.edges, expectedEdges);
 
     }
-    
+    [Fact]
+    public async Task UploadNode_ShouldReturnBadRequest_WhenNoFileUploaded()
+    {
+        // Arrange
+        var request = new HttpRequestMessage(HttpMethod.Post, "api/graph/uploadnode");
+        
+        var filePath = "";
+        await using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+
+        var formDataContent = new MultipartFormDataContent();
+        var fileContent = new StreamContent(fileStream);
+        fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+        formDataContent.Add(fileContent, "File", Path.GetFileName(filePath));
+        
+        formDataContent.Add(new StringContent("Account"), "NodeCategoryName");
+        formDataContent.Add(new StringContent("AccountID"), "UniqueAttributeHeaderName");
+        
+        request.Content = formDataContent;
+        
+        Mock<IOptions<JwtSettings>> jwtSettingsMock = new();
+        jwtSettingsMock.Setup(m => m.Value).Returns(_jwtSettings);
+        
+        var user = new User
+        {
+            Id = 1,
+            Username = "admin",
+            PasswordHash = "74b2c5bd3a8de69c8c7c643e8b5c49d6552dc636aeb0995aff6f01a1f661a979",
+            FirstName = "Admin",
+            LastName = "User",
+            Email = "admin@example.com",
+            UserRoles = new List<UserRole>() { new UserRole() { Role = new Role() { Name = "admin" } } }
+
+        };
+
+        var token = new JwtTokenGenerator(jwtSettingsMock.Object).GenerateJwtToken(user);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        
+        // Act
+        var response = await _client.SendAsync(request);
+        
+        // Assert
+        Assert.Equal(400, (int)response.StatusCode);
+        Assert.Equal(Resources.NoFileUploadedMessage, response.Content.ReadFromJsonAsync<MessageDto>().Result.Message);
+    }
+
+    public async Task UploadNode_ShouldReturnSuccess_WhenDtoIsValid()
+    {
+
+        // Arrange
+        var request = new HttpRequestMessage(HttpMethod.Post, "api/graph/uploadnode");
+        Mock<IOptions<JwtSettings>> jwtSettingsMock = new();
+        jwtSettingsMock.Setup(m => m.Value).Returns(_jwtSettings);
+
+        var user = new User
+        {
+            Id = 1,
+            Username = "admin",
+            PasswordHash = "74b2c5bd3a8de69c8c7c643e8b5c49d6552dc636aeb0995aff6f01a1f661a979",
+            FirstName = "Admin",
+            LastName = "User",
+            Email = "admin@example.com",
+            UserRoles = new List<UserRole>() { new UserRole() { Role = new Role() { Name = "admin" } } }
+
+        };
+
+        var token = new JwtTokenGenerator(jwtSettingsMock.Object).GenerateJwtToken(user);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        // Act
+        var response = await _client.SendAsync(request);
+
+        // Assert
+        Assert.Equal(400, (int)response.StatusCode);
+        Assert.Equal(Resources.NoFileUploadedMessage, response.Content.ReadFromJsonAsync<MessageDto>().Result.Message);
+    }
 }

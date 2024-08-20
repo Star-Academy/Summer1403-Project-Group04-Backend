@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph;
@@ -12,13 +13,13 @@ using RelationshipAnalysis.Services.UserPanelServices;
 
 namespace RelationshipAnalysis.Test.Services;
 
-public class NodeAdditionServiceTests
+public class NodesAdditionServiceTests
 {
-    private readonly INodeAdditionService _sut;
+    private INodesAdditionService _sut;
     private readonly ApplicationDbContext _context;
     private readonly IServiceProvider _serviceProvider;
 
-    public NodeAdditionServiceTests()
+    public NodesAdditionServiceTests()
     {
         _context = new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options);
@@ -29,8 +30,6 @@ public class NodeAdditionServiceTests
         SeedDatabase();
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
-            
-        _sut = new NodeAdditionService(_serviceProvider);
     }
 
     private void SeedDatabase()
@@ -52,10 +51,18 @@ public class NodeAdditionServiceTests
             Data = new MessageDto(Resources.InvalidHeaderAttribute),
             StatusCode = StatusCodeType.BadRequest
         };
+        var fileToBeSend = new FormFile(fileStream, 0, fileStream.Length, "file", Path.GetFileName(filePath));
+        
+        var validatorMock = NSubstitute.Substitute.For<ICsvValidatorService>();
+        validatorMock.Validate(fileToBeSend, "SomeHeaderThatDoesntExist")
+            .Returns(expected);
+        var processorMock = NSubstitute.Substitute.For<ICsvProcessorService>();
+        var additionServiceMock = NSubstitute.Substitute.For<ISingleNodeAdditionService>();
+        _sut = new NodesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock);
         // Act
         var result = await _sut.AddNodes(new UploadNodeDto()
         {
-            File = new FormFile(fileStream, 0, fileStream.Length, "file", Path.GetFileName(filePath)),
+            File = fileToBeSend,
             NodeCategoryName = "Account",
             UniqueAttributeHeaderName = "SomeHeaderThatDoesntExist"
         });
@@ -72,10 +79,17 @@ public class NodeAdditionServiceTests
             Data = new MessageDto(Resources.InvalidNodeCategory),
             StatusCode = StatusCodeType.BadRequest
         };
+
+        var fileToBeSend = new FormFile(fileStream, 0, fileStream.Length, "file", Path.GetFileName(filePath));
+        
+        var validatorMock = NSubstitute.Substitute.For<ICsvValidatorService>();
+        var processorMock = NSubstitute.Substitute.For<ICsvProcessorService>();
+        var additionServiceMock = NSubstitute.Substitute.For<ISingleNodeAdditionService>();
+        _sut = new NodesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock);
         // Act
         var result = await _sut.AddNodes(new UploadNodeDto()
         {
-            File = new FormFile(fileStream, 0, fileStream.Length, "file", Path.GetFileName(filePath)),
+            File = fileToBeSend,
             NodeCategoryName = "SomeNodeCategoryThatDoesntExist",
             UniqueAttributeHeaderName = "AccountID"
         });
@@ -86,6 +100,7 @@ public class NodeAdditionServiceTests
     
     public async Task AddNodes_ShouldReturnSucces_WhenNodeDtoIsValid()
     {
+        // Arrange
         var filePath = "";
         var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
         var expected = new ActionResponse<MessageDto>()
@@ -93,10 +108,21 @@ public class NodeAdditionServiceTests
             Data = new MessageDto(Resources.SuccessfulNodeAdditionMessage),
             StatusCode = StatusCodeType.Success
         };
+        
+        
+        var fileToBeSend = new FormFile(fileStream, 0, fileStream.Length, "file", Path.GetFileName(filePath));
+        
+        var validatorMock = NSubstitute.Substitute.For<ICsvValidatorService>();
+        validatorMock.Validate(fileToBeSend, "AccountID").Returns(expected);
+        var processorMock = NSubstitute.Substitute.For<ICsvProcessorService>();
+        processorMock.ProcessCsvAsync(fileToBeSend).Returns(new List<dynamic>());
+        var additionServiceMock = NSubstitute.Substitute.For<ISingleNodeAdditionService>();
+        _sut = new NodesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock);
+        
         // Act
         var result = await _sut.AddNodes(new UploadNodeDto()
         {
-            File = new FormFile(fileStream, 0, fileStream.Length, "file", Path.GetFileName(filePath)),
+            File = fileToBeSend,
             NodeCategoryName = "Account",
             UniqueAttributeHeaderName = "AccountID"
         });

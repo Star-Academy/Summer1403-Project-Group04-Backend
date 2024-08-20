@@ -1,12 +1,11 @@
 using RelationshipAnalysis.Dto;
-using RelationshipAnalysis.Dto.Graph;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
 
 namespace RelationshipAnalysis.Services.GraphServices;
 
-public class NodeAdditionService(IServiceProvider serviceProvider) : INodeAdditionService
+public class CsvValidatorService : ICsvValidatorService
 {
-    public Task<ActionResponse<MessageDto>> AddNodes(UploadNodeDto uploadNodeDto)
+    public ActionResponse<MessageDto> Validate(IFormFile file, string uniqueHeaderName)
     {
         throw new NotImplementedException();
     }

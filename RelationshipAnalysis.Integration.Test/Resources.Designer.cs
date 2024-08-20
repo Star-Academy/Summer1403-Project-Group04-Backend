@@ -80,12 +80,7 @@ namespace RelationshipAnalysis {
                 return ResourceManager.GetString("SuccessfulNodeAdditionMessage", resourceCulture);
             }
         }
-        
-        internal static string InvalidNodeCategory {
-            get {
-                return ResourceManager.GetString("InvalidNodeCategory", resourceCulture);
-            }
-        }
+
         
         internal static string OldPasswordRequired {
             get {

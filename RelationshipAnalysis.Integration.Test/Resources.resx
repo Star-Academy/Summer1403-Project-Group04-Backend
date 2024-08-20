@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <root>
-
-    <data name="InvalidNodeCategory">
-        <value>Entered node category is invalid</value>
-    </data>
+<data name="ValidFileMessage">
+    <value>File is valid!</value>
+</data>
     <data name="SuccessfulNodeAdditionMessage">
         <value>Nodes added successfully</value>
     </data>

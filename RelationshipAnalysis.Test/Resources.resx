@@ -2,6 +2,24 @@
 
 <root>
 
+    <data name="TwoSameHeadersMessage">
+        <value>Two headers have the same title!</value>
+    </data>
+    <data name="ValidFileMessage">
+        <value>File is valid!</value>
+    </data>
+    <data name="InvalidNodeCategory">
+        <value>Entered node category is invalid</value>
+    </data>
+    <data name="InvalidHeaderAttribute">
+        <value>Entered header is invalid</value>
+    </data>
+    <data name="SuccessfulNodeAdditionMessage">
+        <value>Nodes added successfully</value>
+    </data>
+    <data name="NoFileUploadedMessage">
+        <value>No file uploaded</value>
+    </data>
     <data name="UsernameExistsMessage">
         <value>Chosen username already exists</value>
     </data>

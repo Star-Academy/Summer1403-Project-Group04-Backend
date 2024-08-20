@@ -45,6 +45,42 @@ namespace RelationshipAnalysis.Test {
             }
         }
         
+        internal static string TwoSameHeadersMessage {
+            get {
+                return ResourceManager.GetString("TwoSameHeadersMessage", resourceCulture);
+            }
+        }
+        
+        internal static string ValidFileMessage {
+            get {
+                return ResourceManager.GetString("ValidFileMessage", resourceCulture);
+            }
+        }
+        
+        internal static string InvalidNodeCategory {
+            get {
+                return ResourceManager.GetString("InvalidNodeCategory", resourceCulture);
+            }
+        }
+        
+        internal static string InvalidHeaderAttribute {
+            get {
+                return ResourceManager.GetString("InvalidHeaderAttribute", resourceCulture);
+            }
+        }
+        
+        internal static string SuccessfulNodeAdditionMessage {
+            get {
+                return ResourceManager.GetString("SuccessfulNodeAdditionMessage", resourceCulture);
+            }
+        }
+        
+        internal static string NoFileUploadedMessage {
+            get {
+                return ResourceManager.GetString("NoFileUploadedMessage", resourceCulture);
+            }
+        }
+        
         internal static string UsernameExistsMessage {
             get {
                 return ResourceManager.GetString("UsernameExistsMessage", resourceCulture);
@@ -110,17 +146,5 @@ namespace RelationshipAnalysis.Test {
                 return ResourceManager.GetString("SuccessfulUpdateUserMessage", resourceCulture);
             }
         }
-        internal static string LoginFailedMessage {
-            get {
-                return ResourceManager.GetString("LoginFailedMessage", resourceCulture);
-            }
-        }
-        
-        internal static string SuccessfulLoginMessage {
-            get {
-                return ResourceManager.GetString("SuccessfulLoginMessage", resourceCulture);
-            }
-        }
-        
     }
 }

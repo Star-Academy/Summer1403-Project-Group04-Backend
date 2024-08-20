@@ -9,7 +9,7 @@ namespace RelationshipAnalysis.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/[controller]/[action]")]
-public class GraphController(IGraphReceiver graphReceiver, INodeAdditionService nodeAdditionService) : ControllerBase
+public class GraphController(IGraphReceiver graphReceiver, INodesAdditionService nodesAdditionService) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetGraph()
@@ -22,10 +22,10 @@ public class GraphController(IGraphReceiver graphReceiver, INodeAdditionService 
     {
         if (uploadNodeDto.File == null || uploadNodeDto.File.Length == 0)
         {
-            return BadRequest("No file uploaded.");
+            return BadRequest(Resources.NoFileUploadedMessage);
         }
 
-        var result = await nodeAdditionService.AddNodes(uploadNodeDto);
+        var result = await nodesAdditionService.AddNodes(uploadNodeDto);
         return StatusCode((int)result.StatusCode, result.Data);
     }
 }
