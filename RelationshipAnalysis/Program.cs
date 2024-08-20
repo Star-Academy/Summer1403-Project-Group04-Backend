@@ -40,7 +40,12 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<ILogoutService, LogoutService>()
     .AddSingleton<IUserCreateService, UserCreateService>()
     .AddSingleton<IUserUpdateRolesService, UserUpdateRolesService>()
-    .AddSingleton<IGraphReceiver, GraphReceiver>();
+    .AddSingleton<IGraphReceiver, GraphReceiver>()
+    .AddSingleton<INodesAdditionService, NodesAdditionService>()
+    .AddSingleton<ISingleNodeAdditionService, SingleNodeAdditionService>()
+    .AddSingleton<ICsvProcessorService, CsvProcessorService>()
+    .AddSingleton<ICsvValidatorService, CsvValidatorService>();
+    
 
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));

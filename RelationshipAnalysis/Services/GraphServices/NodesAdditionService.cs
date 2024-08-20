@@ -29,10 +29,21 @@ public class NodesAdditionService(IServiceProvider serviceProvider, ICsvValidato
             return validationResult;
         
         var objects = await csvProcessorService.ProcessCsvAsync(file);
-        
-        objects.ForEach(ob => 
-            singleNodeAdditionService.AddSingleNode((IDictionary<string, object>) ob, uniqueHeader, nodeCategory.NodeCategoryId));
 
+        using (var transaction = await context.Database.BeginTransactionAsync())
+        {
+            try
+            {
+                objects.ForEach(ob => 
+                    singleNodeAdditionService.AddSingleNode((IDictionary<string, object>) ob, uniqueHeader, nodeCategory.NodeCategoryId));
+                await transaction.CommitAsync();
+            }
+            catch(Exception e)
+            {
+                await transaction.RollbackAsync();
+                return BadRequestResult(e.Message);
+            }
+        }
         return SuccessResult();
     }
     

@@ -4,9 +4,9 @@ using System.Text.Json;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
 using Moq;
 using Newtonsoft.Json;
+using NSubstitute;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph;
 using RelationshipAnalysis.Models.Auth;
@@ -56,11 +56,20 @@ public class GraphControllerTests : IClassFixture<CustomWebApplicationFactory<Pr
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
         
         
-        var nodeCategory1 = new NodeCategory { NodeCategoryName = "Account" };
-        var nodeCategory2 = new NodeCategory { NodeCategoryName = "Person" };
+        var nodeCategory1 = new NodeCategory
+        {
+            NodeCategoryId = 1,
+            NodeCategoryName = "Account"
+        };
+        var nodeCategory2 = new NodeCategory
+        {
+            NodeCategoryId = 2,
+            NodeCategoryName = "Person"
+        };
         
         var node1 = new Node 
         {
+            NodeId = 1,
             NodeUniqueString = "Node1",
             NodeCategory = nodeCategory1,
             NodeCategoryId = nodeCategory1.NodeCategoryId
@@ -68,12 +77,17 @@ public class GraphControllerTests : IClassFixture<CustomWebApplicationFactory<Pr
 
         var node2 = new Node
         {
+            NodeId = 2,
             NodeUniqueString = "Node2",
             NodeCategory = nodeCategory2,
             NodeCategoryId = nodeCategory2.NodeCategoryId
         };
 
-        var edgeCategory = new EdgeCategory { EdgeCategoryName = "Transaction"};
+        var edgeCategory = new EdgeCategory
+        {
+            EdgeCategoryId = 1,
+            EdgeCategoryName = "Transaction"
+        };
 
 
 
@@ -93,6 +107,7 @@ public class GraphControllerTests : IClassFixture<CustomWebApplicationFactory<Pr
         
         var edge = new Edge
         {
+            EdgeId = 1,
             EdgeSourceNodeId = node1.NodeId,
             EdgeDestinationNodeId = node2.NodeId,
             EdgeCategory = edgeCategory,
@@ -123,21 +138,24 @@ public class GraphControllerTests : IClassFixture<CustomWebApplicationFactory<Pr
 
     }
     [Fact]
-    public async Task UploadNode_ShouldReturnBadRequest_WhenNoFileUploaded()
+    public async Task UploadNode_ShouldReturnSuccess_WhenDtoIsValid()
     {
         // Arrange
-        var request = new HttpRequestMessage(HttpMethod.Post, "api/graph/uploadnode");
-        
-        var filePath = "";
-        await using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+        var csvContent = @"""AccountID"",""CardID"",""IBAN""
+""6534454617"",""6104335000000190"",""IR120778801496000000198""
+""4000000028"",""6037699000000020"",""IR033880987114000000028""
+";
+        var mockFile = CreateFileMock(csvContent);
 
-        var formDataContent = new MultipartFormDataContent();
-        var fileContent = new StreamContent(fileStream);
-        fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-        formDataContent.Add(fileContent, "File", Path.GetFileName(filePath));
+        var fileContent = new StreamContent(mockFile.OpenReadStream());
+        fileContent.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
         
+        var formDataContent = new MultipartFormDataContent();
         formDataContent.Add(new StringContent("Account"), "NodeCategoryName");
         formDataContent.Add(new StringContent("AccountID"), "UniqueAttributeHeaderName");
+        formDataContent.Add(fileContent, "file", mockFile.FileName);
+
+        var request = new HttpRequestMessage(HttpMethod.Post, "api/graph/uploadnode");
         
         request.Content = formDataContent;
         
@@ -164,38 +182,23 @@ public class GraphControllerTests : IClassFixture<CustomWebApplicationFactory<Pr
         var response = await _client.SendAsync(request);
         
         // Assert
-        Assert.Equal(400, (int)response.StatusCode);
-        Assert.Equal(Resources.NoFileUploadedMessage, response.Content.ReadFromJsonAsync<MessageDto>().Result.Message);
+        Assert.Equal(200, (int)response.StatusCode);
+        Assert.Equal(Resources.SuccessfulNodeAdditionMessage, response.Content.ReadFromJsonAsync<MessageDto>().Result.Message);
     }
 
-    public async Task UploadNode_ShouldReturnSuccess_WhenDtoIsValid()
+    private IFormFile CreateFileMock(string csvContent)
     {
+        var csvFileName = "test.csv";
+        var fileMock = Substitute.For<IFormFile>();
+        var stream = new MemoryStream();
+        var writer = new StreamWriter(stream);
+        writer.Write(csvContent);
+        writer.Flush();
+        stream.Position = 0;
 
-        // Arrange
-        var request = new HttpRequestMessage(HttpMethod.Post, "api/graph/uploadnode");
-        Mock<IOptions<JwtSettings>> jwtSettingsMock = new();
-        jwtSettingsMock.Setup(m => m.Value).Returns(_jwtSettings);
-
-        var user = new User
-        {
-            Id = 1,
-            Username = "admin",
-            PasswordHash = "74b2c5bd3a8de69c8c7c643e8b5c49d6552dc636aeb0995aff6f01a1f661a979",
-            FirstName = "Admin",
-            LastName = "User",
-            Email = "admin@example.com",
-            UserRoles = new List<UserRole>() { new UserRole() { Role = new Role() { Name = "admin" } } }
-
-        };
-
-        var token = new JwtTokenGenerator(jwtSettingsMock.Object).GenerateJwtToken(user);
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-        // Act
-        var response = await _client.SendAsync(request);
-
-        // Assert
-        Assert.Equal(400, (int)response.StatusCode);
-        Assert.Equal(Resources.NoFileUploadedMessage, response.Content.ReadFromJsonAsync<MessageDto>().Result.Message);
+        fileMock.OpenReadStream().Returns(stream);
+        fileMock.FileName.Returns(csvFileName);
+        fileMock.Length.Returns(stream.Length);
+        return fileMock;
     }
 }

@@ -29,4 +29,25 @@
       <ProjectReference Include="..\RelationshipAnalysis\RelationshipAnalysis.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Update="Resources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="NSubstitute">
+        <HintPath>..\..\..\..\.nuget\packages\nsubstitute\5.1.0\lib\net6.0\NSubstitute.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

@@ -81,12 +81,32 @@ namespace RelationshipAnalysis {
             }
         }
         
+        internal static string TwoSameHeadersMessage {
+            get {
+                return ResourceManager.GetString("TwoSameHeadersMessage", resourceCulture);
+            }
+        }
         internal static string InvalidNodeCategory {
             get {
                 return ResourceManager.GetString("InvalidNodeCategory", resourceCulture);
             }
         }
-        
+        internal static string InvalidHeaderAttribute {
+            get {
+                return ResourceManager.GetString("InvalidHeaderAttribute", resourceCulture);
+            }
+        }
+        internal static string FailedAddRecordsMessage {
+            get {
+                return ResourceManager.GetString("FailedAddRecordsMessage", resourceCulture);
+            }
+        }
+        internal static string ValidFileMessage {
+            get {
+                return ResourceManager.GetString("ValidFileMessage", resourceCulture);
+            }
+        }
+
         internal static string OldPasswordRequired {
             get {
                 return ResourceManager.GetString("OldPasswordRequired", resourceCulture);

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Models.Graph;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
@@ -9,11 +10,14 @@ public class SingleNodeAdditionService(IServiceProvider serviceProvider) : ISing
 {
     public async Task AddSingleNode(IDictionary<string, object> record, string uniqueHeaderName, int nodeCategoryId)
     {
-        // TODO : rollBack
-        // TODO : long
-        
+        // TODO : unique key is not empty
+        // TODO : unique key value doesn't exist
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        if (((string)record[uniqueHeaderName]).IsNullOrEmpty())
+        {
+            throw new Exception(Resources.FailedAddRecordsMessage);
+        }
         var newNode = new Node()
         {
             NodeUniqueString = (string)record[uniqueHeaderName],
@@ -34,10 +38,14 @@ public class SingleNodeAdditionService(IServiceProvider serviceProvider) : ISing
                     {
                         NodeAttributeName = kvp.Key
                     };
+                    await context.AddAsync(newNodeAttribute);
+
                 }
 
-                await context.AddAsync(newNodeAttribute);
-
+                // var v = context.NodeValues.SingleOrDefaultAsync(nv =>
+                //     nv.NodeAttributeId == newNodeAttribute.NodeAttributeId &&
+                //     nv.NodeId == newNode.NodeId);
+                
                 var newNodeValue = new NodeValue()
                 {
                     NodeAttributeId = newNodeAttribute.NodeAttributeId,
@@ -48,6 +56,8 @@ public class SingleNodeAdditionService(IServiceProvider serviceProvider) : ISing
                 await context.AddAsync(newNodeValue);
             }
         }
-        
+
+        await context.SaveChangesAsync();
+
     }
 }

@@ -32,6 +32,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Reference Include="NSubstitute">
+        <HintPath>..\..\..\..\.nuget\packages\nsubstitute\5.1.0\lib\net6.0\NSubstitute.dll</HintPath>
+      </Reference>
       <Reference Include="RelationshipAnalysis">
         <HintPath>..\RelationshipAnalysis.Integration.Test\bin\Debug\net8.0\RelationshipAnalysis.dll</HintPath>
       </Reference>

@@ -35,7 +35,7 @@ public class CsvValidatorServiceTests
         var result = _sut.Validate(fileMock, "AccountID");
 
         // Assert
-        Assert.Equal(expected, result);
+        Assert.Equivalent(expected, result);
     }
 
     [Fact]
@@ -58,7 +58,7 @@ public class CsvValidatorServiceTests
         var result = _sut.Validate(fileMock, "AccountID");
 
         // Assert
-        Assert.Equal(expected, result);
+        Assert.Equivalent(expected, result);
     }
 
 
@@ -82,7 +82,7 @@ public class CsvValidatorServiceTests
         var result = _sut.Validate(fileMock, "AccountID");
 
         // Assert
-        Assert.Equal(expected, result);
+        Assert.Equivalent(expected, result);
     }
     
     
@@ -106,15 +106,15 @@ public class CsvValidatorServiceTests
         var result = _sut.Validate(fileMock, "AccountID");
 
         // Assert
-        Assert.Equal(expected, result);
+        Assert.Equivalent(expected, result);
     }
 
 
     
-    private FormFile CreateFileMock(string csvContent)
+    private IFormFile CreateFileMock(string csvContent)
     {
         var csvFileName = "test.csv";
-        var fileMock = Substitute.For<FormFile>();
+        var fileMock = Substitute.For<IFormFile>();
         var stream = new MemoryStream();
         var writer = new StreamWriter(stream);
         writer.Write(csvContent);

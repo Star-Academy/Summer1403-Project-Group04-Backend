@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RelationshipAnalysis {
+namespace RelationshipAnalysis.Integration.Test {
     using System;
     
     
@@ -28,7 +28,7 @@ namespace RelationshipAnalysis {
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("RelationshipAnalysis.Resources", typeof(Resources).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("RelationshipAnalysis.Integration.Test.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,9 +45,51 @@ namespace RelationshipAnalysis {
             }
         }
         
-        internal static string InvalidPasswordMessage {
+        internal static string ValidFileMessage {
             get {
-                return ResourceManager.GetString("InvalidPasswordMessage", resourceCulture);
+                return ResourceManager.GetString("ValidFileMessage", resourceCulture);
+            }
+        }
+        
+        internal static string FailedAddRecordsMessage {
+            get {
+                return ResourceManager.GetString("FailedAddRecordsMessage", resourceCulture);
+            }
+        }
+        
+        internal static string InvalidHeaderAttribute {
+            get {
+                return ResourceManager.GetString("InvalidHeaderAttribute", resourceCulture);
+            }
+        }
+        
+        internal static string TwoSameHeadersMessage {
+            get {
+                return ResourceManager.GetString("TwoSameHeadersMessage", resourceCulture);
+            }
+        }
+        
+        internal static string InvalidNodeCategory {
+            get {
+                return ResourceManager.GetString("InvalidNodeCategory", resourceCulture);
+            }
+        }
+        
+        internal static string SuccessfulNodeAdditionMessage {
+            get {
+                return ResourceManager.GetString("SuccessfulNodeAdditionMessage", resourceCulture);
+            }
+        }
+        
+        internal static string NoFileUploadedMessage {
+            get {
+                return ResourceManager.GetString("NoFileUploadedMessage", resourceCulture);
+            }
+        }
+        
+        internal static string EmailExistsMessage {
+            get {
+                return ResourceManager.GetString("EmailExistsMessage", resourceCulture);
             }
         }
         
@@ -56,7 +98,13 @@ namespace RelationshipAnalysis {
                 return ResourceManager.GetString("SuccessfulLogoutMessage", resourceCulture);
             }
         }
-
+        
+        internal static string InvalidPasswordMessage {
+            get {
+                return ResourceManager.GetString("InvalidPasswordMessage", resourceCulture);
+            }
+        }
+        
         internal static string UserNotFoundMessage {
             get {
                 return ResourceManager.GetString("UserNotFoundMessage", resourceCulture);
@@ -68,19 +116,6 @@ namespace RelationshipAnalysis {
                 return ResourceManager.GetString("WrongOldPasswordMessage", resourceCulture);
             }
         }
-        
-        
-        internal static string NoFileUploadedMessage {
-            get {
-                return ResourceManager.GetString("NoFileUploadedMessage", resourceCulture);
-            }
-        }
-        internal static string SuccessfulNodeAdditionMessage {
-            get {
-                return ResourceManager.GetString("SuccessfulNodeAdditionMessage", resourceCulture);
-            }
-        }
-
         
         internal static string OldPasswordRequired {
             get {
@@ -124,12 +159,6 @@ namespace RelationshipAnalysis {
             }
         }
         
-        internal static string EmailExistsMessage {
-            get {
-                return ResourceManager.GetString("EmailExistsMessage", resourceCulture);
-            }
-        }
-        
         internal static string SucceddfulCreateUser {
             get {
                 return ResourceManager.GetString("SucceddfulCreateUser", resourceCulture);
@@ -165,11 +194,11 @@ namespace RelationshipAnalysis {
                 return ResourceManager.GetString("SuccessfulLoginMessage", resourceCulture);
             }
         }
+        
         internal static string DeleteAccountAccessErrorMessage {
             get {
                 return ResourceManager.GetString("DeleteAccountAccessErrorMessage", resourceCulture);
             }
         }
-        
     }
 }

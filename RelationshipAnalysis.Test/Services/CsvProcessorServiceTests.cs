@@ -22,7 +22,7 @@ public class CsvProcessorServiceTests
 ""4000000028"",""6037699000000020"",""IR033880987114000000028""
 ";
         var csvFileName = "test.csv";
-        var fileMock = Substitute.For<FormFile>();
+        var fileMock = Substitute.For<IFormFile>();
         var stream = new MemoryStream();
         var writer = new StreamWriter(stream);
         writer.Write(csvContent);
@@ -35,8 +35,18 @@ public class CsvProcessorServiceTests
         
         var expected = new List<dynamic>
         {
-            new { AccountID = "6534454617", CardID = "6104335000000190", IBAN = "IR120778801496000000198" },
-            new { AccountID = "4000000028", CardID = "6037699000000020", IBAN = "IR033880987114000000028" }
+            new Dictionary<string, object>
+            {
+                { "AccountID", "6534454617" },
+                { "CardID", "6104335000000190" },
+                { "IBAN", "IR120778801496000000198" }
+            },
+            new Dictionary<string, object>
+            {
+                { "AccountID", "4000000028" },
+                { "CardID", "6037699000000020" },
+                { "IBAN", "IR033880987114000000028" }
+            }
         };
         
         // Act
