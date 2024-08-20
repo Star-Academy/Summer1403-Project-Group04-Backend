@@ -41,7 +41,7 @@ public class CreateNodeCategoryServiceTests
     }
 
     [Fact]
-    public async Task CreateEdgeCategory_ShouldReturnBadRequest_WhenDtoIsNull()
+    public async Task CreateNodeCategory_ShouldReturnBadRequest_WhenDtoIsNull()
     {
         // Arrange
         CreateNodeCategoryDto dto = null;
@@ -55,7 +55,7 @@ public class CreateNodeCategoryServiceTests
     }
 
     [Fact]
-    public async Task CreateEdgeCategory_ShouldReturnBadRequest_WhenCategoryNameIsNotUnique()
+    public async Task CreateNodeCategory_ShouldReturnBadRequest_WhenCategoryNameIsNotUnique()
     {
         // Arrange
         var dto = new CreateNodeCategoryDto()
@@ -72,7 +72,7 @@ public class CreateNodeCategoryServiceTests
     }
 
     [Fact]
-    public async Task CreateEdgeCategory_ShouldReturnSuccess_WhenDtoIsOk()
+    public async Task CreateNodeCategory_ShouldReturnSuccess_WhenDtoIsOk()
     {
         // Arrange
         var dto = new CreateNodeCategoryDto()
