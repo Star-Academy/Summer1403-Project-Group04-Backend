@@ -31,7 +31,7 @@ public class EdgeCategoryReceiverTests
 
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
-        _sut = new();
+        _sut = new(_serviceProvider);
 
     }
 

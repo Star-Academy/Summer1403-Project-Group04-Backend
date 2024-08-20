@@ -1,13 +1,17 @@
-﻿using RelationshipAnalysis.Dto;
+﻿using Microsoft.EntityFrameworkCore;
+using RelationshipAnalysis.Context;
+using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Category;
 using RelationshipAnalysis.Services.CategoryServices.EdgeCategory.Abstraction;
 
 namespace RelationshipAnalysis.Services.CategoryServices.EdgeCategory;
 
-public class EdgeCategoryReceiver : IEdgeCategoryReceiver
+public class EdgeCategoryReceiver(IServiceProvider serviceProvider) : IEdgeCategoryReceiver
 {
-    public Task<List<string>> GetAllEdgeCategories()
+    public async Task<List<string>> GetAllEdgeCategories()
     {
-        throw new NotImplementedException();
+        using var scope = serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        return await context.EdgeCategories.Select(e => e.EdgeCategoryName).ToListAsync();
     }
 }
