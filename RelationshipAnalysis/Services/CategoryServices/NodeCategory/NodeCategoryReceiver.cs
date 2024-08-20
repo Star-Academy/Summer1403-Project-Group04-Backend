@@ -1,11 +1,15 @@
-﻿using RelationshipAnalysis.Services.CategoryServices.NodeCategory.Abstraction;
+﻿using Microsoft.EntityFrameworkCore;
+using RelationshipAnalysis.Context;
+using RelationshipAnalysis.Services.CategoryServices.NodeCategory.Abstraction;
 
 namespace RelationshipAnalysis.Services.CategoryServices.NodeCategory;
 
-public class NodeCategoryReceiver : INodeCategoryReceiver
+public class NodeCategoryReceiver(IServiceProvider serviceProvider) : INodeCategoryReceiver
 {
-    public Task<List<string>> GetAllNodeCategories()
+    public async Task<List<string>> GetAllNodeCategories()
     {
-        throw new NotImplementedException();
+        using var scope = serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        return await context.NodeCategories.Select(e => e.NodeCategoryName).ToListAsync();
     }
 }

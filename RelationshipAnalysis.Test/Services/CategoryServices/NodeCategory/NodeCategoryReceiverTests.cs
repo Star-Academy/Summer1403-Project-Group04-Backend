@@ -31,7 +31,7 @@ public class NodeCategoryReceiverTests
 
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
-        _sut = new();
+        _sut = new NodeCategoryReceiver(_serviceProvider);
 
     }
 
