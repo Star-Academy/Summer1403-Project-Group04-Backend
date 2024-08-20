@@ -24,7 +24,7 @@ public class CreateNodeCategoryServiceTests
 
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
-        _sut = new();
+        _sut = new(_serviceProvider);
 
         SeedDatabase();
     }
@@ -84,7 +84,7 @@ public class CreateNodeCategoryServiceTests
 
         // Act
         var result = await _sut.CreateNodeCategory(dto);
-        var categoty = context.EdgeCategories.SingleOrDefault(c => c.EdgeCategoryName == dto.NodeCategoryName);
+        var categoty = context.NodeCategories.SingleOrDefault(c => c.NodeCategoryName == dto.NodeCategoryName);
 
         // Assert
         Assert.Equal(StatusCodeType.Success, result.StatusCode);
