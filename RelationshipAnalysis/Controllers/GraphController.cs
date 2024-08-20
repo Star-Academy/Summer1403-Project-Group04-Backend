@@ -13,6 +13,6 @@ public class GraphController(IGraphReceiver graphReceiver) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetGraph()
     {
-        return Ok(graphReceiver.GetGraph());
+        return Ok(await graphReceiver.GetGraph());
     }
 }
