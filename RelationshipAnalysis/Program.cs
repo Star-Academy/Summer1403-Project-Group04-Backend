@@ -54,7 +54,7 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<INodesAdditionService, NodesAdditionService>()
     .AddSingleton<ISingleNodeAdditionService, SingleNodeAdditionService>()
     .AddSingleton<ICsvProcessorService, CsvProcessorService>()
-    //.AddSingleton<ISingleEdgeAdditionService, SingleEdgeAdditionService>()
+    .AddSingleton<ISingleEdgeAdditionService, SingleEdgeAdditionService>()
     .AddSingleton<IEdgesAdditionService, EdgesAdditionService>()
     .AddSingleton<ICsvValidatorService, CsvValidatorService>();
     

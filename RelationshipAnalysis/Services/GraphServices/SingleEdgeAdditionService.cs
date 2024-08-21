@@ -9,7 +9,8 @@ namespace RelationshipAnalysis.Services.GraphServices;
 public class SingleEdgeAdditionService(IServiceProvider serviceProvider) : ISingleEdgeAdditionService
 
 {
-    public async Task AddSingleEdge(IDictionary<string, object> record, string uniqueHeaderName, string uniqueSourceHeaderName,
+    public async Task AddSingleEdge(IDictionary<string, object> record, string uniqueHeaderName,
+        string uniqueSourceHeaderName,
         string uniqueTargetHeaderName, int edgeCategoryId, int sourceNodeCategoryId, int targetNodeCategoryId)
     {
         using var scope = serviceProvider.CreateScope();
@@ -19,60 +20,88 @@ public class SingleEdgeAdditionService(IServiceProvider serviceProvider) : ISing
         {
             throw new Exception(Resources.FailedAddRecordsMessage);
         }
+
         if (((string)record[uniqueSourceHeaderName]).IsNullOrEmpty())
         {
             throw new Exception(Resources.FailedAddRecordsMessage);
         }
+
         if (((string)record[uniqueTargetHeaderName]).IsNullOrEmpty())
         {
             throw new Exception(Resources.FailedAddRecordsMessage);
         }
-        var newEdge = new Edge()
+
+        var source =
+            await context.Nodes.SingleOrDefaultAsync(n => n.NodeUniqueString == (string)record[uniqueSourceHeaderName]
+            && n.NodeCategoryId == sourceNodeCategoryId);
+        if (source == null)
         {
-            EdgeUniqueString = (string)record[uniqueHeaderName],
-            EdgeSourceNodeId = sourceNodeCategoryId,
-            EdgeDestinationNodeId = targetNodeCategoryId,
-            EdgeCategoryId = edgeCategoryId,
-        };
-        await context.AddAsync(newEdge);
-        await context.SaveChangesAsync();
+            throw new Exception(Resources.FailedAddRecordsMessage);
+        }
+
+        var target =
+            await context.Nodes.SingleOrDefaultAsync(n => n.NodeUniqueString == (string)record[uniqueTargetHeaderName]
+            && n.NodeCategoryId == targetNodeCategoryId);
+        if (target == null)
+        {
+            throw new Exception(Resources.FailedAddRecordsMessage);
+        }
+
+        var newEdge = await context.Edges.SingleOrDefaultAsync(e =>
+            e.EdgeCategoryId == edgeCategoryId
+            && e.EdgeUniqueString == (string)record[uniqueHeaderName]);
+        if (newEdge == null)
+        {
+            newEdge = new Edge()
+            {
+                EdgeUniqueString = (string)record[uniqueHeaderName],
+                EdgeSourceNodeId = source.NodeId,
+                EdgeDestinationNodeId = target.NodeId,
+                EdgeCategoryId = edgeCategoryId,
+            };
+            await context.AddAsync(newEdge);
+            await context.SaveChangesAsync();
+        }
+        else if(newEdge.EdgeSourceNodeId != source.NodeId || newEdge.EdgeDestinationNodeId != target.NodeId)
+        {
+            throw new Exception(Resources.FailedAddRecordsMessage);
+        }
+        
         foreach (var kvp in record)
         {
             if (kvp.Key != uniqueHeaderName)
             {
-                var newNodeAttribute = await context.NodeAttributes.SingleOrDefaultAsync(na =>
-                    na.NodeAttributeName == kvp.Key);
-                if (newNodeAttribute == null)
+                var newEdgeAttribute = await context.EdgeAttributes.SingleOrDefaultAsync(na =>
+                    na.EdgeAttributeName == kvp.Key);
+                if (newEdgeAttribute == null)
                 {
-                    newNodeAttribute = new NodeAttribute()
+                    newEdgeAttribute = new EdgeAttribute()
                     {
-                        NodeAttributeName = kvp.Key
+                        EdgeAttributeName = kvp.Key
                     };
-                    await context.AddAsync(newNodeAttribute);
+                    await context.AddAsync(newEdgeAttribute);
                     await context.SaveChangesAsync();
                 }
 
-                var value = await context.NodeValues.SingleOrDefaultAsync(nv =>
-                    nv.NodeAttributeId == newNodeAttribute.NodeAttributeId &&
-                    nv.NodeId == newNode.NodeId);
+                var value = await context.EdgeValues.SingleOrDefaultAsync(nv =>
+                    nv.EdgeAttributeId == newEdgeAttribute.EdgeAttributeId &&
+                    nv.EdgeId == newEdge.EdgeId);
 
                 if (value != null)
                 {
                     throw new Exception(Resources.FailedAddRecordsMessage);
                 }
-                
-                var newNodeValue = new NodeValue()
+
+                var newEdgeValue = new EdgeValue()
                 {
-                    NodeAttributeId = newNodeAttribute.NodeAttributeId,
+                    EdgeAttributeId = newEdgeAttribute.EdgeAttributeId,
                     ValueData = kvp.Value.ToString(),
-                    NodeId = newNode.NodeId
+                    EdgeId = newEdge.EdgeId
                 };
 
-                await context.AddAsync(newNodeValue);
+                await context.AddAsync(newEdgeValue);
                 await context.SaveChangesAsync();
-
             }
         }
-
     }
 }

@@ -11,6 +11,7 @@ public class SingleNodeAdditionServiceTests
 {
     private readonly SingleNodeAdditionService _sut;
     private readonly IServiceProvider _serviceProvider;
+
     public SingleNodeAdditionServiceTests()
     {
         var serviceCollection = new ServiceCollection();
@@ -26,6 +27,7 @@ public class SingleNodeAdditionServiceTests
         _sut = new(_serviceProvider);
         SeedDatabase();
     }
+
     private void SeedDatabase()
     {
         using var scope = _serviceProvider.CreateScope();
@@ -34,10 +36,9 @@ public class SingleNodeAdditionServiceTests
         {
             NodeCategoryId = 1,
             NodeCategoryName = "Account",
-
         });
-        var existingNode = new Node { NodeUniqueString = "TestNode", NodeCategoryId = 1 , NodeId = 1};
-        var existingAttribute = new NodeAttribute { NodeAttributeName = "Attribute1", NodeAttributeId = 1};
+        var existingNode = new Node { NodeUniqueString = "TestNode", NodeCategoryId = 1, NodeId = 1 };
+        var existingAttribute = new NodeAttribute { NodeAttributeName = "Attribute1", NodeAttributeId = 1 };
         context.NodeAttributes.Add(existingAttribute);
         var existingNodeValue = new NodeValue
         {
@@ -50,8 +51,8 @@ public class SingleNodeAdditionServiceTests
         context.Add(existingNode);
         context.SaveChanges();
     }
-    
-    
+
+
     [Fact]
     public async Task AddSingleNode_ShouldAddNewNode_WhenValidRecordIsProvided()
     {
@@ -75,7 +76,8 @@ public class SingleNodeAdditionServiceTests
         var attribute = await context.NodeAttributes.SingleOrDefaultAsync(a => a.NodeAttributeName == "Attribute1");
         Assert.NotNull(attribute);
 
-        var nodeValue = await context.NodeValues.SingleOrDefaultAsync(v => v.ValueData == "Value1" && v.NodeId == node.NodeId);
+        var nodeValue =
+            await context.NodeValues.SingleOrDefaultAsync(v => v.ValueData == "Value1" && v.NodeId == node.NodeId);
         Assert.NotNull(nodeValue);
     }
 
@@ -102,23 +104,24 @@ public class SingleNodeAdditionServiceTests
         var attribute = await context.NodeAttributes.SingleOrDefaultAsync(a => a.NodeAttributeName == "Attribute2");
         Assert.NotNull(attribute);
 
-        var nodeValue = await context.NodeValues.SingleOrDefaultAsync(v => v.ValueData == "Value2" && v.NodeId == node.NodeId);
+        var nodeValue =
+            await context.NodeValues.SingleOrDefaultAsync(v => v.ValueData == "Value2" && v.NodeId == node.NodeId);
         Assert.NotNull(nodeValue);
     }
-    
+
     [Fact]
     public async Task AddSingleNode_ShouldThrowException_WhenUniqueNameIsEmpty()
     {
         // Arrange
         var record = new Dictionary<string, object>
         {
-            { "UniqueName", "" },  // Empty unique name
+            { "UniqueName", "" }, // Empty unique name
             { "Attribute1", "Value1" }
         };
 
         // Act
         var action = () => _sut.AddSingleNode(record, "UniqueName", 1);
-        
+
         // Assert
         await Assert.ThrowsAsync<Exception>(action);
     }
@@ -135,11 +138,8 @@ public class SingleNodeAdditionServiceTests
 
         // Act
         var action = () => _sut.AddSingleNode(record, "UniqueName", 1);
-        
+
         // Assert
         await Assert.ThrowsAsync<Exception>(action);
     }
-    
-    
-    
 }
