@@ -4,6 +4,7 @@ using RelationshipAnalysis.Dto.Category;
 using RelationshipAnalysis.Dto.Graph;
 using RelationshipAnalysis.Services.CategoryServices.EdgeCategory.Abstraction;
 using RelationshipAnalysis.Services.CategoryServices.NodeCategory.Abstraction;
+using RelationshipAnalysis.Services.GraphServices.Abstraction;
 
 namespace RelationshipAnalysis.Controllers;
 
@@ -39,7 +40,7 @@ public class EdgeController(
             return BadRequest(Resources.NoFileUploadedMessage);
         }
 
-        var result = await edgesAdditionService.AddNodes(uploadEdgeDto);
+        var result = await edgesAdditionService.AddEdges(uploadEdgeDto);
         return StatusCode((int)result.StatusCode, result.Data);
     }
 }

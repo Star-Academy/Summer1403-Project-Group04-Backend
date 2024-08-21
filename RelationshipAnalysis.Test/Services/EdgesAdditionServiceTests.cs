@@ -63,7 +63,7 @@ public class EdgesAdditionServiceTests
         var fileToBeSend = CreateFileMock(csvContent);
 
         var validatorMock = NSubstitute.Substitute.For<ICsvValidatorService>();
-        validatorMock.Validate(fileToBeSend, "SomeHeaderThatDoesntExist")
+        validatorMock.Validate(fileToBeSend, "SomeHeaderThatDoesntExist", "SourceAcount", "DestiantionAccount")
             .Returns(expected);
         var processorMock = NSubstitute.Substitute.For<ICsvProcessorService>();
         var additionServiceMock = NSubstitute.Substitute.For<ISingleEdgeAdditionService>();
@@ -97,7 +97,7 @@ public class EdgesAdditionServiceTests
         var fileToBeSend = CreateFileMock(csvContent);
 
         var validatorMock = NSubstitute.Substitute.For<ICsvValidatorService>();
-        validatorMock.Validate(fileToBeSend, "SomeHeaderThatDoesntExist")
+        validatorMock.Validate(fileToBeSend, "TransactionID", "SomeHeaderThatDoesntExist", "DestiantionAccount")
             .Returns(expected);
         var processorMock = NSubstitute.Substitute.For<ICsvProcessorService>();
         var additionServiceMock = NSubstitute.Substitute.For<ISingleEdgeAdditionService>();
@@ -132,7 +132,7 @@ public class EdgesAdditionServiceTests
         var fileToBeSend = CreateFileMock(csvContent);
 
         var validatorMock = NSubstitute.Substitute.For<ICsvValidatorService>();
-        validatorMock.Validate(fileToBeSend, "SomeHeaderThatDoesntExist")
+        validatorMock.Validate(fileToBeSend, "TransactionID", "SourceAcount", "SomeHeaderThatDoesntExist")
             .Returns(expected);
         var processorMock = NSubstitute.Substitute.For<ICsvProcessorService>();
         var additionServiceMock = NSubstitute.Substitute.For<ISingleEdgeAdditionService>();
@@ -254,12 +254,12 @@ public class EdgesAdditionServiceTests
     
     
     [Fact]
-    public async Task AddNodes_ShouldReturnSuccess_WhenNodeDtoIsValid()
+    public async Task AddEdges_ShouldReturnSuccess_WhenNodeDtoIsValid()
     {
         // Arrange
         var expected = new ActionResponse<MessageDto>()
         {
-            Data = new MessageDto(Resources.SuccessfulNodeAdditionMessage),
+            Data = new MessageDto(Resources.SuccessfulEdgeAdditionMessage),
             StatusCode = StatusCodeType.Success
         };
         var csvContent = @"""AccountID"",""CardID"",""IBAN""
@@ -269,7 +269,7 @@ public class EdgesAdditionServiceTests
         var fileToBeSend = CreateFileMock(csvContent);
 
         var validatorMock = NSubstitute.Substitute.For<ICsvValidatorService>();
-        validatorMock.Validate(fileToBeSend, "AccountID").Returns(expected);
+        validatorMock.Validate(fileToBeSend, "TransactionID", "SourceAcount", "DestiantionAccount").Returns(expected);
         var processorMock = NSubstitute.Substitute.For<ICsvProcessorService>();
         processorMock.ProcessCsvAsync(fileToBeSend).Returns(new List<dynamic>());
         var additionServiceMock = NSubstitute.Substitute.For<ISingleEdgeAdditionService>();
