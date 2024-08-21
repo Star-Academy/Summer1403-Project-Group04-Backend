@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RelationshipAnalysis.Dto;
-using RelationshipAnalysis.Services.AccessServices.Abstraction;
 using RelationshipAnalysis.Services.UserPanelServices.Abstraction;
 
 namespace RelationshipAnalysis.Controllers;
