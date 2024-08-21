@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RelationshipAnalysis.Context;
+using RelationshipAnalysis.Models.Graph;
 using RelationshipAnalysis.Services.GraphServices;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
 
@@ -23,6 +24,93 @@ public class SingleNodeAdditionServiceTests
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
         _sut = new(_serviceProvider);
+        SeedDatabase();
+    }
+    private void SeedDatabase()
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        context.NodeCategories.Add(new NodeCategory()
+        {
+            NodeCategoryId = 1,
+            NodeCategoryName = "Account",
+
+        });
+        var existingNode = new Node { NodeUniqueString = "TestNode", NodeCategoryId = 1 , NodeId = 1};
+        var existingAttribute = new NodeAttribute { NodeAttributeName = "Attribute1", NodeAttributeId = 1};
+        context.NodeAttributes.Add(existingAttribute);
+        var existingNodeValue = new NodeValue
+        {
+            ValueId = 1,
+            NodeId = 1,
+            NodeAttributeId = 1,
+            ValueData = "ExistingValue"
+        };
+        context.NodeValues.Add(existingNodeValue);
+        context.Add(existingNode);
+        context.SaveChanges();
+    }
+    
+    
+    [Fact]
+    public async Task AddSingleNode_ShouldAddNewNode_WhenValidRecordIsProvided()
+    {
+        // Arrange
+        var record = new Dictionary<string, object>
+        {
+            { "UniqueName", "TestNode2" },
+            { "Attribute1", "Value1" }
+        };
+
+        // Act
+        await _sut.AddSingleNode(record, "UniqueName", 1);
+
+        // Assert
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var node = await context.Nodes.SingleOrDefaultAsync(n => n.NodeUniqueString == "TestNode2");
+        Assert.NotNull(node);
+        Assert.Equal(1, node.NodeCategoryId);
+
+        var attribute = await context.NodeAttributes.SingleOrDefaultAsync(a => a.NodeAttributeName == "Attribute1");
+        Assert.NotNull(attribute);
+
+        var nodeValue = await context.NodeValues.SingleOrDefaultAsync(v => v.ValueData == "Value1" && v.NodeId == node.NodeId);
+        Assert.NotNull(nodeValue);
+    }
+
+    [Fact]
+    public async Task AddSingleNode_ShouldThrowException_WhenUniqueNameIsEmpty()
+    {
+        // Arrange
+        var record = new Dictionary<string, object>
+        {
+            { "UniqueName", "" },  // Empty unique name
+            { "Attribute1", "Value1" }
+        };
+
+        // Act
+        var action = () => _sut.AddSingleNode(record, "UniqueName", 1);
+        
+        // Assert
+        await Assert.ThrowsAsync<Exception>(action);
+    }
+
+    [Fact]
+    public async Task AddSingleNode_ShouldThrowException_WhenNodeValueAlreadyExists()
+    {
+        // Arrange
+        var record = new Dictionary<string, object>
+        {
+            { "UniqueName", "TestNode" },
+            { "Attribute1", "ExistingValue" }
+        };
+
+        // Act
+        var action = () => _sut.AddSingleNode(record, "UniqueName", 1);
+        
+        // Assert
+        await Assert.ThrowsAsync<Exception>(action);
     }
     
     

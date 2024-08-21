@@ -40,9 +40,14 @@ public class SingleNodeAdditionService(IServiceProvider serviceProvider) : ISing
                     await context.SaveChangesAsync();
                 }
 
-                // var v = context.NodeValues.SingleOrDefaultAsync(nv =>
-                //     nv.NodeAttributeId == newNodeAttribute.NodeAttributeId &&
-                //     nv.NodeId == newNode.NodeId);
+                var value = await context.NodeValues.SingleOrDefaultAsync(nv =>
+                    nv.NodeAttributeId == newNodeAttribute.NodeAttributeId &&
+                    nv.NodeId == newNode.NodeId);
+
+                if (value != null)
+                {
+                    throw new Exception(Resources.FailedAddRecordsMessage);
+                }
                 
                 var newNodeValue = new NodeValue()
                 {
