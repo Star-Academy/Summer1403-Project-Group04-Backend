@@ -16,13 +16,21 @@ public class SingleNodeAdditionService(IServiceProvider serviceProvider) : ISing
         {
             throw new Exception(Resources.FailedAddRecordsMessage);
         }
-        var newNode = new Node()
+
+        var newNode = await context.Nodes.SingleOrDefaultAsync(n =>
+            n.NodeUniqueString == (string)record[uniqueHeaderName]
+            && n.NodeCategoryId == nodeCategoryId);
+        if (newNode == null)
         {
-            NodeUniqueString = (string)record[uniqueHeaderName],
-            NodeCategoryId = nodeCategoryId,
-        };
-        await context.AddAsync(newNode);
-        await context.SaveChangesAsync();
+            newNode = new Node()
+            {
+                NodeUniqueString = (string)record[uniqueHeaderName],
+                NodeCategoryId = nodeCategoryId,
+            };
+            
+            await context.AddAsync(newNode);
+            await context.SaveChangesAsync();
+        } 
 
         foreach (var kvp in record)
         {
@@ -48,7 +56,7 @@ public class SingleNodeAdditionService(IServiceProvider serviceProvider) : ISing
                 {
                     throw new Exception(Resources.FailedAddRecordsMessage);
                 }
-                
+
                 var newNodeValue = new NodeValue()
                 {
                     NodeAttributeId = newNodeAttribute.NodeAttributeId,
@@ -58,9 +66,7 @@ public class SingleNodeAdditionService(IServiceProvider serviceProvider) : ISing
 
                 await context.AddAsync(newNodeValue);
                 await context.SaveChangesAsync();
-
             }
         }
-
     }
 }
