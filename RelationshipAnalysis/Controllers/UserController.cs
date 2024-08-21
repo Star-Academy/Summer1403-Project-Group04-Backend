@@ -1,19 +1,21 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RelationshipAnalysis.Dto;
+using RelationshipAnalysis.Services.AccessServices.Abstraction;
 using RelationshipAnalysis.Services.UserPanelServices.Abstraction;
 
 namespace RelationshipAnalysis.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("api/[controller]/[action]")]
+[Route("api/[controller]")]
 public class UserController(
     IUserInfoService userInfoService,
     IUserUpdateInfoService userUpdateInfoService,
     IUserPasswordService passwordService,
     IUserReceiver userReceiver,
-    ILogoutService logoutService)
+    ILogoutService logoutService,
+    IPermissionService permissionService)
     : ControllerBase
 {
     [HttpGet]
@@ -32,7 +34,7 @@ public class UserController(
         return StatusCode((int)result.StatusCode, result.Data);
     }
 
-    [HttpPut]
+    [HttpPatch("password")]
     public async Task<IActionResult> UpdatePassword(UserPasswordInfoDto passwordInfoDto)
     {
         var user = await userReceiver.ReceiveUserAsync(User);
@@ -40,10 +42,18 @@ public class UserController(
         return StatusCode((int)result.StatusCode, result.Data);
     }
 
-    [HttpPost]
+    [HttpPost("logout")]
     public IActionResult Logout()
     {
         logoutService.Logout(Response);
         return Ok(new MessageDto(Resources.SuccessfulLogoutMessage));
+    }
+    
+    [HttpGet("permissions")]
+    public async Task<IActionResult> GetPermissions()
+    {
+        var response = await permissionService.GetPermissionsAsync(User);
+
+        return StatusCode((int)response.StatusCode, response.Data);
     }
 }

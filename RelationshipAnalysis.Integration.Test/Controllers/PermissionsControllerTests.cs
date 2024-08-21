@@ -24,11 +24,11 @@ using RelationshipAnalysis.Settings.JWT;
 
 namespace RelationshipAnalysis.Integration.Test.Controllers;
 
-public class AccessControllerTests : IClassFixture<CustomWebApplicationFactory<Program>>
+public class PermissionsControllerTests : IClassFixture<CustomWebApplicationFactory<Program>>
 {
     private readonly HttpClient _client;
 
-    public AccessControllerTests(CustomWebApplicationFactory<Program> factory)
+    public PermissionsControllerTests(CustomWebApplicationFactory<Program> factory)
     {
         _client = factory.CreateClient();
     }
