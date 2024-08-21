@@ -19,7 +19,9 @@ using RelationshipAnalysis.Services.UserPanelServices.Abstraction.AuthServices.A
 using RelationshipAnalysis.Settings.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Configuration
+    .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

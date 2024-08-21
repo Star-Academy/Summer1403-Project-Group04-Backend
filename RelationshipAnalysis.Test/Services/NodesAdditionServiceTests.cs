@@ -70,7 +70,7 @@ public class NodesAdditionServiceTests
         {
             File = fileToBeSend,
             NodeCategoryName = "Account",
-            UniqueAttributeHeaderName = "SomeHeaderThatDoesntExist"
+            UniqueKeyHeaderName = "SomeHeaderThatDoesntExist"
         });
         // Assert
         Assert.Equivalent(expected, result);
@@ -100,7 +100,7 @@ public class NodesAdditionServiceTests
         {
             File = fileToBeSend,
             NodeCategoryName = "SomeNodeCategoryThatDoesntExist",
-            UniqueAttributeHeaderName = "AccountID"
+            UniqueKeyHeaderName = "AccountID"
         });
         // Assert
         Assert.Equivalent(expected, result);
@@ -133,7 +133,7 @@ public class NodesAdditionServiceTests
         {
             File = fileToBeSend,
             NodeCategoryName = "Account",
-            UniqueAttributeHeaderName = "AccountID"
+            UniqueKeyHeaderName = "AccountID"
         });
         // Assert
         Assert.Equivalent(expected, result);
