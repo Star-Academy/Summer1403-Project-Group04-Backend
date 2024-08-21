@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RelationshipAnalysis.Dto;
@@ -24,7 +23,7 @@ public class UserController(
         var result = await userInfoService.GetUser(user);
         return StatusCode((int)result.StatusCode, result.Data);
     }
-    
+
     [HttpPut]
     public async Task<IActionResult> UpdateUser(UserUpdateInfoDto userUpdateInfoDto)
     {
@@ -32,7 +31,7 @@ public class UserController(
         var result = await userUpdateInfoService.UpdateUserAsync(user, userUpdateInfoDto, Response);
         return StatusCode((int)result.StatusCode, result.Data);
     }
-    
+
     [HttpPut]
     public async Task<IActionResult> UpdatePassword(UserPasswordInfoDto passwordInfoDto)
     {

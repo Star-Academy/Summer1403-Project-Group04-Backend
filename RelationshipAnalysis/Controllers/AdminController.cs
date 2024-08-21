@@ -40,9 +40,9 @@ public class AdminController(
     }
 
     [HttpGet]
-    public IActionResult GetAllRoles()
+    public async Task<IActionResult> GetAllRoles()
     {
-        var roles = roleReceiver.ReceiveAllRoles();
+        var roles = await  roleReceiver.ReceiveAllRoles();
         return Ok(roles);
     }
 

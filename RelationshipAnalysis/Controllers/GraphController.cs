@@ -5,7 +5,6 @@ using RelationshipAnalysis.Services.GraphServices.Abstraction;
 
 namespace RelationshipAnalysis.Controllers;
 
-
 [ApiController]
 [Authorize]
 [Route("api/[controller]/[action]")]
@@ -14,7 +13,7 @@ public class GraphController(IGraphReceiver graphReceiver, INodesAdditionService
     [HttpGet]
     public async Task<IActionResult> GetGraph()
     {
-        return Ok( await graphReceiver.GetGraph());
+        return Ok(await graphReceiver.GetGraph());
     }
 
     [HttpPost]
