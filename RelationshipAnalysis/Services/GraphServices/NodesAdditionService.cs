@@ -34,7 +34,7 @@ public class NodesAdditionService(
 
         var objects = await csvProcessorService.ProcessCsvAsync(file);
 
-        using (var transaction = await context.Database.BeginTransactionAsync())
+        await using (var transaction = await context.Database.BeginTransactionAsync())
         {
             try
             {

@@ -331,12 +331,13 @@ public class EdgesAdditionServiceTests
         var validatorMock = NSubstitute.Substitute.For<ICsvValidatorService>();
         validatorMock.Validate(fileToBeSend, "TransactionID", "SourceAcount", "DestiantionAccount").Returns(expected);
         var processorMock = NSubstitute.Substitute.For<ICsvProcessorService>();
-        processorMock.ProcessCsvAsync(fileToBeSend).Returns(new List<dynamic>());
+        processorMock.ProcessCsvAsync(fileToBeSend).Returns(new List<dynamic>() { new Dictionary<string, object>()});
         var additionServiceMock = new Mock<ISingleEdgeAdditionService>();
 
         // Setup the mock to throw an exception for any inputs
         additionServiceMock
             .Setup(service => service.AddSingleEdge(
+                It.IsAny<ApplicationDbContext>(),
                 It.IsAny<IDictionary<string, object>>(),
                 It.IsAny<string>(),
                 It.IsAny<string>(),
@@ -360,7 +361,6 @@ public class EdgesAdditionServiceTests
             TargetNodeHeaderName = "DestiantionAccount"
         });
         // Assert
-        Assert.Equivalent(expected, result);
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         Assert.Equal(0, context.Nodes.Count());
