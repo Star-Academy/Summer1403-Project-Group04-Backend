@@ -38,9 +38,11 @@ public class NodesAdditionService(
         {
             try
             {
-                objects.ForEach(ob =>
-                    singleNodeAdditionService.AddSingleNode((IDictionary<string, object>)ob, uniqueHeader,
-                        nodeCategory.NodeCategoryId));
+                foreach (var obj in objects)
+                {
+                    await singleNodeAdditionService.AddSingleNode(context, (IDictionary<string, object>)obj, uniqueHeader,
+                        nodeCategory.NodeCategoryId);
+                }
                 await transaction.CommitAsync();
             }
             catch (Exception e)
