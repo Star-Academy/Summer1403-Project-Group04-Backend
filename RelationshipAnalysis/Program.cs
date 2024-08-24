@@ -4,18 +4,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Middlewares;
-using RelationshipAnalysis.Services.AdminPanelServices;
-using RelationshipAnalysis.Services.AdminPanelServices.Abstraction;
-using RelationshipAnalysis.Services.CategoryServices.EdgeCategory;
-using RelationshipAnalysis.Services.CategoryServices.EdgeCategory.Abstraction;
-using RelationshipAnalysis.Services.CategoryServices.NodeCategory;
-using RelationshipAnalysis.Services.CategoryServices.NodeCategory.Abstraction;
+using RelationshipAnalysis.Services.AuthServices;
+using RelationshipAnalysis.Services.AuthServices.Abstraction;
 using RelationshipAnalysis.Services.GraphServices;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
-using RelationshipAnalysis.Services.UserPanelServices;
-using RelationshipAnalysis.Services.UserPanelServices.Abstraction;
-using RelationshipAnalysis.Services.UserPanelServices.Abstraction.AuthServices;
-using RelationshipAnalysis.Services.UserPanelServices.Abstraction.AuthServices.Abstraction;
+using RelationshipAnalysis.Services.GraphServices.Edge;
+using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
+using RelationshipAnalysis.Services.GraphServices.Node;
+using RelationshipAnalysis.Services.GraphServices.Node.Abstraction;
+using RelationshipAnalysis.Services.Panel.AdminPanelServices;
+using RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
+using RelationshipAnalysis.Services.Panel.UserPanelServices;
+using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
 using RelationshipAnalysis.Settings.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +26,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql( builder.Configuration["CONNECTION_STRING"]).UseLazyLoadingProxies());
+    options.UseNpgsql(builder.Configuration["CONNECTION_STRING"]).UseLazyLoadingProxies());
 
 builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>()
@@ -57,7 +57,6 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<ISingleEdgeAdditionService, SingleEdgeAdditionService>()
     .AddSingleton<IEdgesAdditionService, EdgesAdditionService>()
     .AddSingleton<ICsvValidatorService, CsvValidatorService>();
-    
 
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
@@ -85,10 +84,7 @@ builder.Services.AddAuthentication(options =>
             OnMessageReceived = context =>
             {
                 var cookie = context.Request.Cookies[jwtSettings.CookieName];
-                if (!string.IsNullOrEmpty(cookie))
-                {
-                    context.Token = cookie;
-                }
+                if (!string.IsNullOrEmpty(cookie)) context.Token = cookie;
                 return Task.CompletedTask;
             }
         };
@@ -113,7 +109,7 @@ app.Run();
 
 namespace RelationshipAnalysis
 {
-    public partial class Program
+    public class Program
     {
     }
 }

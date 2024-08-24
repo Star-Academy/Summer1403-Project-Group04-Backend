@@ -1,4 +1,3 @@
-
 using RelationshipAnalysis.Dto.Graph;
 
 namespace RelationshipAnalysis.Services.GraphServices.Abstraction;

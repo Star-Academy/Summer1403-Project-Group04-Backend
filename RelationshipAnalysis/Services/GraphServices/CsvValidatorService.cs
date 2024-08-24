@@ -20,19 +20,12 @@ public class CsvValidatorService : ICsvValidatorService
             csv.ReadHeader();
             var headers = csv.HeaderRecord;
             if (headers.SingleOrDefault(h => h == string.Empty) != null || headers.IsNullOrEmpty())
-            {
                 return BadRequestResult(Resources.InvalidHeaderAttribute);
-            }
 
-            if (headers.Distinct().Count() != headers.Length)
-            {
-                return BadRequestResult(Resources.TwoSameHeadersMessage);
-            }
+            if (headers.Distinct().Count() != headers.Length) return BadRequestResult(Resources.TwoSameHeadersMessage);
 
             if (uniqueHeaderNames.Count(h => headers.Contains(h)) != uniqueHeaderNames.Length)
-            {
                 return BadRequestResult(Resources.InvalidHeaderAttribute);
-            }
         }
 
         return SuccessResult(Resources.ValidFileMessage);
@@ -40,7 +33,7 @@ public class CsvValidatorService : ICsvValidatorService
 
     private ActionResponse<MessageDto> SuccessResult(string message)
     {
-        return new ActionResponse<MessageDto>()
+        return new ActionResponse<MessageDto>
         {
             Data = new MessageDto(message),
             StatusCode = StatusCodeType.Success
@@ -50,14 +43,10 @@ public class CsvValidatorService : ICsvValidatorService
 
     private ActionResponse<MessageDto> BadRequestResult(string message)
     {
-        return new ActionResponse<MessageDto>()
+        return new ActionResponse<MessageDto>
         {
             Data = new MessageDto(message),
             StatusCode = StatusCodeType.BadRequest
         };
     }
-    
-    
-
-
 }
