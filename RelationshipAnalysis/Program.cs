@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Middlewares;
+using RelationshipAnalysis.Services;
+using RelationshipAnalysis.Services.Abstraction;
 using RelationshipAnalysis.Services.AuthServices;
 using RelationshipAnalysis.Services.AuthServices.Abstraction;
 using RelationshipAnalysis.Services.GraphServices;
@@ -56,6 +58,7 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<ICsvProcessorService, CsvProcessorService>()
     .AddSingleton<ISingleEdgeAdditionService, SingleEdgeAdditionService>()
     .AddSingleton<IEdgesAdditionService, EdgesAdditionService>()
+    .AddSingleton<IMessageResponseCreator, MessageResponseCreator>()
     .AddSingleton<ICsvValidatorService, CsvValidatorService>();
 
 

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Enums;
+using RelationshipAnalysis.Services;
 using RelationshipAnalysis.Services.GraphServices;
 
 namespace RelationshipAnalysis.Test.Services.GraphServices;
@@ -12,7 +13,7 @@ public class CsvValidatorServiceTests
 
     public CsvValidatorServiceTests()
     {
-        _sut = new CsvValidatorService();
+        _sut = new CsvValidatorService(new MessageResponseCreator());
     }
 
     [Fact]
