@@ -62,6 +62,7 @@ public class SingleNodeAdditionServiceTests
             { "UniqueName", "TestNode2" },
             { "Attribute1", "Value1" }
         };
+      
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
@@ -70,6 +71,7 @@ public class SingleNodeAdditionServiceTests
 
         // Assert
         
+
         var node = await context.Nodes.SingleOrDefaultAsync(n => n.NodeUniqueString == "TestNode2");
         Assert.NotNull(node);
         Assert.Equal(1, node.NodeCategoryId);
@@ -91,6 +93,7 @@ public class SingleNodeAdditionServiceTests
             { "UniqueName", "TestNode" },
             { "Attribute2", "Value2" }
         };
+      
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
@@ -120,6 +123,7 @@ public class SingleNodeAdditionServiceTests
             { "UniqueName", "" }, // Empty unique name
             { "Attribute1", "Value1" }
         };
+      
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
@@ -139,6 +143,7 @@ public class SingleNodeAdditionServiceTests
             { "UniqueName", "TestNode" },
             { "Attribute1", "ExistingValue" },
         };
+      
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 

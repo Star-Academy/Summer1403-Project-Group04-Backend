@@ -48,6 +48,7 @@ public class EdgesAdditionService(
 
         var objects = await csvProcessorService.ProcessCsvAsync(file);
 
+
         await using (var transaction = await context.Database.BeginTransactionAsync())
         {
             try

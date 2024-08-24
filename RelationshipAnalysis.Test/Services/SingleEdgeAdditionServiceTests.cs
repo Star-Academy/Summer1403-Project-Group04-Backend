@@ -96,6 +96,7 @@ public class SingleEdgeAdditionServiceTests
         await _sut.AddSingleEdge(context, record, "UniqueEdge", "SourceNode", "TargetNode", 1, 1, 1);
 
         // Assert
+
         var edge = await context.Edges.SingleOrDefaultAsync(e => e.EdgeUniqueString == "TestEdge");
         Assert.NotNull(edge);
         Assert.Equal(1, edge.EdgeSourceNodeId);
@@ -252,6 +253,7 @@ public class SingleEdgeAdditionServiceTests
             { "TargetNode", "NotExist" },
             { "Attribute1", "Value1" }
         };
+      
         
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -301,6 +303,7 @@ public class SingleEdgeAdditionServiceTests
             { "att2", "dsjsdnfukj" }
         };
     
+      
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
