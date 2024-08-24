@@ -1,27 +1,18 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Panel.Admin;
 using RelationshipAnalysis.Dto.Panel.User;
 using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Models.Auth;
 using RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
+using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
 
 namespace RelationshipAnalysis.Services.Panel.AdminPanelServices;
 
-public class AllUserService(IServiceProvider serviceProvider, IMapper mapper, IRoleReceiver rolesReceiver)
+public class AllUserService(IUserReceiver userReceiver, IMapper mapper, IRoleReceiver rolesReceiver)
     : IAllUserService
 {
-    public async Task<int> ReceiveAllUserCount()
-    {
-        using var scope = serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var users = await context.Users.ToListAsync();
-        return users.Count;
-    }
-
     public async Task<ActionResponse<GetAllUsersDto>> GetAllUser(List<User> users)
     {
         if (users.IsNullOrEmpty()) return NotFoundResult();
@@ -37,7 +28,7 @@ public class AllUserService(IServiceProvider serviceProvider, IMapper mapper, IR
         return new GetAllUsersDto
         {
             Users = usersList,
-            AllUserCount = await ReceiveAllUserCount()
+            AllUserCount = await userReceiver.ReceiveAllUserCountAsync()
         };
     }
 
@@ -48,7 +39,7 @@ public class AllUserService(IServiceProvider serviceProvider, IMapper mapper, IR
         {
             var data = new UserOutputInfoDto();
             mapper.Map(user, data);
-            data.Roles = await rolesReceiver.ReceiveRoles(user.Id);
+            data.Roles = await rolesReceiver.ReceiveRoleNamesAsync(user.Id);
 
             userOutputs.Add(data);
         }

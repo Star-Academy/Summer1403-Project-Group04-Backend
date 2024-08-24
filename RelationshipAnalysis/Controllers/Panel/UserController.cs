@@ -52,8 +52,8 @@ public class UserController(
     [HttpGet("permissions")]
     public async Task<IActionResult> GetPermissions()
     {
-        var response = await permissionService.GetPermissionsAsync(User);
-
+        var user = await userReceiver.ReceiveUserAsync(User);
+        var response = await permissionService.GetPermissionsAsync(user);
         return StatusCode((int)response.StatusCode, response.Data);
     }
 }

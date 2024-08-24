@@ -7,5 +7,4 @@ namespace RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
 public interface IAllUserService
 {
     Task<ActionResponse<GetAllUsersDto>> GetAllUser(List<User> users);
-    Task<int> ReceiveAllUserCount();
 }

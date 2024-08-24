@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using RelationshipAnalysis.Context;
+using RelationshipAnalysis.Models.Auth;
 using RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
 
 namespace RelationshipAnalysis.Services.Panel.AdminPanelServices;
 
 public class RoleReceiver(IServiceProvider serviceProvider) : IRoleReceiver
 {
-    public async Task<List<string>> ReceiveRoles(int userId)
+    public async Task<List<string>> ReceiveRoleNamesAsync(int userId)
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -14,10 +15,27 @@ public class RoleReceiver(IServiceProvider serviceProvider) : IRoleReceiver
             .Select(ur => ur.Role.Name).ToList();
     }
 
-    public async Task<List<string>> ReceiveAllRoles()
+    public async Task<List<string>> ReceiveAllRolesAsync()
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         return await context.Roles.Select(x => x.Name).ToListAsync();
+    }
+
+    public async Task<List<Role>> ReceiveRolesListAsync(List<string> roleNames)
+    {
+        var roles = new List<Role>();
+
+        using var scope = serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        foreach (var roleName in roleNames)
+        {
+            var role = await context.Roles
+                .SingleOrDefaultAsync(r => r.Name == roleName);
+
+            if (role != null) roles.Add(role);
+        }
+
+        return roles;
     }
 }

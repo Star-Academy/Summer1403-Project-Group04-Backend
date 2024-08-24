@@ -8,6 +8,14 @@ namespace RelationshipAnalysis.Services.Panel.UserPanelServices;
 
 public class UserReceiver(IServiceProvider serviceProvider) : IUserReceiver
 {
+    public async Task<int> ReceiveAllUserCountAsync()
+    {
+        using var scope = serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var users = await context.Users.ToListAsync();
+        return users.Count;
+    }
+
     public async Task<User> ReceiveUserAsync(ClaimsPrincipal userClaims)
     {
         var currentId = int.Parse(userClaims.FindFirst(ClaimTypes.NameIdentifier)?.Value);
@@ -25,7 +33,15 @@ public class UserReceiver(IServiceProvider serviceProvider) : IUserReceiver
         return user;
     }
 
-    public List<User> ReceiveAllUser(int page, int size)
+    public async Task<User> ReceiveUserAsync(string username)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var user = await context.Users.SingleOrDefaultAsync(u => u.Username == username);
+        return user;
+    }
+
+    public List<User> ReceiveAllUserAsync(int page, int size)
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();

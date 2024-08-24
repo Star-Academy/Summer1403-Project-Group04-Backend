@@ -33,7 +33,7 @@ public class AdminController(
     [HttpGet("users")]
     public async Task<IActionResult> GetAllUser([FromQuery] int page, [FromQuery] int size)
     {
-        var users = userReceiver.ReceiveAllUser(page, size);
+        var users = userReceiver.ReceiveAllUserAsync(page, size);
         var result = await allUserService.GetAllUser(users);
         return StatusCode((int)result.StatusCode, result.Data);
     }
@@ -41,7 +41,7 @@ public class AdminController(
     [HttpGet("roles")]
     public async Task<IActionResult> GetAllRoles()
     {
-        var roles = await roleReceiver.ReceiveAllRoles();
+        var roles = await roleReceiver.ReceiveAllRolesAsync();
         return Ok(roles);
     }
 

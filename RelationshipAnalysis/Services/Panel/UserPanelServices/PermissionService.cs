@@ -1,18 +1,17 @@
-﻿using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using RelationshipAnalysis.Context;
+﻿using Newtonsoft.Json;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Panel.User;
+using RelationshipAnalysis.Models.Auth;
+using RelationshipAnalysis.Services.CRUD.Permissions;
 using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
 
 namespace RelationshipAnalysis.Services.Panel.UserPanelServices;
 
-public class PermissionService(IServiceProvider serviceProvider) : IPermissionService
+public class PermissionService(IPermissionsReceiver permissionsReceiver) : IPermissionService
 {
-    public async Task<ActionResponse<PermissionDto>> GetPermissionsAsync(ClaimsPrincipal userClaims)
+    public async Task<ActionResponse<PermissionDto>> GetPermissionsAsync(User user)
     {
-        var unionList = await CreatPrmissionsList(userClaims);
+        var unionList = await permissionsReceiver.ReceivePermissionsAsync(user);
 
         var permissions = JsonConvert.SerializeObject(unionList);
 
@@ -24,25 +23,5 @@ public class PermissionService(IServiceProvider serviceProvider) : IPermissionSe
         };
 
         return result;
-    }
-
-    private async Task<List<string>?> CreatPrmissionsList(ClaimsPrincipal userClaims)
-    {
-        var unionList = new HashSet<string>();
-        var roleNames = userClaims.FindAll(ClaimTypes.Role).Select(c => c.Value).Distinct();
-
-        foreach (var roleName in roleNames)
-        {
-            using var scope = serviceProvider.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            var role = await context.Roles
-                .FirstOrDefaultAsync(r => r.Name == roleName);
-
-
-            var newList = JsonConvert.DeserializeObject<List<string>>(role.Permissions) ?? [];
-            unionList.UnionWith(newList);
-        }
-
-        return unionList.ToList();
     }
 }

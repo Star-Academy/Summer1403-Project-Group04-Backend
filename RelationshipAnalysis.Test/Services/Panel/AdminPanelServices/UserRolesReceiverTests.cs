@@ -59,7 +59,7 @@ public class UserRolesReceiverTests
         var userId = 1;
 
         // Act
-        var result = await _sut.ReceiveRoles(userId);
+        var result = await _sut.ReceiveRoleNamesAsync(userId);
 
         // Assert
         Assert.NotNull(result);
@@ -75,7 +75,7 @@ public class UserRolesReceiverTests
         var userId = 3; // Non-existent user ID
 
         // Act
-        var result = await _sut.ReceiveRoles(userId);
+        var result = await _sut.ReceiveRoleNamesAsync(userId);
 
         // Assert
         Assert.NotNull(result);
@@ -89,7 +89,7 @@ public class UserRolesReceiverTests
         var userId = 99; // Invalid user ID
 
         // Act
-        var result = await _sut.ReceiveRoles(userId);
+        var result = await _sut.ReceiveRoleNamesAsync(userId);
 
         // Assert
         Assert.NotNull(result);

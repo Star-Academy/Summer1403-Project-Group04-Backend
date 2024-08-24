@@ -8,7 +8,9 @@ using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
 
 namespace RelationshipAnalysis.Services.Panel.UserPanelServices;
 
-public class UserInfoService(IRoleReceiver rolesReceiver, IMapper mapper) : IUserInfoService
+public class UserInfoService(
+    IRoleReceiver rolesReceiver,
+    IMapper mapper) : IUserInfoService
 {
     public async Task<ActionResponse<UserOutputInfoDto>> GetUser(User user)
     {
@@ -20,7 +22,7 @@ public class UserInfoService(IRoleReceiver rolesReceiver, IMapper mapper) : IUse
     {
         var result = new UserOutputInfoDto();
         mapper.Map(user, result);
-        result.Roles = await rolesReceiver.ReceiveRoles(user.Id);
+        result.Roles = await rolesReceiver.ReceiveRoleNamesAsync(user.Id);
 
         return new ActionResponse<UserOutputInfoDto>
         {

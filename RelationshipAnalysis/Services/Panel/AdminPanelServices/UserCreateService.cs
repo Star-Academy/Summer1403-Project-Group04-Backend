@@ -5,67 +5,52 @@ using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Panel.Admin;
 using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Models.Auth;
+using RelationshipAnalysis.Services.Abstraction;
 using RelationshipAnalysis.Services.AuthServices.Abstraction;
 using RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
+using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
 
 namespace RelationshipAnalysis.Services.Panel.AdminPanelServices;
 
-public class UserCreateService(IServiceProvider serviceProvider, IPasswordHasher passwordHasher) : IUserCreateService
+public class UserCreateService(
+    IUserAdder userAdder,
+    IRoleReceiver roleReceiver,
+    IUserRolesAdder userRolesAdder,
+    IMessageResponseCreator messageResponseCreator,
+    IServiceProvider serviceProvider,
+    IPasswordHasher passwordHasher) : IUserCreateService
 {
     public async Task<ActionResponse<MessageDto>> CreateUser(CreateUserDto createUserDto)
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var isUserExist = context.Users.Select(x => x.Username).ToList().Contains(createUserDto.Username);
-        if (isUserExist) return BadRequestResult(Resources.UsernameExistsMessage);
+        if (isUserExist)
+            return messageResponseCreator.Create(StatusCodeType.BadRequest, Resources.UsernameExistsMessage);
 
         var isEmailExist = context.Users.Select(x => x.Email).ToList().Contains(createUserDto.Email);
-        if (isEmailExist) return BadRequestResult(Resources.EmailExistsMessage);
+        if (isEmailExist)
+            return messageResponseCreator.Create(StatusCodeType.BadRequest, Resources.EmailExistsMessage);
 
-        if (createUserDto.Roles.IsNullOrEmpty()) return BadRequestResult(Resources.EmptyRolesMessage);
+        if (createUserDto.Roles.IsNullOrEmpty())
+            return messageResponseCreator.Create(StatusCodeType.BadRequest, Resources.EmptyRolesMessage);
 
         var invalidRoles = createUserDto.Roles.FindAll(r => !context.Roles.Select(role => role.Name)
             .Contains(r));
-        if (invalidRoles.Any()) return BadRequestResult(Resources.InvalidRolesListMessage);
+        if (invalidRoles.Any())
+            return messageResponseCreator.Create(StatusCodeType.BadRequest, Resources.InvalidRolesListMessage);
 
         var user = await AddUser(createUserDto);
         await AddUserRoles(createUserDto, user);
 
 
-        return SuccessResult();
-    }
-
-    private ActionResponse<MessageDto> SuccessResult()
-    {
-        return new ActionResponse<MessageDto>
-        {
-            Data = new MessageDto(Resources.SucceddfulCreateUser),
-            StatusCode = StatusCodeType.Success
-        };
+        return messageResponseCreator.Create(StatusCodeType.BadRequest, Resources.SucceddfulCreateUser);
     }
 
     private async Task AddUserRoles(CreateUserDto createUserDto, User user)
     {
-        var roles = new List<Role>();
-
-        using var scope = serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        foreach (var roleName in createUserDto.Roles)
-        {
-            var role = await context.Roles
-                .SingleOrDefaultAsync(r => r.Name == roleName);
-
-            if (role != null) roles.Add(role);
-        }
-
-        var userRoles = roles.Select(role => new UserRole
-        {
-            RoleId = role.Id,
-            UserId = user.Id
-        }).ToList();
-
-        await context.UserRoles.AddRangeAsync(userRoles);
-        await context.SaveChangesAsync();
+        var roleNames = await roleReceiver.ReceiveRolesListAsync(createUserDto.Roles);
+        await userRolesAdder.AddUserRoles(roleNames, user);
     }
 
     private async Task<User> AddUser(CreateUserDto createUserDto)
@@ -79,19 +64,7 @@ public class UserCreateService(IServiceProvider serviceProvider, IPasswordHasher
             LastName = createUserDto.LastName
         };
 
-        using var scope = serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        await context.AddAsync(user);
-        await context.SaveChangesAsync();
+        await userAdder.AddUserAsync(user);
         return user;
-    }
-
-    private ActionResponse<MessageDto> BadRequestResult(string message)
-    {
-        return new ActionResponse<MessageDto>
-        {
-            Data = new MessageDto(message),
-            StatusCode = StatusCodeType.BadRequest
-        };
     }
 }

@@ -45,7 +45,7 @@ public class UserInfoServiceTests
 
         _mapper.Map<UserOutputInfoDto>(user).Returns(resultData);
 
-        _rolesReceiver.ReceiveRoles(user.Id).Returns(roles);
+        _rolesReceiver.ReceiveRoleNamesAsync(user.Id).Returns(roles);
 
         // Act
         var result = await _service.GetUser(user);
