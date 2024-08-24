@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Runtime.InteropServices.JavaScript;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph;
@@ -21,31 +24,35 @@ public class EdgesAdditionServiceTests
 
     public EdgesAdditionServiceTests()
     {
-        _context = new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>()
+        var serviceCollection = new ServiceCollection();
+
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-            .Options);
-            
-        var serviceCollection = new ServiceCollection();
-        serviceCollection.AddScoped(_ => _context);
+            .Options;
+
+        serviceCollection.AddScoped(_ => new ApplicationDbContext(options));
+
+        _serviceProvider = serviceCollection.BuildServiceProvider();
 
         SeedDatabase();
-        _serviceProvider = serviceCollection.BuildServiceProvider();
     }
 
     private void SeedDatabase()
     {
-        _context.Add(new NodeCategory()
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        context.Add(new NodeCategory()
         {
             NodeCategoryName = "Account",
             NodeCategoryId = 1
         });
-        _context.Add(new EdgeCategory()
+        context.Add(new EdgeCategory()
         {
             EdgeCategoryName = "Transaction",
             EdgeCategoryId = 1
         });
-        _context.SaveChanges();
+        context.SaveChanges();
     }
 
     [Fact]
@@ -262,10 +269,9 @@ public class EdgesAdditionServiceTests
             Data = new MessageDto(Resources.SuccessfulEdgeAdditionMessage),
             StatusCode = StatusCodeType.Success
         };
-        var csvContent = @"""AccountID"",""CardID"",""IBAN""
-""6534454617"",""6104335000000190"",""IR120778801496000000198""
-""4000000028"",""6037699000000020"",""IR033880987114000000028""
-";
+        var csvContent = @"""SourceAcount"",""DestiantionAccount"",""Amount"",""Date"",""TransactionID"",""Type""
+""6534454617"",""6039548046"",""500,000,000"",""1399/04/23"",""153348811341"",""پایا""
+""6039548046"",""5287517379"",""100,000,000"",""1399/04/23"",""192524206627"",""پایا""";
         var fileToBeSend = CreateFileMock(csvContent);
 
         var validatorMock = NSubstitute.Substitute.For<ICsvValidatorService>();
@@ -305,4 +311,61 @@ public class EdgesAdditionServiceTests
         fileMock.Length.Returns(stream.Length);
         return fileMock;
     }
+    
+//     // TODO
+//     [Fact]
+//     public async Task AddEdges_ShouldReturnBadRequestAndRollBack_WhenDbFailsToAddData()
+//     {
+//         // Arrange
+//         var expected = new ActionResponse<MessageDto>()
+//         {
+//             Data = new MessageDto(Resources.SuccessfulEdgeAdditionMessage),
+//             StatusCode = StatusCodeType.Success
+//         };
+//         var csvContent = @"""SourceAcount"",""DestiantionAccount"",""Amount"",""Date"",""TransactionID"",""Type""
+// ""6534454617"",""6039548046"",""500,000,000"",""1399/04/23"",""153348811341"",""پایا""
+// ""6534454617"",""6039548046"",""500,000,000"",""1399/04/23"",""153348811341"",""پایا""
+// ""6039548046"",""5287517379"",""100,000,000"",""1399/04/23"",""192524206627"",""پایا""";
+//         var fileToBeSend = CreateFileMock(csvContent);
+//
+//         var validatorMock = NSubstitute.Substitute.For<ICsvValidatorService>();
+//         validatorMock.Validate(fileToBeSend, "TransactionID", "SourceAcount", "DestiantionAccount").Returns(expected);
+//         var processorMock = NSubstitute.Substitute.For<ICsvProcessorService>();
+//         processorMock.ProcessCsvAsync(fileToBeSend).Returns(new List<dynamic>());
+//         var additionServiceMock = new Mock<ISingleEdgeAdditionService>();
+//
+//         // Setup the mock to throw an exception for any inputs
+//         additionServiceMock
+//             .Setup(service => service.AddSingleEdge(
+//                 It.IsAny<IDictionary<string, object>>(),
+//                 It.IsAny<string>(),
+//                 It.IsAny<string>(),
+//                 It.IsAny<string>(),
+//                 It.IsAny<int>(),
+//                 It.IsAny<int>(),
+//                 It.IsAny<int>()
+//             ))
+//             .Throws(new Exception("Custom exception message"));
+//         _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock.Object);
+//
+//         // Act
+//         var result = await _sut.AddEdges(new UploadEdgeDto()
+//         {
+//             File = fileToBeSend,
+//             EdgeCategoryName = "Transaction",
+//             UniqueKeyHeaderName = "TransactionID",
+//             SourceNodeCategoryName = "Account",
+//             TargetNodeCategoryName = "Account",
+//             SourceNodeHeaderName = "SourceAcount",
+//             TargetNodeHeaderName = "DestiantionAccount"
+//         });
+//         // Assert
+//         Assert.Equivalent(expected, result);
+//         using var scope = _serviceProvider.CreateScope();
+//         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//         Assert.Equal(0, context.Nodes.Count());
+//         Assert.Equal("Custom exception message", result.Data.Message);
+//     }
+
+
 }
