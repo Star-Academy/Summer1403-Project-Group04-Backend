@@ -311,7 +311,7 @@ public class EdgesAdditionServiceTests
         fileMock.Length.Returns(stream.Length);
         return fileMock;
     }
-    
+
     // TODO
     [Fact]
     public async Task AddEdges_ShouldReturnBadRequestAndRollBack_WhenDbFailsToAddData()
@@ -366,6 +366,5 @@ public class EdgesAdditionServiceTests
         Assert.Equal(0, context.Nodes.Count());
         Assert.Equal("Custom exception message", result.Data.Message);
     }
-
 
 }

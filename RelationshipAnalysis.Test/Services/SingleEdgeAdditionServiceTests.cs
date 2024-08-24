@@ -181,7 +181,7 @@ public class SingleEdgeAdditionServiceTests
             { "TargetNode", "acc2" },
             { "Attribute1", "Value1" }
         };
-        
+
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
@@ -300,7 +300,7 @@ public class SingleEdgeAdditionServiceTests
             { "TargetNode", "acc2" },
             { "att2", "dsjsdnfukj" }
         };
-    
+
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
