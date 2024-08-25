@@ -1,22 +1,17 @@
-using Microsoft.EntityFrameworkCore;
-using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto.Graph;
 using RelationshipAnalysis.Dto.Graph.Edge;
 using RelationshipAnalysis.Dto.Graph.Node;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
+using RelationshipAnalysis.Services.GraphServices.Graph.Abstraction;
 
-namespace RelationshipAnalysis.Services.GraphServices;
+namespace RelationshipAnalysis.Services.GraphServices.Graph;
 
-public class GraphReceiver(IServiceProvider serviceProvider) : IGraphReceiver
+public class GraphDtoCreator : IGraphDtoCreator
 {
-    public async Task<GraphDto> GetGraph()
+    
+    public GraphDto CreateResultGraphDto(List<Models.Graph.Node.Node> contextNodes, List<Models.Graph.Edge.Edge> contextEdges)
     {
-        using var scope = serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-        var contextNodes = await context.Nodes.Include(node => node.NodeCategory).ToListAsync();
-        var contextEdges = await context.Edges.ToListAsync();
-
+        if (contextEdges == null || contextNodes == null) throw new ArgumentNullException();
         var resultGraphDto = new GraphDto();
         contextNodes.ForEach(n => resultGraphDto.Nodes.Add(new NodeDto
         {

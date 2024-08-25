@@ -1,11 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using RelationshipAnalysis.Context;
+using RelationshipAnalysis.Dto.Graph;
 using RelationshipAnalysis.Dto.Graph.Edge;
 using RelationshipAnalysis.Dto.Graph.Node;
 using RelationshipAnalysis.Models.Graph.Edge;
 using RelationshipAnalysis.Models.Graph.Node;
 using RelationshipAnalysis.Services.GraphServices;
+using RelationshipAnalysis.Services.GraphServices.Graph;
+using RelationshipAnalysis.Services.GraphServices.Graph.Abstraction;
 
 namespace RelationshipAnalysis.Test.Services.GraphServices;
 
@@ -13,7 +17,7 @@ public class GraphReceiverTests
 {
     private readonly ApplicationDbContext _context;
     private readonly IServiceProvider _serviceProvider;
-    private readonly GraphReceiver _sut;
+    private GraphReceiver _sut;
 
     public GraphReceiverTests()
     {
@@ -25,7 +29,6 @@ public class GraphReceiverTests
 
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
-        _sut = new GraphReceiver(_serviceProvider);
     }
 
     [Fact]
@@ -96,7 +99,17 @@ public class GraphReceiverTests
                 target = node2.NodeId.ToString()
             }
         };
+
+        
+        var allNodes = await _context.Nodes.ToListAsync();
+        var allEdges = await _context.Edges.ToListAsync();
+        var graphDtoCreatorMock = Substitute.For<IGraphDtoCreator>();
+        
+        graphDtoCreatorMock.CreateResultGraphDto(Arg.Any<List<Models.Graph.Node.Node>>(), Arg.Any<List<Models.Graph.Edge.Edge>>())
+            .Returns(new GraphDto { Edges = expectedEdges, Nodes = expectedNodes });
+        
         // Act
+        _sut = new GraphReceiver(_serviceProvider, graphDtoCreatorMock);
         var resultGraph = await _sut.GetGraph();
 
         // Assert

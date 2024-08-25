@@ -12,6 +12,8 @@ using RelationshipAnalysis.Services.GraphServices;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
 using RelationshipAnalysis.Services.GraphServices.Edge;
 using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
+using RelationshipAnalysis.Services.GraphServices.Graph;
+using RelationshipAnalysis.Services.GraphServices.Graph.Abstraction;
 using RelationshipAnalysis.Services.GraphServices.Node;
 using RelationshipAnalysis.Services.GraphServices.Node.Abstraction;
 using RelationshipAnalysis.Services.Panel.AdminPanelServices;
@@ -59,7 +61,8 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<ISingleEdgeAdditionService, SingleEdgeAdditionService>()
     .AddSingleton<IEdgesAdditionService, EdgesAdditionService>()
     .AddSingleton<IMessageResponseCreator, MessageResponseCreator>()
-    .AddSingleton<ICsvValidatorService, CsvValidatorService>();
+    .AddSingleton<ICsvValidatorService, CsvValidatorService>()
+    .AddSingleton<IGraphDtoCreator, GraphDtoCreator>();
 
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
