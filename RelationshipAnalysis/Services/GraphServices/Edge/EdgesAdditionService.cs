@@ -15,7 +15,7 @@ public class EdgesAdditionService(
     IServiceProvider serviceProvider,
     ICsvValidatorService csvValidatorService,
     ICsvProcessorService csvProcessorService,
-    ISingleEdgeAdditionService singleEdgeAdditionService,
+    IContextEdgesAdditionService contextEdgesAdditionService,
     IMessageResponseCreator responseCreator) : IEdgesAdditionService
 {
     public async Task<ActionResponse<MessageDto>> AddEdges(UploadEdgeDto uploadEdgeDto)
@@ -41,31 +41,8 @@ public class EdgesAdditionService(
 
         var objects = await csvProcessorService.ProcessCsvAsync(uploadEdgeDto.File);
 
-        await using (var transaction = await context.Database.BeginTransactionAsync())
-        {
-            try
-            {
-                foreach (var obj in objects)
-                {
-                    var dictObject = (IDictionary<string, object>)obj;
-                    await singleEdgeAdditionService.AddSingleEdge(context, dictObject,
-                        uploadEdgeDto.UniqueKeyHeaderName, 
-                        uploadEdgeDto.SourceNodeHeaderName,
-                        uploadEdgeDto.TargetNodeHeaderName, 
-                        edgeCategory.EdgeCategoryId,
-                        sourceCategory.NodeCategoryId,
-                        targetCategory.NodeCategoryId);
-                }
-                await transaction.CommitAsync();
-            }
-            catch (Exception e)
-            {
-                await transaction.RollbackAsync();
-                return responseCreator.Create(StatusCodeType.BadRequest, e.Message);
-            }
-        }
-
-        return responseCreator.Create(StatusCodeType.Success, Resources.SuccessfulEdgeAdditionMessage);
+        return await contextEdgesAdditionService.AddToContext(context, edgeCategory, sourceCategory, targetCategory, objects,
+            uploadEdgeDto);
     }
 
     private ActionResponse<MessageDto> CheckForNullValues(EdgeCategory? edgeCategory, NodeCategory? sourceCategory, NodeCategory? targetCategory)
