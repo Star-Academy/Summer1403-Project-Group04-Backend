@@ -20,16 +20,13 @@ public class SingleNodeAdditionService(INodeValueAdditionService nodeValueAdditi
 
         foreach (var kvp in record)
         {
-            if (kvp.Key != uniqueHeaderName)
+            try
             {
-                try
-                {
-                    await nodeValueAdditionService.AddKvpToValues(context, kvp, newNode);
-                }
-                catch(Exception e)
-                {
-                    throw;
-                }
+                await nodeValueAdditionService.AddKvpToValues(context, kvp, newNode);
+            }
+            catch(Exception e)
+            {
+                throw;
             }
         }
     }
