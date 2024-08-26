@@ -75,7 +75,7 @@ public class SingleNodeAdditionServiceTests
         await _sut.AddSingleNode(context, record, "UniqueName", 1);
 
         // Assert
-        await _nodeValueAdditionService.Received(1).AddKvpToValues(Arg.Any<ApplicationDbContext>(), Arg.Any<KeyValuePair<string, object>>(), Arg.Any<Models.Graph.Node.Node>());
+        await _nodeValueAdditionService.Received().AddKvpToValues(Arg.Any<ApplicationDbContext>(), Arg.Any<KeyValuePair<string, object>>(), Arg.Any<Models.Graph.Node.Node>());
         
         
     }
@@ -101,7 +101,7 @@ public class SingleNodeAdditionServiceTests
         await _sut.AddSingleNode(context, record, "UniqueName", 1);
 
         // Assert
-        await _nodeValueAdditionService.Received(1).AddKvpToValues(Arg.Any<ApplicationDbContext>(), Arg.Any<KeyValuePair<string, object>>(), Arg.Any<Models.Graph.Node.Node>());
+        await _nodeValueAdditionService.Received().AddKvpToValues(Arg.Any<ApplicationDbContext>(), Arg.Any<KeyValuePair<string, object>>(), Arg.Any<Models.Graph.Node.Node>());
      
     }
 

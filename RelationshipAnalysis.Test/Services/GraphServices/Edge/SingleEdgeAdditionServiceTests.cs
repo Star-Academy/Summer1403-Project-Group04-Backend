@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Models.Graph.Edge;
 using RelationshipAnalysis.Models.Graph.Node;
 using RelationshipAnalysis.Services.GraphServices.Edge;
+using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
 
 namespace RelationshipAnalysis.Test.Services.GraphServices.Edge;
 
@@ -24,7 +26,8 @@ public class SingleEdgeAdditionServiceTests
 
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
-        _sut = new SingleEdgeAdditionService();
+        var edgeValueAdditionService = new Mock<IEdgeValueAdditionService>();
+        _sut = new SingleEdgeAdditionService(edgeValueAdditionService.Object);
         SeedDatabase();
     }
 

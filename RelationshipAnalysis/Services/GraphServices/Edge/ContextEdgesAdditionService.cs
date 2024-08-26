@@ -1,18 +1,16 @@
-using Microsoft.EntityFrameworkCore;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph.Edge;
-using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Models.Graph.Edge;
 using RelationshipAnalysis.Models.Graph.Node;
-using RelationshipAnalysis.Services.Abstraction;
 using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
 
 namespace RelationshipAnalysis.Services.GraphServices.Edge;
 
-public class ContextEdgesAdditionService(IMessageResponseCreator responseCreator, ISingleEdgeAdditionService singleEdgeAdditionService) : IContextEdgesAdditionService
+public class ContextEdgesAdditionService(ISingleEdgeAdditionService) : IContextEdgesAdditionService
 {
-    public async Task<ActionResponse<MessageDto>> AddToContext(ApplicationDbContext context,EdgeCategory edgeCategory,NodeCategory sourceCategory,NodeCategory targetCategory, List<dynamic> objects,UploadEdgeDto uploadEdgeDto)
+    public async Task<ActionResponse<MessageDto>> AddToContext(ApplicationDbContext context, EdgeCategory edgeCategory, NodeCategory sourceCategory,
+        NodeCategory targetCategory, List<dynamic> objects, UploadEdgeDto uploadEdgeDto)
     {
         await using (var transaction = await context.Database.BeginTransactionAsync())
         {
@@ -21,14 +19,10 @@ public class ContextEdgesAdditionService(IMessageResponseCreator responseCreator
                 foreach (var obj in objects)
                 {
                     var dictObject = (IDictionary<string, object>)obj;
-                    await singleEdgeAdditionService.AddSingleEdge(context, dictObject,
-                        uploadEdgeDto.UniqueKeyHeaderName, 
-                        uploadEdgeDto.SourceNodeHeaderName,
-                        uploadEdgeDto.TargetNodeHeaderName, 
-                        edgeCategory.EdgeCategoryId,
-                        sourceCategory.NodeCategoryId,
-                        targetCategory.NodeCategoryId);
+                    await singleNodeAdditionService.AddSingleNode(context, dictObject, uniqueKeyHeaderName,
+                        nodeCategory.NodeCategoryId);
                 }
+
                 await transaction.CommitAsync();
             }
             catch (Exception e)
@@ -38,6 +32,7 @@ public class ContextEdgesAdditionService(IMessageResponseCreator responseCreator
             }
         }
 
-        return responseCreator.Create(StatusCodeType.Success, Resources.SuccessfulEdgeAdditionMessage);
+        return responseCreator.Create(StatusCodeType.Success, Resources.SuccessfulNodeAdditionMessage);
+        
     }
 }
