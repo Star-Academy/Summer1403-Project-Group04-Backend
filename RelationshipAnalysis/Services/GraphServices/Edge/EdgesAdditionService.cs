@@ -3,6 +3,9 @@ using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph.Edge;
 using RelationshipAnalysis.Enums;
+using RelationshipAnalysis.Models.Graph.Edge;
+using RelationshipAnalysis.Models.Graph.Node;
+using RelationshipAnalysis.Services.Abstraction;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
 using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
 
@@ -12,80 +15,97 @@ public class EdgesAdditionService(
     IServiceProvider serviceProvider,
     ICsvValidatorService csvValidatorService,
     ICsvProcessorService csvProcessorService,
-    ISingleEdgeAdditionService singleEdgeAdditionService) : IEdgesAdditionService
+    ISingleEdgeAdditionService singleEdgeAdditionService,
+    IMessageResponseCreator responseCreator) : IEdgesAdditionService
 {
     public async Task<ActionResponse<MessageDto>> AddEdges(UploadEdgeDto uploadEdgeDto)
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        var edgeCategory = await context.EdgeCategories.SingleOrDefaultAsync(ec =>
-            ec.EdgeCategoryName == uploadEdgeDto.EdgeCategoryName);
+        var targetCategory = await GetTargetCategory(uploadEdgeDto, context);
+        var sourceCategory = await GetSourceCategory(uploadEdgeDto, context);
+        var edgeCategory = await GetEdgeCategory(uploadEdgeDto, context);
+        
+        var nullCheckResponse = CheckForNullValues(edgeCategory, sourceCategory, targetCategory);
+        if (nullCheckResponse.StatusCode == StatusCodeType.BadRequest)
+        {
+            return nullCheckResponse;
+        }
 
-
-        var sourceNodeCategory = await context.NodeCategories.SingleOrDefaultAsync(nc =>
-            nc.NodeCategoryName == uploadEdgeDto.SourceNodeCategoryName);
-        var targetNodeCategory = await context.NodeCategories.SingleOrDefaultAsync(nc =>
-            nc.NodeCategoryName == uploadEdgeDto.TargetNodeCategoryName);
-
-
-        var file = uploadEdgeDto.File;
-        var uniqueHeader = uploadEdgeDto.UniqueKeyHeaderName;
-        var uniqueSourceHeader = uploadEdgeDto.SourceNodeHeaderName;
-        var uniqueTargetHeader = uploadEdgeDto.TargetNodeHeaderName;
-
-
-        if (edgeCategory == null)
-            return BadRequestResult(Resources.InvalidEdgeCategory);
-
-        if (sourceNodeCategory == null)
-            return BadRequestResult(Resources.InvalidSourceNodeCategory);
-        if (targetNodeCategory == null)
-            return BadRequestResult(Resources.InvalidTargetNodeCategory);
-
-        var validationResult = csvValidatorService.Validate(file, uniqueHeader, uniqueSourceHeader, uniqueTargetHeader);
+        var validationResult = csvValidatorService.Validate(uploadEdgeDto.File, uploadEdgeDto.UniqueKeyHeaderName, uploadEdgeDto.SourceNodeHeaderName, uploadEdgeDto.TargetNodeHeaderName);
         if (validationResult.StatusCode == StatusCodeType.BadRequest)
+        {
             return validationResult;
+        }
 
-        var objects = await csvProcessorService.ProcessCsvAsync(file);
+        var objects = await csvProcessorService.ProcessCsvAsync(uploadEdgeDto.File);
 
         await using (var transaction = await context.Database.BeginTransactionAsync())
         {
             try
             {
                 foreach (var obj in objects)
-                    await singleEdgeAdditionService.AddSingleEdge(context, (IDictionary<string, object>)obj,
-                        uniqueHeader, uniqueSourceHeader, uniqueTargetHeader,
-                        edgeCategory.EdgeCategoryId, sourceNodeCategory.NodeCategoryId,
-                        targetNodeCategory.NodeCategoryId);
+                {
+                    var dictObject = (IDictionary<string, object>)obj;
+                    await singleEdgeAdditionService.AddSingleEdge(context, dictObject,
+                        uploadEdgeDto.UniqueKeyHeaderName, 
+                        uploadEdgeDto.SourceNodeHeaderName,
+                        uploadEdgeDto.TargetNodeHeaderName, 
+                        edgeCategory.EdgeCategoryId,
+                        sourceCategory.NodeCategoryId,
+                        targetCategory.NodeCategoryId);
+                }
                 await transaction.CommitAsync();
             }
             catch (Exception e)
             {
                 await transaction.RollbackAsync();
-                return BadRequestResult(e.Message);
+                return responseCreator.Create(StatusCodeType.BadRequest, e.Message);
             }
         }
 
-        return SuccessResult();
+        return responseCreator.Create(StatusCodeType.Success, Resources.SuccessfulEdgeAdditionMessage);
     }
 
-
-    private ActionResponse<MessageDto> BadRequestResult(string message)
+    private ActionResponse<MessageDto> CheckForNullValues(EdgeCategory? edgeCategory, NodeCategory? sourceCategory, NodeCategory? targetCategory)
     {
-        return new ActionResponse<MessageDto>
+        if (edgeCategory == null)
         {
-            Data = new MessageDto(message),
-            StatusCode = StatusCodeType.BadRequest
-        };
+            return responseCreator.Create(StatusCodeType.BadRequest, Resources.InvalidEdgeCategory);
+        }
+
+        if (sourceCategory == null)
+        {
+            return responseCreator.Create(StatusCodeType.BadRequest, Resources.InvalidSourceNodeCategory);
+        }
+
+        if (targetCategory == null)
+        {
+            return responseCreator.Create(StatusCodeType.BadRequest, Resources.InvalidTargetNodeCategory);
+        }
+
+        return responseCreator.Create(StatusCodeType.Success, string.Empty);
     }
 
-    private ActionResponse<MessageDto> SuccessResult()
+    private async Task<NodeCategory?> GetTargetCategory(UploadEdgeDto uploadEdgeDto, ApplicationDbContext context)
     {
-        return new ActionResponse<MessageDto>
-        {
-            Data = new MessageDto(Resources.SuccessfulEdgeAdditionMessage),
-            StatusCode = StatusCodeType.Success
-        };
+        var targetNodeCategory = await context.NodeCategories.SingleOrDefaultAsync(nc =>
+            nc.NodeCategoryName == uploadEdgeDto.TargetNodeCategoryName);
+        return targetNodeCategory;
+    }
+
+    private async Task<NodeCategory?> GetSourceCategory(UploadEdgeDto uploadEdgeDto, ApplicationDbContext context)
+    {
+        var sourceNodeCategory = await context.NodeCategories.SingleOrDefaultAsync(nc =>
+            nc.NodeCategoryName == uploadEdgeDto.SourceNodeCategoryName);
+        return sourceNodeCategory;
+    }
+
+    private async Task<EdgeCategory?> GetEdgeCategory(UploadEdgeDto uploadEdgeDto, ApplicationDbContext context)
+    {
+        var edgeCategory = await context.EdgeCategories.SingleOrDefaultAsync(ec =>
+            ec.EdgeCategoryName == uploadEdgeDto.EdgeCategoryName);
+        return edgeCategory;
     }
 }
