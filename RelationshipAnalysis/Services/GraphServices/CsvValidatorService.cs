@@ -10,7 +10,7 @@ using RelationshipAnalysis.Services.GraphServices.Abstraction;
 
 namespace RelationshipAnalysis.Services.GraphServices;
 
-public class CsvValidatorService(IMessageResponseCreator messageResponseCreator) : ICsvValidatorService
+public class CsvValidatorService(IMessageResponseCreator responseCreator) : ICsvValidatorService
 {
     public ActionResponse<MessageDto> Validate(IFormFile file, params string[] uniqueHeaderNames)
     {
@@ -21,16 +21,16 @@ public class CsvValidatorService(IMessageResponseCreator messageResponseCreator)
             csv.ReadHeader();
             var headers = csv.HeaderRecord;
             if (headers.SingleOrDefault(h => h == string.Empty) != null || headers.IsNullOrEmpty())
-                return messageResponseCreator.Create(StatusCodeType.BadRequest, Resources.InvalidHeaderAttribute);
+                return responseCreator.Create(StatusCodeType.BadRequest, Resources.InvalidHeaderAttribute);
 
             if (headers.Distinct().Count() != headers.Length)
-                return messageResponseCreator.Create(StatusCodeType.BadRequest, Resources.TwoSameHeadersMessage);
+                return responseCreator.Create(StatusCodeType.BadRequest, Resources.TwoSameHeadersMessage);
 
             if (uniqueHeaderNames.Count(h => headers.Contains(h)) != uniqueHeaderNames.Length)
-                return messageResponseCreator.Create(StatusCodeType.BadRequest, Resources.InvalidHeaderAttribute);
+                return responseCreator.Create(StatusCodeType.BadRequest, Resources.InvalidHeaderAttribute);
         }
 
-        return messageResponseCreator.Create(StatusCodeType.Success, Resources.ValidFileMessage);
+        return responseCreator.Create(StatusCodeType.Success, Resources.ValidFileMessage);
     }
 
     

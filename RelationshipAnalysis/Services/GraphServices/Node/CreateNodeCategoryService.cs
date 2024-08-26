@@ -8,21 +8,21 @@ using RelationshipAnalysis.Services.GraphServices.Node.Abstraction;
 
 namespace RelationshipAnalysis.Services.GraphServices.Node;
 
-public class CreateNodeCategoryService(IServiceProvider serviceProvider, IMessageResponseCreator messageResponseCreator) : ICreateNodeCategoryService
+public class CreateNodeCategoryService(IServiceProvider serviceProvider, IMessageResponseCreator responseCreator) : ICreateNodeCategoryService
 {
     public async Task<ActionResponse<MessageDto>> CreateNodeCategory(CreateNodeCategoryDto createNodeCategoryDto)
     {
         if (createNodeCategoryDto is null)
         {
-            return messageResponseCreator.Create(StatusCodeType.BadRequest, Resources.NullDtoErrorMessage);
+            return responseCreator.Create(StatusCodeType.BadRequest, Resources.NullDtoErrorMessage);
         }
         if (IsNotUniqueCategoryName(createNodeCategoryDto))
         {
-            return messageResponseCreator.Create(StatusCodeType.BadRequest, Resources.NotUniqueCategoryNameErrorMessage);
+            return responseCreator.Create(StatusCodeType.BadRequest, Resources.NotUniqueCategoryNameErrorMessage);
         }
         
         await AddCategory(createNodeCategoryDto);
-        return messageResponseCreator.Create(StatusCodeType.Success, Resources.SuccessfulCreateCategory);
+        return responseCreator.Create(StatusCodeType.Success, Resources.SuccessfulCreateCategory);
     }
     private async Task AddCategory(CreateNodeCategoryDto createNodeCategoryDto)
     {

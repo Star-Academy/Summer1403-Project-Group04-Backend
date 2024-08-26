@@ -62,7 +62,8 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<IEdgesAdditionService, EdgesAdditionService>()
     .AddSingleton<IMessageResponseCreator, MessageResponseCreator>()
     .AddSingleton<ICsvValidatorService, CsvValidatorService>()
-    .AddSingleton<IGraphDtoCreator, GraphDtoCreator>();
+    .AddSingleton<IGraphDtoCreator, GraphDtoCreator>()
+    .AddSingleton<IContextNodesAdditionService, ContextNodesAdditionService>();
 
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
