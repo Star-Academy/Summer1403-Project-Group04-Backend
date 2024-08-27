@@ -7,11 +7,10 @@ using RelationshipAnalysis.Dto.Graph.Edge;
 using RelationshipAnalysis.Dto.Graph.Node;
 using RelationshipAnalysis.Models.Graph.Edge;
 using RelationshipAnalysis.Models.Graph.Node;
-using RelationshipAnalysis.Services.GraphServices;
 using RelationshipAnalysis.Services.GraphServices.Graph;
 using RelationshipAnalysis.Services.GraphServices.Graph.Abstraction;
 
-namespace RelationshipAnalysis.Test.Services.GraphServices;
+namespace RelationshipAnalysis.Test.Services.GraphServices.Graph;
 
 public class GraphReceiverTests
 {

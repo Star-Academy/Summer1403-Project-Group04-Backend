@@ -6,8 +6,8 @@ using NSubstitute.Exceptions;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Models.Graph.Edge;
 using RelationshipAnalysis.Models.Graph.Node;
-using RelationshipAnalysis.Services.GraphServices.Edge;
-using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
+using RelationshipAnalysis.Services.GraphServices;
+using RelationshipAnalysis.Services.GraphServices.Abstraction;
 
 namespace RelationshipAnalysis.Test.Services.GraphServices.Edge;
 

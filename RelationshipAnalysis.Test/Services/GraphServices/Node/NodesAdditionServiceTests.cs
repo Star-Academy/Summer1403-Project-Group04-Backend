@@ -12,9 +12,8 @@ using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Models.Graph.Node;
 using RelationshipAnalysis.Services;
 using RelationshipAnalysis.Services.Abstraction;
+using RelationshipAnalysis.Services.GraphServices;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
-using RelationshipAnalysis.Services.GraphServices.Node;
-using RelationshipAnalysis.Services.GraphServices.Node.Abstraction;
 
 namespace RelationshipAnalysis.Test.Services.GraphServices.Node;
 

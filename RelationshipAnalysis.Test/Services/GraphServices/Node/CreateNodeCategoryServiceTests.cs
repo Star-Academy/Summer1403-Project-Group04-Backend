@@ -5,7 +5,6 @@ using RelationshipAnalysis.Dto.Graph.Node;
 using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Models.Graph.Node;
 using RelationshipAnalysis.Services;
-using RelationshipAnalysis.Services.GraphServices.Node;
 
 namespace RelationshipAnalysis.Test.Services.GraphServices.Node;
 

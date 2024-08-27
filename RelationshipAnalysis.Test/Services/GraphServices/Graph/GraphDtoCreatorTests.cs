@@ -1,11 +1,6 @@
-using System.Collections.Generic;
-using NSubstitute;
-using RelationshipAnalysis.Dto.Graph;
-using RelationshipAnalysis.Dto.Graph.Edge;
-using RelationshipAnalysis.Dto.Graph.Node;
 using RelationshipAnalysis.Services.GraphServices.Graph;
-using Xunit;
-using Models = RelationshipAnalysis.Models.Graph;
+
+namespace RelationshipAnalysis.Test.Services.GraphServices.Graph;
 
 public class GraphDtoCreatorTests
 {
@@ -20,16 +15,16 @@ public class GraphDtoCreatorTests
     public void CreateResultGraphDto_ShouldReturnGraphDto_WithCorrectNodesAndEdges()
     {
         // Arrange
-        var contextNodes = new List<Models.Node.Node>
+        var contextNodes = new List<Models.Graph.Node.Node>
         {
-            new Models.Node.Node { NodeId = 1, NodeCategory = new Models.Node.NodeCategory { NodeCategoryName = "Category1" }, NodeUniqueString = "Unique1" },
-            new Models.Node.Node { NodeId = 2, NodeCategory = new Models.Node.NodeCategory { NodeCategoryName = "Category2" }, NodeUniqueString = "Unique2" }
+            new Models.Graph.Node.Node { NodeId = 1, NodeCategory = new Models.Graph.Node.NodeCategory { NodeCategoryName = "Category1" }, NodeUniqueString = "Unique1" },
+            new Models.Graph.Node.Node { NodeId = 2, NodeCategory = new Models.Graph.Node.NodeCategory { NodeCategoryName = "Category2" }, NodeUniqueString = "Unique2" }
         };
 
-        var contextEdges = new List<Models.Edge.Edge>
+        var contextEdges = new List<Models.Graph.Edge.Edge>
         {
-            new Models.Edge.Edge { EdgeId = 1, EdgeSourceNodeId = 1, EdgeDestinationNodeId = 2 },
-            new Models.Edge.Edge { EdgeId = 2, EdgeSourceNodeId = 2, EdgeDestinationNodeId = 1 }
+            new Models.Graph.Edge.Edge { EdgeId = 1, EdgeSourceNodeId = 1, EdgeDestinationNodeId = 2 },
+            new Models.Graph.Edge.Edge { EdgeId = 2, EdgeSourceNodeId = 2, EdgeDestinationNodeId = 1 }
         };
 
         // Act
@@ -59,8 +54,8 @@ public class GraphDtoCreatorTests
     public void CreateResultGraphDto_ShouldThrowException_WhenContextNodesAndEdgesAreNull()
     {
         // Arrange
-        List<Models.Node.Node> contextNodes = null;
-        List<Models.Edge.Edge> contextEdges = null;
+        List<Models.Graph.Node.Node> contextNodes = null;
+        List<Models.Graph.Edge.Edge> contextEdges = null;
 
         // Act
         var action = () => _graphDtoCreator.CreateResultGraphDto(contextNodes, contextEdges); 
@@ -73,8 +68,8 @@ public class GraphDtoCreatorTests
     public void CreateResultGraphDto_ShouldReturnEmptyGraphDto_WhenContextNodesAndEdgesAreEmpty()
     {
         // Arrange
-        var contextNodes = new List<Models.Node.Node>();
-        var contextEdges = new List<Models.Edge.Edge>();
+        var contextNodes = new List<Models.Graph.Node.Node>();
+        var contextEdges = new List<Models.Graph.Edge.Edge>();
 
         // Act
         var result = _graphDtoCreator.CreateResultGraphDto(contextNodes, contextEdges);

@@ -28,8 +28,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Services\GraphServices\Edge\Abstraction\" />
-        <Folder Include="Services\GraphServices\Node\Abstraction\" />
         <Folder Include="Services\Panel\"/>
         <Folder Include="Settings\"/>
     </ItemGroup>

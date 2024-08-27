@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Models.Graph.Node;
-using RelationshipAnalysis.Services.GraphServices.Node;
 
 namespace RelationshipAnalysis.Test.Services.GraphServices.Node;
 

@@ -1,21 +1,16 @@
-
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using NSubstitute;
 using RelationshipAnalysis.Context;
-using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph.Edge;
-using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Models.Graph.Edge;
 using RelationshipAnalysis.Models.Graph.Node;
 using RelationshipAnalysis.Services;
+using RelationshipAnalysis.Services.GraphServices;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
-using RelationshipAnalysis.Services.GraphServices.Edge;
-using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
-using RelationshipAnalysis.Test;
+
+namespace RelationshipAnalysis.Test.Services.GraphServices.Edge;
 
 public class ContextEdgesAdditionServiceTests
 {
