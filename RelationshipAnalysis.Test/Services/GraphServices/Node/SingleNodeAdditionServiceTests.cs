@@ -4,7 +4,6 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Models.Graph.Node;
-using RelationshipAnalysis.Services.GraphServices.Abstraction;
 
 namespace RelationshipAnalysis.Test.Services.GraphServices.Node;
 

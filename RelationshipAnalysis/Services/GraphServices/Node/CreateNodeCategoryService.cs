@@ -2,11 +2,11 @@
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph.Node;
 using RelationshipAnalysis.Enums;
+using RelationshipAnalysis.GraphServices.Node.Abstraction;
 using RelationshipAnalysis.Models.Graph.Node;
 using RelationshipAnalysis.Services.Abstraction;
-using RelationshipAnalysis.Services.GraphServices.Node.Abstraction;
 
-namespace RelationshipAnalysis.Services.GraphServices.Node;
+namespace RelationshipAnalysis.GraphServices.Node;
 
 public class CreateNodeCategoryService(IServiceProvider serviceProvider, IMessageResponseCreator responseCreator) : ICreateNodeCategoryService
 {

@@ -7,8 +7,6 @@ using RelationshipAnalysis.Dto.Graph.Edge;
 using RelationshipAnalysis.Models.Graph.Edge;
 using RelationshipAnalysis.Models.Graph.Node;
 using RelationshipAnalysis.Services;
-using RelationshipAnalysis.Services.GraphServices;
-using RelationshipAnalysis.Services.GraphServices.Abstraction;
 
 namespace RelationshipAnalysis.Test.Services.GraphServices.Edge;
 

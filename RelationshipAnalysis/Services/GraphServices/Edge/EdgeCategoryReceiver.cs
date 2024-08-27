@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RelationshipAnalysis.Context;
-using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
+using RelationshipAnalysis.GraphServices.Edge.Abstraction;
 
-namespace RelationshipAnalysis.Services.GraphServices.Edge;
+namespace RelationshipAnalysis.GraphServices.Edge;
 
 public class EdgeCategoryReceiver(IServiceProvider serviceProvider) : IEdgeCategoryReceiver
 {

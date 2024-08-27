@@ -2,11 +2,11 @@
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph.Edge;
 using RelationshipAnalysis.Enums;
+using RelationshipAnalysis.GraphServices.Edge.Abstraction;
 using RelationshipAnalysis.Models.Graph.Edge;
 using RelationshipAnalysis.Services.Abstraction;
-using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
 
-namespace RelationshipAnalysis.Services.GraphServices.Edge;
+namespace RelationshipAnalysis.GraphServices.Edge;
 
 public class CreateEdgeCategoryService(IServiceProvider serviceProvider, IMessageResponseCreator responseCreator) : ICreateEdgeCategoryService
 {

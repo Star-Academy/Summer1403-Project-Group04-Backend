@@ -2,10 +2,11 @@ using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph.Edge;
 using RelationshipAnalysis.Enums;
+using RelationshipAnalysis.GraphServices.Edge.Abstraction;
 using RelationshipAnalysis.Models.Graph.Edge;
 using RelationshipAnalysis.Models.Graph.Node;
 using RelationshipAnalysis.Services.Abstraction;
-using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
+using IContextEdgesAdditionService = RelationshipAnalysis.Services.GraphServices.Edge.Abstraction.IContextEdgesAdditionService;
 
 namespace RelationshipAnalysis.Services.GraphServices.Edge;
 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RelationshipAnalysis.Context;
-using RelationshipAnalysis.Services.GraphServices.Node.Abstraction;
+using RelationshipAnalysis.GraphServices.Node.Abstraction;
 
-namespace RelationshipAnalysis.Services.GraphServices.Node;
+namespace RelationshipAnalysis.GraphServices.Node;
 
 public class NodeCategoryReceiver(IServiceProvider serviceProvider) : INodeCategoryReceiver
 {

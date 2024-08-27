@@ -1,7 +1,7 @@
 ﻿using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph.Node;
 
-namespace RelationshipAnalysis.Services.GraphServices.Node.Abstraction;
+namespace RelationshipAnalysis.GraphServices.Node.Abstraction;
 
 public interface ICreateNodeCategoryService
 {

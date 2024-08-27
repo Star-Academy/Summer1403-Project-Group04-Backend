@@ -1,4 +1,4 @@
-﻿namespace RelationshipAnalysis.Services.GraphServices.Node.Abstraction;
+﻿namespace RelationshipAnalysis.GraphServices.Node.Abstraction;
 
 public interface INodeCategoryReceiver
 {
