@@ -14,9 +14,16 @@ namespace RelationshipAnalysis.Controllers;
 public class NodeController(
     ICreateNodeCategoryService createNodeCategoryService,
     INodeCategoryReceiver nodeCategoryReceiver,
-    INodesAdditionService nodesAdditionService)
+    INodesAdditionService nodesAdditionService,
+    IExpansionGraphReceiver expansionGraphReceiver)
     : ControllerBase
 {
+    [HttpGet]
+    public async Task<IActionResult> GetExpansionGraph(ExpansionDto expansionDto)
+    {
+        var result = await expansionGraphReceiver.GetExpansionGraph(expansionDto);
+        return StatusCode((int)result.StatusCode, result.Data);
+    }
     [HttpGet("categories")]
     public async Task<IActionResult> GetAllNodeCategories()
     {
