@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RelationshipAnalysis.Models.Auth;
-using RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
+using RelationshipAnalysis.Services.CRUD.Permissions.Abstraction;
+using RelationshipAnalysis.Services.CRUD.Role.Abstraction;
 
 namespace RelationshipAnalysis.Services.CRUD.Permissions;
 

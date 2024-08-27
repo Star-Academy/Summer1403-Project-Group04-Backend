@@ -5,7 +5,7 @@ using RelationshipAnalysis.Dto.Auth;
 using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Services.Abstraction;
 using RelationshipAnalysis.Services.AuthServices.Abstraction;
-using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
+using RelationshipAnalysis.Services.CRUD.User.Abstraction;
 
 namespace RelationshipAnalysis.Services.AuthServices;
 

@@ -7,7 +7,6 @@ using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Models.Auth;
 using RelationshipAnalysis.Services.AuthServices.Abstraction;
 using RelationshipAnalysis.Services.Panel.UserPanelServices;
-using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
 
 namespace RelationshipAnalysis.Test.Services.Panel.UserPanelServices;
 

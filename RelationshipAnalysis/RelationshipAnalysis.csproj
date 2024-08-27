@@ -28,6 +28,8 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Services\GraphServices\Edge\Abstraction\" />
+        <Folder Include="Services\GraphServices\Node\Abstraction\" />
         <Folder Include="Services\Panel\"/>
         <Folder Include="Settings\"/>
     </ItemGroup>
@@ -39,6 +41,25 @@
         <Reference Include="RelationshipAnalysis">
             <HintPath>..\RelationshipAnalysis.Integration.Test\bin\Debug\net8.0\RelationshipAnalysis.dll</HintPath>
         </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Services\GraphServices\Node\CreateNodeCategoryService.cs" />
+      <Compile Remove="Services\GraphServices\Node\NodesAdditionService.cs" />
+      <Compile Remove="Services\GraphServices\Node\NodeCategoryReceiver.cs" />
+      <Compile Remove="Services\GraphServices\Node\Abstraction\ISingleNodeAdditionService.cs" />
+      <Compile Remove="Services\GraphServices\Node\Abstraction\ICreateNodeCategoryService.cs" />
+      <Compile Remove="Services\GraphServices\Node\Abstraction\INodesAdditionService.cs" />
+      <Compile Remove="Services\GraphServices\Edge\SingleEdgeAdditionService.cs" />
+      <Compile Remove="Services\GraphServices\Edge\CreateEdgeCategoryService.cs" />
+      <Compile Remove="Services\GraphServices\Edge\EdgesAdditionService.cs" />
+      <Compile Remove="Services\GraphServices\Edge\EdgeCategoryReceiver.cs" />
+      <Compile Remove="Services\GraphServices\Edge\Abstraction\ISingleEdgeAdditionService.cs" />
+      <Compile Remove="Services\GraphServices\Edge\Abstraction\ICreateEdgeCategoryService.cs" />
+      <Compile Remove="Services\GraphServices\Edge\Abstraction\IEdgesAdditionService.cs" />
+      <Compile Remove="Services\GraphServices\Node\SingleNodeAdditionService.cs" />
+      <Compile Remove="Services\GraphServices\Edge\Abstraction\IEdgeCategoryReceiver.cs" />
+      <Compile Remove="Services\GraphServices\Node\Abstraction\INodeCategoryReceiver.cs" />
     </ItemGroup>
 
 </Project>

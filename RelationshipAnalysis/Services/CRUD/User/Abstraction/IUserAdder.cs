@@ -1,8 +1,6 @@
-﻿using RelationshipAnalysis.Models.Auth;
-
-namespace RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
+﻿namespace RelationshipAnalysis.Services.CRUD.User.Abstraction;
 
 public interface IUserAdder
 {
-    Task<User> AddUserAsync(User user);
+    Task<Models.Auth.User> AddUserAsync(Models.Auth.User user);
 }

@@ -1,12 +1,11 @@
 ﻿using RelationshipAnalysis.Context;
-using RelationshipAnalysis.Models.Auth;
-using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
+using RelationshipAnalysis.Services.CRUD.User.Abstraction;
 
-namespace RelationshipAnalysis.Services.Panel.UserPanelServices;
+namespace RelationshipAnalysis.Services.CRUD.User;
 
 public class UserAdder(IServiceProvider serviceProvider) : IUserAdder
 {
-    public async Task<User> AddUserAsync(User user)
+    public async Task<Models.Auth.User> AddUserAsync(Models.Auth.User user)
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();

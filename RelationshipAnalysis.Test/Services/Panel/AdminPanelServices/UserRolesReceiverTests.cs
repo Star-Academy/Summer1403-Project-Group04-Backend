@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Models.Auth;
+using RelationshipAnalysis.Services.CRUD.Role;
 using RelationshipAnalysis.Services.Panel.AdminPanelServices;
 
 namespace RelationshipAnalysis.Test.Services.Panel.AdminPanelServices;

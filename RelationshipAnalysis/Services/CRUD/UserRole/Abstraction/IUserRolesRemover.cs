@@ -1,8 +1,6 @@
-﻿using RelationshipAnalysis.Models.Auth;
-
-namespace RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
+﻿namespace RelationshipAnalysis.Services.CRUD.UserRole.Abstraction;
 
 public interface IUserRolesRemover
 {
-    Task RemoveUserRoles(User user);
+    Task RemoveUserRoles(Models.Auth.User user);
 }

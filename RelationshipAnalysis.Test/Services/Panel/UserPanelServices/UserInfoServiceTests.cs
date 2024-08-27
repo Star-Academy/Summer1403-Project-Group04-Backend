@@ -3,7 +3,7 @@ using NSubstitute;
 using RelationshipAnalysis.Dto.Panel.User;
 using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Models.Auth;
-using RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
+using RelationshipAnalysis.Services.CRUD.Role.Abstraction;
 using RelationshipAnalysis.Services.Panel.UserPanelServices;
 
 namespace RelationshipAnalysis.Test.Services.Panel.UserPanelServices;
