@@ -10,6 +10,9 @@ public class NodeAttributesReceiver(IServiceProvider serviceProvider) : IAttribu
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        return context.NodeAttributes.Where(nc => nc.Values.Contains(v => v.Node.NodeCategoryId == id)).ToList();
+
+        return await context.NodeAttributes
+            .Where(na => na.Values.Any(v => v.Node.NodeCategoryId == id))
+            .Select(na => na.NodeAttributeName).ToListAsync();
     }
 }
