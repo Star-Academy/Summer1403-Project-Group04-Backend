@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
@@ -7,17 +8,19 @@ using RelationshipAnalysis.Services.GraphServices.Abstraction;
 
 namespace RelationshipAnalysis.Services.GraphServices;
 
-public class ExpansionGraphReceiver(IServiceProvider serviceProvider) : IExpansionGraphReceiver
+public class ExpansionGraphReceiver(IServiceProvider serviceProvider, IGraphDtoCreator graphDtoCreator, IResponseMessageCreator responseCreator) : IExpansionGraphReceiver
 {
     public async Task<ActionResponse<GraphDto>> GetExpansionGraph(ExpansionDto expansionDto)
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        
         var inputNodes = await GetInputNodes(expansionDto, context);
         var outputNodes = await GetOutputNodes(expansionDto, context);
         var validEdges = await GetValidEdges(expansionDto, context, inputNodes, outputNodes);
         
-        
+        var resultData = graphDtoCreator.CreateResultGraphDto(inputNodes.Union(outputNodes).ToList(), validEdges);
+        return responseCreator.Create()
     }
 
     private async Task<List<Edge>> GetValidEdges(ExpansionDto expansionDto, ApplicationDbContext context, List<Node> inputNodes,
