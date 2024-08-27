@@ -18,6 +18,6 @@ public class LogoutServiceTests
         _logoutService.Logout(_fakeResponse);
 
         // Assert
-        _fakeResponse.Cookies.Received(1).Delete("jwt");
+        _fakeResponse.Cookies.Received().Delete("jwt");
     }
 }

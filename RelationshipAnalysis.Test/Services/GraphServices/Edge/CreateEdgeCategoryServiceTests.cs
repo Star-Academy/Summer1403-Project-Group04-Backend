@@ -4,6 +4,7 @@ using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto.Graph.Edge;
 using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Models.Graph.Edge;
+using RelationshipAnalysis.Services;
 using RelationshipAnalysis.Services.GraphServices.Edge;
 
 namespace RelationshipAnalysis.Test.Services.GraphServices.Edge;
@@ -25,7 +26,7 @@ public class CreateEdgeCategoryServiceTests
 
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
-        _sut = new CreateEdgeCategoryService(_serviceProvider);
+        _sut = new CreateEdgeCategoryService(_serviceProvider, new MessageResponseCreator());
 
         SeedDatabase();
     }

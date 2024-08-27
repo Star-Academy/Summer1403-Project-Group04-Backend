@@ -10,6 +10,7 @@ using RelationshipAnalysis.Dto.Graph.Edge;
 using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Models.Graph.Edge;
 using RelationshipAnalysis.Models.Graph.Node;
+using RelationshipAnalysis.Services;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
 using RelationshipAnalysis.Services.GraphServices.Edge;
 using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
@@ -72,8 +73,8 @@ public class EdgesAdditionServiceTests
         validatorMock.Validate(fileToBeSend, "SomeHeaderThatDoesntExist", "SourceAcount", "DestiantionAccount")
             .Returns(expected);
         var processorMock = Substitute.For<ICsvProcessorService>();
-        var additionServiceMock = Substitute.For<ISingleEdgeAdditionService>();
-        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock);
+        var additionServiceMock = Substitute.For<IContextEdgesAdditionService>();
+        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock, new MessageResponseCreator());
         // Act 
         var result = await _sut.AddEdges(new UploadEdgeDto
         {
@@ -107,8 +108,8 @@ public class EdgesAdditionServiceTests
         validatorMock.Validate(fileToBeSend, "TransactionID", "SomeHeaderThatDoesntExist", "DestiantionAccount")
             .Returns(expected);
         var processorMock = Substitute.For<ICsvProcessorService>();
-        var additionServiceMock = Substitute.For<ISingleEdgeAdditionService>();
-        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock);
+        var additionServiceMock = Substitute.For<IContextEdgesAdditionService>();
+        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock, new MessageResponseCreator());
         // Act 
         var result = await _sut.AddEdges(new UploadEdgeDto
         {
@@ -143,8 +144,8 @@ public class EdgesAdditionServiceTests
             .Returns(expected);
         ICsvProcessorService processorMock;
         processorMock = Substitute.For<ICsvProcessorService>();
-        var additionServiceMock = Substitute.For<ISingleEdgeAdditionService>();
-        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock);
+        var additionServiceMock = Substitute.For<IContextEdgesAdditionService>();
+        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock, new MessageResponseCreator());
         // Act 
         var result = await _sut.AddEdges(new UploadEdgeDto
         {
@@ -177,8 +178,8 @@ public class EdgesAdditionServiceTests
 
         var validatorMock = Substitute.For<ICsvValidatorService>();
         var processorMock = Substitute.For<ICsvProcessorService>();
-        var additionServiceMock = Substitute.For<ISingleEdgeAdditionService>();
-        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock);
+        var additionServiceMock = Substitute.For<IContextEdgesAdditionService>();
+        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock, new MessageResponseCreator());
         // Act
         var result = await _sut.AddEdges(new UploadEdgeDto
         {
@@ -210,8 +211,8 @@ public class EdgesAdditionServiceTests
 
         var validatorMock = Substitute.For<ICsvValidatorService>();
         var processorMock = Substitute.For<ICsvProcessorService>();
-        var additionServiceMock = Substitute.For<ISingleEdgeAdditionService>();
-        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock);
+        var additionServiceMock = Substitute.For<IContextEdgesAdditionService>();
+        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock, new MessageResponseCreator());
         // Act
         var result = await _sut.AddEdges(new UploadEdgeDto
         {
@@ -243,8 +244,8 @@ public class EdgesAdditionServiceTests
 
         var validatorMock = Substitute.For<ICsvValidatorService>();
         var processorMock = Substitute.For<ICsvProcessorService>();
-        var additionServiceMock = Substitute.For<ISingleEdgeAdditionService>();
-        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock);
+        var additionServiceMock = Substitute.For<IContextEdgesAdditionService>();
+        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock, new MessageResponseCreator());
         // Act
         var result = await _sut.AddEdges(new UploadEdgeDto
         {
@@ -279,8 +280,10 @@ public class EdgesAdditionServiceTests
         validatorMock.Validate(fileToBeSend, "TransactionID", "SourceAcount", "DestiantionAccount").Returns(expected);
         var processorMock = Substitute.For<ICsvProcessorService>();
         processorMock.ProcessCsvAsync(fileToBeSend).Returns(new List<dynamic>());
-        var additionServiceMock = Substitute.For<ISingleEdgeAdditionService>();
-        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock);
+        var additionServiceMock = Substitute.For<IContextEdgesAdditionService>();
+        additionServiceMock.AddToContext(Arg.Any<ApplicationDbContext>(), Arg.Any<EdgeCategory>(),
+            Arg.Any<NodeCategory>(), Arg.Any<NodeCategory>(), Arg.Any<List<dynamic>>(), Arg.Any<UploadEdgeDto>()).Returns(expected);
+        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock, new MessageResponseCreator());
         // Act
         var result = await _sut.AddEdges(new UploadEdgeDto
         {
@@ -311,60 +314,5 @@ public class EdgesAdditionServiceTests
         fileMock.FileName.Returns(csvFileName);
         fileMock.Length.Returns(stream.Length);
         return fileMock;
-    }
-
-    // TODO
-    [Fact]
-    public async Task AddEdges_ShouldReturnBadRequestAndRollBack_WhenDbFailsToAddData()
-    {
-        // Arrange
-        var expected = new ActionResponse<MessageDto>
-        {
-            Data = new MessageDto(Resources.SuccessfulEdgeAdditionMessage),
-            StatusCode = StatusCodeType.Success
-        };
-        var csvContent = @"""SourceAcount"",""DestiantionAccount"",""Amount"",""Date"",""TransactionID"",""Type""
-""6534454617"",""6039548046"",""500,000,000"",""1399/04/23"",""153348811341"",""پایا""
-""6534454617"",""6039548046"",""500,000,000"",""1399/04/23"",""153348811341"",""پایا""
-""6039548046"",""5287517379"",""100,000,000"",""1399/04/23"",""192524206627"",""پایا""";
-        var fileToBeSend = CreateFileMock(csvContent);
-
-        var validatorMock = Substitute.For<ICsvValidatorService>();
-        validatorMock.Validate(fileToBeSend, "TransactionID", "SourceAcount", "DestiantionAccount").Returns(expected);
-        var processorMock = Substitute.For<ICsvProcessorService>();
-        processorMock.ProcessCsvAsync(fileToBeSend).Returns(new List<dynamic> { new Dictionary<string, object>() });
-        var additionServiceMock = new Mock<ISingleEdgeAdditionService>();
-
-        // Setup the mock to throw an exception for any inputs
-        additionServiceMock
-            .Setup(service => service.AddSingleEdge(
-                It.IsAny<ApplicationDbContext>(),
-                It.IsAny<IDictionary<string, object>>(),
-                It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<int>(),
-                It.IsAny<int>(),
-                It.IsAny<int>()
-            ))
-            .Throws(new Exception("Custom exception message"));
-        _sut = new EdgesAdditionService(_serviceProvider, validatorMock, processorMock, additionServiceMock.Object);
-
-        // Act
-        var result = await _sut.AddEdges(new UploadEdgeDto
-        {
-            File = fileToBeSend,
-            EdgeCategoryName = "Transaction",
-            UniqueKeyHeaderName = "TransactionID",
-            SourceNodeCategoryName = "Account",
-            TargetNodeCategoryName = "Account",
-            SourceNodeHeaderName = "SourceAcount",
-            TargetNodeHeaderName = "DestiantionAccount"
-        });
-        // Assert
-        using var scope = _serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        Assert.Equal(0, context.Nodes.Count());
-        Assert.Equal("Custom exception message", result.Data.Message);
     }
 }
