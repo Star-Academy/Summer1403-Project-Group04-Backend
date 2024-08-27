@@ -12,12 +12,12 @@ public class GraphDtoCreator : IGraphDtoCreator
     {
         if (contextEdges == null || contextNodes == null) throw new ArgumentNullException();
         var resultGraphDto = new GraphDto();
-        contextNodes.ForEach(n => resultGraphDto.Nodes.Add(new NodeDto
+        contextNodes.ForEach(n => resultGraphDto.nodes.Add(new NodeDto
         {
             id = n.NodeId.ToString(),
             label = $"{n.NodeCategory.NodeCategoryName}/{n.NodeUniqueString}"
         }));
-        contextEdges.ForEach(e => resultGraphDto.Edges.Add(new EdgeDto
+        contextEdges.ForEach(e => resultGraphDto.edges.Add(new EdgeDto
         {
             id = e.EdgeId.ToString(),
             source = e.EdgeSourceNodeId.ToString(),

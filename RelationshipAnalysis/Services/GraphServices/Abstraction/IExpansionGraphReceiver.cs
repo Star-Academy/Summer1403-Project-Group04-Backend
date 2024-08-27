@@ -5,5 +5,6 @@ namespace RelationshipAnalysis.Services.GraphServices.Abstraction;
 
 public interface IExpansionGraphReceiver
 {
-    Task<ActionResponse<GraphDto>> GetExpansionGraph(ExpansionDto expansionDto);
+    Task<GraphDto> GetExpansionGraph(int nodeId, string sourceCategoryName, string targetCategoryName,
+        string edgeCategoryName);
 }

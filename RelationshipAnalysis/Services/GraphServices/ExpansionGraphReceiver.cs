@@ -1,49 +1,46 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using RelationshipAnalysis.Context;
-using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph;
 using RelationshipAnalysis.Models.Graph;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
 
 namespace RelationshipAnalysis.Services.GraphServices;
 
-public class ExpansionGraphReceiver(IServiceProvider serviceProvider, IGraphDtoCreator graphDtoCreator, IResponseMessageCreator responseCreator) : IExpansionGraphReceiver
+public class ExpansionGraphReceiver(IServiceProvider serviceProvider, IGraphDtoCreator graphDtoCreator) : IExpansionGraphReceiver
 {
-    public async Task<ActionResponse<GraphDto>> GetExpansionGraph(ExpansionDto expansionDto)
+    public async Task<GraphDto> GetExpansionGraph(int nodeId, string sourceCategoryName, string targetCategoryName, string edgeCategoryName)
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         
-        var inputNodes = await GetInputNodes(expansionDto, context);
-        var outputNodes = await GetOutputNodes(expansionDto, context);
-        var validEdges = await GetValidEdges(expansionDto, context, inputNodes, outputNodes);
-        
-        var resultData = graphDtoCreator.CreateResultGraphDto(inputNodes.Union(outputNodes).ToList(), validEdges);
-        return responseCreator.Create()
+        var inputNodes = await GetInputNodes(sourceCategoryName, context);
+        var outputNodes = await GetOutputNodes(targetCategoryName, context);
+        var validEdges = await GetValidEdges(edgeCategoryName, context, inputNodes, outputNodes);
+
+        return graphDtoCreator.CreateResultGraphDto(inputNodes.Union(outputNodes).ToList(), validEdges);
     }
 
-    private async Task<List<Edge>> GetValidEdges(ExpansionDto expansionDto, ApplicationDbContext context, List<Node> inputNodes,
+    private async Task<List<Edge>> GetValidEdges(string edgeCategoryName, ApplicationDbContext context, List<Node> inputNodes,
         List<Node> outputNodes)
     {
         var validEdges = await context.Edges.Where(e =>
-            e.EdgeCategoryId == expansionDto.EdgeCategoryId &&
+            e.EdgeCategory.EdgeCategoryName == edgeCategoryName &&
             inputNodes.Contains(e.NodeSource) &&
             outputNodes.Contains(e.NodeDestination)).ToListAsync();
         return validEdges;
     }
 
-    private async Task<List<Node>> GetOutputNodes(ExpansionDto expansionDto, ApplicationDbContext context)
+    private async Task<List<Node>> GetOutputNodes(string targetCategoryName, ApplicationDbContext context)
     {
         var outputNodes =
-            await context.Nodes.Where(n => n.NodeCategoryId == expansionDto.TargetCategoryId).ToListAsync();
+            await context.Nodes.Where(n => n.NodeCategory.NodeCategoryName == targetCategoryName).ToListAsync();
         return outputNodes;
     }
 
-    private async Task<List<Node>> GetInputNodes(ExpansionDto expansionDto, ApplicationDbContext context)
+    private async Task<List<Node>> GetInputNodes(string sourceCategoryName, ApplicationDbContext context)
     {
         var inputNodes =
-            await context.Nodes.Where(n => n.NodeCategoryId == expansionDto.SourceCategoryId).ToListAsync();
+            await context.Nodes.Where(n => n.NodeCategory.NodeCategoryName == sourceCategoryName).ToListAsync();
         return inputNodes;
     }
 }
