@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Models.Graph.Edge;
+using RelationshipAnalysis.Services.GraphServices.Edge;
 
 namespace RelationshipAnalysis.Test.Services.GraphServices.Edge;
 

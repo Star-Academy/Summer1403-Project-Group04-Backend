@@ -1,6 +1,7 @@
 using RelationshipAnalysis.Dto.Graph;
 using RelationshipAnalysis.Dto.Graph.Edge;
 using RelationshipAnalysis.Dto.Graph.Node;
+using RelationshipAnalysis.Services.GraphServices.Abstraction;
 using RelationshipAnalysis.Services.GraphServices.Graph.Abstraction;
 
 namespace RelationshipAnalysis.Services.GraphServices.Graph;

@@ -1,10 +1,9 @@
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Enums;
-using RelationshipAnalysis.GraphServices.Node.Abstraction;
 using RelationshipAnalysis.Models.Graph.Node;
 using RelationshipAnalysis.Services.Abstraction;
-using IContextNodesAdditionService = RelationshipAnalysis.Services.GraphServices.Node.Abstraction.IContextNodesAdditionService;
+using RelationshipAnalysis.Services.GraphServices.Node.Abstraction;
 
 namespace RelationshipAnalysis.Services.GraphServices.Node;
 

@@ -5,6 +5,7 @@ using RelationshipAnalysis.Dto.Graph.Edge;
 using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Models.Graph.Edge;
 using RelationshipAnalysis.Services;
+using RelationshipAnalysis.Services.GraphServices.Edge;
 
 namespace RelationshipAnalysis.Test.Services.GraphServices.Edge;
 

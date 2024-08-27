@@ -3,11 +3,11 @@ using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph.Node;
 using RelationshipAnalysis.Enums;
-using RelationshipAnalysis.GraphServices.Abstraction;
-using RelationshipAnalysis.GraphServices.Node.Abstraction;
 using RelationshipAnalysis.Services.Abstraction;
+using RelationshipAnalysis.Services.GraphServices.Abstraction;
+using RelationshipAnalysis.Services.GraphServices.Node.Abstraction;
 
-namespace RelationshipAnalysis.GraphServices.Node;
+namespace RelationshipAnalysis.Services.GraphServices.Node;
 
 public class NodesAdditionService(
     IServiceProvider serviceProvider,

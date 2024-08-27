@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RelationshipAnalysis.Dto.Graph.Edge;
-using RelationshipAnalysis.GraphServices.Edge.Abstraction;
+using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
 
 namespace RelationshipAnalysis.Controllers.Graph;
 

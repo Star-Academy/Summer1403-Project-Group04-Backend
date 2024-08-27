@@ -12,6 +12,8 @@ using RelationshipAnalysis.Models.Graph.Edge;
 using RelationshipAnalysis.Models.Graph.Node;
 using RelationshipAnalysis.Services;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
+using RelationshipAnalysis.Services.GraphServices.Edge;
+using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
 
 namespace RelationshipAnalysis.Test.Services.GraphServices.Edge;
 

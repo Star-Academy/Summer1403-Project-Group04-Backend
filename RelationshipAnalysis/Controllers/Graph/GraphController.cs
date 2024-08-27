@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RelationshipAnalysis.GraphServices.Graph.Abstraction;
-using IGraphReceiver = RelationshipAnalysis.Services.GraphServices.Graph.Abstraction.IGraphReceiver;
+using RelationshipAnalysis.Services.GraphServices.Abstraction;
+using RelationshipAnalysis.Services.GraphServices.Graph.Abstraction;
 
 namespace RelationshipAnalysis.Controllers.Graph;
 

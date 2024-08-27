@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RelationshipAnalysis.Context;
-using RelationshipAnalysis.GraphServices.Node.Abstraction;
+using RelationshipAnalysis.Models.Graph.Node;
+using RelationshipAnalysis.Services.GraphServices.Node.Abstraction;
 
-namespace RelationshipAnalysis.GraphServices.Node;
+namespace RelationshipAnalysis.Services.GraphServices.Node;
 
 public class SingleNodeAdditionService(INodeValueAdditionService nodeValueAdditionService) : ISingleNodeAdditionService
 {

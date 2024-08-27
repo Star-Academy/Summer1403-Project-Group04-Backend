@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RelationshipAnalysis.Context;
-using RelationshipAnalysis.GraphServices.Edge.Abstraction;
+using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
 
-namespace RelationshipAnalysis.GraphServices.Edge;
+namespace RelationshipAnalysis.Services.GraphServices.Edge;
 
 public class SingleEdgeAdditionService(IEdgeValueAdditionService edgeValueAdditionService) : ISingleEdgeAdditionService
 

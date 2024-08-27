@@ -1,4 +1,4 @@
-﻿namespace RelationshipAnalysis.GraphServices.Edge.Abstraction;
+﻿namespace RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
 
 public interface IEdgeCategoryReceiver
 {

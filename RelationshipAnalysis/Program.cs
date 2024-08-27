@@ -3,14 +3,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RelationshipAnalysis.Context;
-using RelationshipAnalysis.GraphServices;
-using RelationshipAnalysis.GraphServices.Abstraction;
-using RelationshipAnalysis.GraphServices.Edge;
-using RelationshipAnalysis.GraphServices.Edge.Abstraction;
-using RelationshipAnalysis.GraphServices.Graph;
-using RelationshipAnalysis.GraphServices.Graph.Abstraction;
-using RelationshipAnalysis.GraphServices.Node;
-using RelationshipAnalysis.GraphServices.Node.Abstraction;
 using RelationshipAnalysis.Middlewares;
 using RelationshipAnalysis.Services;
 using RelationshipAnalysis.Services.Abstraction;
@@ -24,6 +16,10 @@ using RelationshipAnalysis.Services.CRUD.User;
 using RelationshipAnalysis.Services.CRUD.User.Abstraction;
 using RelationshipAnalysis.Services.CRUD.UserRole;
 using RelationshipAnalysis.Services.CRUD.UserRole.Abstraction;
+using RelationshipAnalysis.Services.GraphServices.Edge;
+using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
+using RelationshipAnalysis.Services.GraphServices.Node;
+using RelationshipAnalysis.Services.GraphServices.Node.Abstraction;
 using RelationshipAnalysis.Services.Panel.AdminPanelServices.AllUserService;
 using RelationshipAnalysis.Services.Panel.AdminPanelServices.AllUserService.Abstraction;
 using RelationshipAnalysis.Services.Panel.AdminPanelServices.CreateUserService;
@@ -103,7 +99,6 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<ICreateUserDtoMapper, CreateUserDtoMapper>()
     .AddSingleton<IAllUserServiceValidator, AllUserServiceValidator>()
     .AddSingleton<IAllUserDtoCreator, AllUserDtoCreator>()
-    
     .AddSingleton<IPermissionsReceiver, PermissionsReceiver>()
     .AddSingleton<IRoleReceiver, RoleReceiver>()
     .AddSingleton<IUserAdder, UserAdder>()
@@ -115,6 +110,10 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<ICsvValidatorService, CsvValidatorService>()
     .AddSingleton<ICsvValidatorService, CsvValidatorService>()
     .AddSingleton<IGraphDtoCreator, GraphDtoCreator>()
+    .AddSingleton<IContextNodesAdditionService, ContextNodesAdditionService>()
+    .AddSingleton<INodeValueAdditionService, NodeValueAdditionService>()
+    .AddSingleton<IEdgeValueAdditionService, EdgeValueAdditionService>()
+    .AddSingleton<IContextEdgesAdditionService, ContextEdgesAdditionService>()
     .AddSingleton<IContextNodesAdditionService, ContextNodesAdditionService>();
 
 
