@@ -17,7 +17,7 @@ public class GraphController(IGraphReceiver graphReceiver,
         return Ok(await graphReceiver.GetGraph());
     }
     [HttpGet("expansion")]
-    public async Task<IActionResult> GetExpansionGraph(int nodeId, string sourceCategoryName, string targetCategoryName, string edgeCategoryName)
+    public async Task<IActionResult> GetExpansionGraph([FromQuery] int nodeId,[FromQuery] string sourceCategoryName,[FromQuery] string targetCategoryName,[FromQuery] string edgeCategoryName)
     {
         var result = await expansionGraphReceiver.GetExpansionGraph(nodeId, sourceCategoryName, targetCategoryName, edgeCategoryName);
         return Ok(result);

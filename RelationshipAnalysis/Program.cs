@@ -60,7 +60,9 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<IExpansionGraphReceiver, ExpansionGraphReceiver>()
     .AddSingleton<IGraphDtoCreator, GraphDtoCreator>()
     .AddKeyedSingleton<IInfoReceiver, NodeInfoReceiver>("node")
-    .AddKeyedSingleton<IInfoReceiver, EdgeInfoReceiver>("edge");
+    .AddKeyedSingleton<IInfoReceiver, EdgeInfoReceiver>("edge")
+    .AddKeyedSingleton<IAttributesReceiver, NodeAttributesReceiver>("node")
+    .AddKeyedSingleton<IAttributesReceiver, EdgeAttributesReceiver>("edge");
     
 
 
