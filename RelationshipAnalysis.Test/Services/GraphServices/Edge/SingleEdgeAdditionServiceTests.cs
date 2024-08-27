@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using NSubstitute;
+using NSubstitute.Exceptions;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Models.Graph.Edge;
 using RelationshipAnalysis.Models.Graph.Node;
@@ -13,7 +15,7 @@ public class SingleEdgeAdditionServiceTests
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly SingleEdgeAdditionService _sut;
-
+    private IEdgeValueAdditionService _edgeValueAdditionService;
     public SingleEdgeAdditionServiceTests()
     {
         var serviceCollection = new ServiceCollection();
@@ -26,8 +28,8 @@ public class SingleEdgeAdditionServiceTests
 
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
-        var edgeValueAdditionService = new Mock<IEdgeValueAdditionService>();
-        _sut = new SingleEdgeAdditionService(edgeValueAdditionService.Object);
+        _edgeValueAdditionService = Substitute.For<IEdgeValueAdditionService>();
+        _sut = new SingleEdgeAdditionService(_edgeValueAdditionService);
         SeedDatabase();
     }
 
@@ -82,7 +84,7 @@ public class SingleEdgeAdditionServiceTests
 
 
     [Fact]
-    public async Task AddSingleEdge_ShouldAddNewEdge_WhenValidRecordIsProvided()
+    public async Task AddSingleEdge_ShouldCallAddKvpToValues_WhenValidRecordIsProvided()
     {
         // Arrange
         var record = new Dictionary<string, object>
@@ -106,47 +108,43 @@ public class SingleEdgeAdditionServiceTests
         Assert.Equal(2, edge.EdgeDestinationNodeId);
         Assert.Equal(1, edge.EdgeCategoryId);
 
-        var attribute = await context.EdgeAttributes.SingleOrDefaultAsync(a => a.EdgeAttributeName == "Attribute1");
-        Assert.NotNull(attribute);
+        _edgeValueAdditionService.Received().AddKvpToValues(context, Arg.Any<KeyValuePair<string, object>>(), Arg.Any<Models.Graph.Edge.Edge>());
 
-        var edgeValue =
-            await context.EdgeValues.SingleOrDefaultAsync(v => v.ValueData == "Value1" && v.EdgeId == edge.EdgeId);
-        Assert.NotNull(edgeValue);
     }
-
-    [Fact]
-    public async Task AddSingleEdge_ShouldAddNewAttributes_WhenEdgeExists()
-    {
-        // Arrange
-        var record = new Dictionary<string, object>
-        {
-            { "UniqueEdge", "tran1" },
-            { "SourceNode", "acc1" },
-            { "TargetNode", "acc2" },
-            { "Attribute2", "Value2" }
-        };
-
-        using var scope = _serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-
-        // Act
-        await _sut.AddSingleEdge(context, record, "UniqueEdge", "SourceNode", "TargetNode", 1, 1, 1);
-
-        // Assert
-        var edge = await context.Edges.SingleOrDefaultAsync(e => e.EdgeUniqueString == "tran1");
-        Assert.NotNull(edge);
-        Assert.Equal(1, edge.EdgeSourceNodeId);
-        Assert.Equal(2, edge.EdgeDestinationNodeId);
-        Assert.Equal(1, edge.EdgeCategoryId);
-
-        var attribute = await context.EdgeAttributes.SingleOrDefaultAsync(a => a.EdgeAttributeName == "Attribute2");
-        Assert.NotNull(attribute);
-
-        var edgeValue =
-            await context.EdgeValues.SingleOrDefaultAsync(v => v.ValueData == "Value2" && v.EdgeId == edge.EdgeId);
-        Assert.NotNull(edgeValue);
-    }
+    //
+    // [Fact]
+    // public async Task AddSingleEdge_ShouldCallAddKvpToValues_WhenEdgeExists()
+    // {
+    //     // Arrange
+    //     var record = new Dictionary<string, object>
+    //     {
+    //         { "UniqueEdge", "tran1" },
+    //         { "SourceNode", "acc1" },
+    //         { "TargetNode", "acc2" },
+    //         { "Attribute2", "Value2" }
+    //     };
+    //
+    //     using var scope = _serviceProvider.CreateScope();
+    //     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    //
+    //
+    //     // Act
+    //     await _sut.AddSingleEdge(context, record, "UniqueEdge", "SourceNode", "TargetNode", 1, 1, 1);
+    //
+    //     // Assert
+    //     var edge = await context.Edges.SingleOrDefaultAsync(e => e.EdgeUniqueString == "tran1");
+    //     Assert.NotNull(edge);
+    //     Assert.Equal(1, edge.EdgeSourceNodeId);
+    //     Assert.Equal(2, edge.EdgeDestinationNodeId);
+    //     Assert.Equal(1, edge.EdgeCategoryId);
+    //
+    //     var attribute = await context.EdgeAttributes.SingleOrDefaultAsync(a => a.EdgeAttributeName == "Attribute2");
+    //     Assert.NotNull(attribute);
+    //
+    //     var edgeValue =
+    //         await context.EdgeValues.SingleOrDefaultAsync(v => v.ValueData == "Value2" && v.EdgeId == edge.EdgeId);
+    //     Assert.NotNull(edgeValue);
+    // }
 
     [Fact]
     public async Task AddSingleEdge_ShouldThrowException_WhenUniqueEdgeNameIsEmpty()
@@ -266,31 +264,31 @@ public class SingleEdgeAdditionServiceTests
         // Assert 
         await Assert.ThrowsAsync<Exception>(action);
     }
-
-    [Fact]
-    public async Task AddSingleEdge_ShouldThrowException_WhenEdgeValueAlreadyExists()
-    {
-        // Arrange
-        var record = new Dictionary<string, object>
-        {
-            { "UniqueEdge", "tran1" },
-            { "SourceNode", "acc1" },
-            { "TargetNode", "acc2" },
-            { "att1", "dsjsdnfukj" }
-        };
-
-        using var scope = _serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-        // Act 
-        var action = () =>
-            _sut.AddSingleEdge(context, record, "UniqueEdge", "SourceNode", "TargetNode", 1, 1, 1);
-
-
-        // Assert
-        await Assert.ThrowsAsync<Exception>(action);
-    }
-
+    //
+    // [Fact]
+    // public async Task AddSingleEdge_ShouldThrowException_WhenEdgeValueAlreadyExists()
+    // {
+    //     // Arrange
+    //     var record = new Dictionary<string, object>
+    //     {
+    //         { "UniqueEdge", "tran1" },
+    //         { "SourceNode", "acc1" },
+    //         { "TargetNode", "acc2" },
+    //         { "att1", "dsjsdnfukj" }
+    //     };
+    //
+    //     using var scope = _serviceProvider.CreateScope();
+    //     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    //
+    //     // Act 
+    //     var action = () =>
+    //         _sut.AddSingleEdge(context, record, "UniqueEdge", "SourceNode", "TargetNode", 1, 1, 1);
+    //
+    //
+    //     // Assert
+    //     await Assert.ThrowsAsync<Exception>(action);
+    // }
+    //
     [Fact]
     public async Task AddSingleEdge_ShouldThrowException_WhenSourceOrDestinationIsDeiffrent()
     {

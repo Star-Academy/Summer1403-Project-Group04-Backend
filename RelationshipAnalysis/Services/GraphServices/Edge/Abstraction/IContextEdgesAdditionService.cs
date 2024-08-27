@@ -9,5 +9,6 @@ namespace RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
 public interface IContextEdgesAdditionService
 {
     Task<ActionResponse<MessageDto>> AddToContext(ApplicationDbContext context, EdgeCategory edgeCategory,
-        NodeCategory sourceCategory, NodeCategory targetCategory, List<dynamic> objects, UploadEdgeDto uploadEdgeDto);
+        NodeCategory sourceCategory,
+        NodeCategory targetCategory, List<dynamic> objects, UploadEdgeDto uploadEdgeDto);
 }
