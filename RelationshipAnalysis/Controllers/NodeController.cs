@@ -14,7 +14,8 @@ namespace RelationshipAnalysis.Controllers;
 public class NodeController(
     ICreateNodeCategoryService createNodeCategoryService,
     INodeCategoryReceiver nodeCategoryReceiver,
-    INodesAdditionService nodesAdditionService)
+    INodesAdditionService nodesAdditionService,
+    [FromKeyedServices("node")] IInfoReceiver infoReceiver)
     : ControllerBase
 {
     [HttpGet("categories")]
@@ -24,6 +25,12 @@ public class NodeController(
         return Ok(result);
     }
     
+    [HttpGet]
+    public async Task<IActionResult> GetInfo(int nodeId)
+    {
+        var result = await infoReceiver.GetInfo(nodeId);
+        return StatusCode((int)result.StatusCode, result.Data);
+    }
 
     [HttpPost("categories")]
     public async Task<IActionResult> CreateNodeCategory([FromBody] CreateNodeCategoryDto createNodeCategoryDto)

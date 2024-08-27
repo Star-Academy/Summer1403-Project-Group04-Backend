@@ -4,5 +4,5 @@ namespace RelationshipAnalysis.Services.GraphServices.Abstraction;
 
 public interface IInfoReceiver
 {
-    Task<ActionResponse<NodeInfoDto>
+    Task<ActionResponse<IDictionary<string, string>>> GetInfo(int id);
 }

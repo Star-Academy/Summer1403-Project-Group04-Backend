@@ -14,7 +14,8 @@ namespace RelationshipAnalysis.Controllers;
 public class EdgeController(
     ICreateEdgeCategoryService createEdgeCategoryService,
     IEdgeCategoryReceiver edgeCategoryReceiver,
-    IEdgesAdditionService edgesAdditionService)
+    IEdgesAdditionService edgesAdditionService,
+    [FromKeyedServices("edge")] IInfoReceiver infoReceiver)
     : ControllerBase
 {
 
@@ -23,6 +24,14 @@ public class EdgeController(
     {
         var result = await edgeCategoryReceiver.GetAllEdgeCategories();
         return Ok(result);
+    }
+    
+    
+    [HttpGet]
+    public async Task<IActionResult> GetInfo(int edgeId)
+    {
+        var result = await infoReceiver.GetInfo(edgeId);
+        return StatusCode((int)result.StatusCode, result.Data);
     }
     
     [HttpPost("categories")]

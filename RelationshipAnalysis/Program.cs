@@ -58,7 +58,9 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<IEdgesAdditionService, EdgesAdditionService>()
     .AddSingleton<ICsvValidatorService, CsvValidatorService>()
     .AddSingleton<IExpansionGraphReceiver, ExpansionGraphReceiver>()
-    .AddSingleton<IGraphDtoCreator, GraphDtoCreator>();
+    .AddSingleton<IGraphDtoCreator, GraphDtoCreator>()
+    .AddKeyedSingleton<IInfoReceiver, NodeInfoReceiver>("node")
+    .AddKeyedSingleton<IInfoReceiver, EdgeInfoReceiver>("edge");
     
 
 
