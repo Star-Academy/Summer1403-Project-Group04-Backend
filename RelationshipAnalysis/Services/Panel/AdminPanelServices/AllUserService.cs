@@ -7,6 +7,8 @@ using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Models.Auth;
 using RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
 using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
+using GetAllUsersDto = RelationshipAnalysis.Dto.Panel.Admin.GetAllUsersDto;
+using UserOutputInfoDto = RelationshipAnalysis.Dto.Panel.User.UserOutputInfoDto;
 
 namespace RelationshipAnalysis.Services.Panel.AdminPanelServices;
 

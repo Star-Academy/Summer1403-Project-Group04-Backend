@@ -5,6 +5,8 @@ using RelationshipAnalysis.Dto.Graph.Node;
 using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
 using RelationshipAnalysis.Services.GraphServices.Node.Abstraction;
+using INodesAdditionService = RelationshipAnalysis.Services.GraphServices.Node.Abstraction.INodesAdditionService;
+using ISingleNodeAdditionService = RelationshipAnalysis.Services.GraphServices.Node.Abstraction.ISingleNodeAdditionService;
 
 namespace RelationshipAnalysis.Services.GraphServices.Node;
 

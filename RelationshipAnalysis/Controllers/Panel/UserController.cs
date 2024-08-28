@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RelationshipAnalysis.Dto;
-using RelationshipAnalysis.Dto.Panel.User;
 using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
+using UserPasswordInfoDto = RelationshipAnalysis.Dto.Panel.User.UserPasswordInfoDto;
+using UserUpdateInfoDto = RelationshipAnalysis.Dto.Panel.User.UserUpdateInfoDto;
 
 namespace RelationshipAnalysis.Controllers.Panel;
 

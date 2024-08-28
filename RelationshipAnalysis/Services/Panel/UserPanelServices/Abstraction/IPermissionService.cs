@@ -2,6 +2,7 @@
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Panel.User;
 using RelationshipAnalysis.Models.Auth;
+using PermissionDto = RelationshipAnalysis.Dto.Panel.User.PermissionDto;
 
 namespace RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
 

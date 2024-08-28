@@ -1,6 +1,7 @@
 ﻿using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Panel.Admin;
 using RelationshipAnalysis.Models.Auth;
+using GetAllUsersDto = RelationshipAnalysis.Dto.Panel.Admin.GetAllUsersDto;
 
 namespace RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
 

@@ -7,6 +7,7 @@ using RelationshipAnalysis.Services.Abstraction;
 using RelationshipAnalysis.Services.AuthServices.Abstraction;
 using RelationshipAnalysis.Services.CRUD.User.Abstraction;
 using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
+using UserPasswordInfoDto = RelationshipAnalysis.Dto.Panel.User.UserPasswordInfoDto;
 
 namespace RelationshipAnalysis.Services.Panel.UserPanelServices;
 

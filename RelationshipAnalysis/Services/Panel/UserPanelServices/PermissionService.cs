@@ -4,6 +4,7 @@ using RelationshipAnalysis.Dto.Panel.User;
 using RelationshipAnalysis.Models.Auth;
 using RelationshipAnalysis.Services.CRUD.Permissions;
 using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
+using PermissionDto = RelationshipAnalysis.Dto.Panel.User.PermissionDto;
 
 namespace RelationshipAnalysis.Services.Panel.UserPanelServices;
 

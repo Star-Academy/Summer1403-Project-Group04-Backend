@@ -7,6 +7,7 @@ using RelationshipAnalysis.Models.Auth;
 using RelationshipAnalysis.Services.Abstraction;
 using RelationshipAnalysis.Services.CRUD.User.Abstraction;
 using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
+using UserUpdateInfoDto = RelationshipAnalysis.Dto.Panel.User.UserUpdateInfoDto;
 
 namespace RelationshipAnalysis.Services.Panel.UserPanelServices;
 

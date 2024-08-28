@@ -4,6 +4,6 @@ namespace RelationshipAnalysis.Dto.Panel.Admin;
 
 public class GetAllUsersDto
 {
-    public List<UserOutputInfoDto> Users { get; init; }
+    public List<User.UserOutputInfoDto> Users { get; init; }
     public int AllUserCount { get; init; }
 }

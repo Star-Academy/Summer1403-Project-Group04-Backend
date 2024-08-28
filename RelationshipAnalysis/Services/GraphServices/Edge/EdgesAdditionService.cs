@@ -5,6 +5,8 @@ using RelationshipAnalysis.Dto.Graph.Edge;
 using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
 using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
+using IEdgesAdditionService = RelationshipAnalysis.Services.GraphServices.Edge.Abstraction.IEdgesAdditionService;
+using ISingleEdgeAdditionService = RelationshipAnalysis.Services.GraphServices.Edge.Abstraction.ISingleEdgeAdditionService;
 
 namespace RelationshipAnalysis.Services.GraphServices.Edge;
 

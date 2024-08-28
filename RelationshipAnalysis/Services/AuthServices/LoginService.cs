@@ -6,6 +6,7 @@ using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Services.Abstraction;
 using RelationshipAnalysis.Services.AuthServices.Abstraction;
 using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
+using LoginDto = RelationshipAnalysis.Dto.Auth.LoginDto;
 
 namespace RelationshipAnalysis.Services.AuthServices;
 
