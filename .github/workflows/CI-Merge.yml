@@ -1,52 +1,72 @@
-name: CI-Merge
+name: CI-Merge  
 
-on:
-  push:
-    branches:
-      - main
+on:  
+  push:  
+    branches:  
+      - main  
 
-jobs:
-  build:
-    runs-on: ubuntu-24.04
+jobs:  
+  build:  
+    runs-on: ubuntu-22.04  
 
-    permissions:
-      contents: write
+    permissions:  
+      contents: write  
 
-    steps:
-      - uses: actions/checkout@v4
+    steps:  
+      - uses: actions/checkout@v4  
+        with:  
+          fetch-depth: '0'  
+
+      - name: Log in to Docker Hub  
+        uses: docker/login-action@v2  
+        with:  
+          username: ${{ vars.DOCKERHUB_USERNAME }}  
+          password: ${{ secrets.DOCKERHUB_PASS }}  
+
+      - name: Build the Docker image  
+        id: build_image  
+        run: |  
+          docker build -t ${{ vars.DOCKERHUB_USERNAME }}/negar-backend:latest .  
+
+      - name: Bump version and push tag  
+        id: tag_version  
+        uses: mathieudutour/github-tag-action@v6.2  
+        with:  
+          github_token: ${{ secrets.GITHUB_TOKEN }}  
+
+      - name: Push the Docker image  
+        run: |  
+          docker push ${{ vars.DOCKERHUB_USERNAME }}/negar-backend:latest  
+          docker tag ${{ vars.DOCKERHUB_USERNAME }}/negar-backend:latest ${{ vars.DOCKERHUB_USERNAME }}/negar-backend:${{ steps.tag_version.outputs.new_tag }}  
+          docker push ${{ vars.DOCKERHUB_USERNAME }}/negar-backend:${{ steps.tag_version.outputs.new_tag }}  
+
+      - name: Install yq 
+        run: |  
+          sudo apt-get update
+          sudo snap install yq
+
+      - name: Clone Deployment Repository
+        uses: GuillaumeFalourd/clone-github-repo-action@v2.3
         with:
-          fetch-depth: '0'
+          depth: 1
+          branch: 'main'
+          owner: 'Star-Academy'
+          repository: 'Summer1403-Project-Group04-Deployment'
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASS }}
+      - name: Update values.yaml for backend  
+        run: |  
+          echo "Updating values.yaml for backend..."  
+          cd Summer1403-Project-Group04-Deployment 
+          yq eval ".backend.tag = \"${{ steps.tag_version.outputs.new_tag }}\"" -i values.yaml  
 
-      - name: Build migration Docker image
-        id: migration_image
-        run: |
-          docker build --target migrate -t ${{ vars.DOCKERHUB_USERNAME }}/negar-migration:latest . 
-
-      - name: Build the Docker image
-        id: build_image
-        run: |
-          docker build -t ${{ vars.DOCKERHUB_USERNAME }}/negar-backend:latest . 
+          git config --local user.email "m.h.chah4@gmail.com"  
+          git config --local user.name "muhuchah"  
           
-      - name: Bump version and push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.2
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git add values.yaml  
+          git commit -m "Update backend tag to ${{ steps.tag_version.outputs.new_tag }}"  
 
-      - name: Push migration Docker image
-        run : |
-          docker push ${{ vars.DOCKERHUB_USERNAME }}/negar-migration:latest
-          docker tag ${{ vars.DOCKERHUB_USERNAME }}/negar-migration:latest ${{ vars.DOCKERHUB_USERNAME }}/negar-migration:${{ steps.tag_version.outputs.new_tag }}
-          docker push ${{ vars.DOCKERHUB_USERNAME }}/negar-migration:${{ steps.tag_version.outputs.new_tag }}
-
-      - name: Push the Docker image
+      - name: Push changes
         run: |
-          docker push ${{ vars.DOCKERHUB_USERNAME }}/negar-backend:latest
-          docker tag ${{ vars.DOCKERHUB_USERNAME }}/negar-backend:latest ${{ vars.DOCKERHUB_USERNAME }}/negar-backend:${{ steps.tag_version.outputs.new_tag }}
-          docker push ${{ vars.DOCKERHUB_USERNAME }}/negar-backend:${{ steps.tag_version.outputs.new_tag }}
+          cd Summer1403-Project-Group04-Deployment
+          git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/Star-Academy/Summer1403-Project-Group04-Deployment.git
+          git push origin main
