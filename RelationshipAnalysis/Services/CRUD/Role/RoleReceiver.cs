@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using RelationshipAnalysis.Context;
-using RelationshipAnalysis.Models.Auth;
-using RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
+using RelationshipAnalysis.Services.CRUD.Role.Abstraction;
 
-namespace RelationshipAnalysis.Services.Panel.AdminPanelServices;
+namespace RelationshipAnalysis.Services.CRUD.Role;
 
 public class RoleReceiver(IServiceProvider serviceProvider) : IRoleReceiver
 {
@@ -22,9 +21,9 @@ public class RoleReceiver(IServiceProvider serviceProvider) : IRoleReceiver
         return await context.Roles.Select(x => x.Name).ToListAsync();
     }
 
-    public async Task<List<Role>> ReceiveRolesListAsync(List<string> roleNames)
+    public async Task<List<Models.Auth.Role>> ReceiveRolesListAsync(List<string> roleNames)
     {
-        var roles = new List<Role>();
+        var roles = new List<Models.Auth.Role>();
 
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();

@@ -1,9 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RelationshipAnalysis.Dto;
-using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
-using UserPasswordInfoDto = RelationshipAnalysis.Dto.Panel.User.UserPasswordInfoDto;
-using UserUpdateInfoDto = RelationshipAnalysis.Dto.Panel.User.UserUpdateInfoDto;
+using RelationshipAnalysis.Dto.Panel.User;
+using RelationshipAnalysis.Services.CRUD.User.Abstraction;
+using RelationshipAnalysis.Services.Panel.UserPanelServices.LogoutService.Abstraction;
+using RelationshipAnalysis.Services.Panel.UserPanelServices.PermissionsService.Abstraction;
+using RelationshipAnalysis.Services.Panel.UserPanelServices.UserInfoService.Abstraction;
+using RelationshipAnalysis.Services.Panel.UserPanelServices.UserUpdateInfoService.Abstraction;
+using RelationshipAnalysis.Services.Panel.UserPanelServices.UserUpdatePasswordService.Abstraction;
 
 namespace RelationshipAnalysis.Controllers.Panel;
 
@@ -13,7 +17,7 @@ namespace RelationshipAnalysis.Controllers.Panel;
 public class UserController(
     IUserInfoService userInfoService,
     IUserUpdateInfoService userUpdateInfoService,
-    IUserPasswordService passwordService,
+    IUserUpdatePasswordService updatePasswordService,
     IUserReceiver userReceiver,
     ILogoutService logoutService,
     IPermissionService permissionService)
@@ -39,7 +43,7 @@ public class UserController(
     public async Task<IActionResult> UpdatePassword(UserPasswordInfoDto passwordInfoDto)
     {
         var user = await userReceiver.ReceiveUserAsync(User);
-        var result = await passwordService.UpdatePasswordAsync(user, passwordInfoDto);
+        var result = await updatePasswordService.UpdatePasswordAsync(user, passwordInfoDto);
         return StatusCode((int)result.StatusCode, result.Data);
     }
 

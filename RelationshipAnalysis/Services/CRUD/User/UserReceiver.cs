@@ -1,10 +1,9 @@
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using RelationshipAnalysis.Context;
-using RelationshipAnalysis.Models.Auth;
-using RelationshipAnalysis.Services.Panel.UserPanelServices.Abstraction;
+using RelationshipAnalysis.Services.CRUD.User.Abstraction;
 
-namespace RelationshipAnalysis.Services.Panel.UserPanelServices;
+namespace RelationshipAnalysis.Services.CRUD.User;
 
 public class UserReceiver(IServiceProvider serviceProvider) : IUserReceiver
 {
@@ -16,7 +15,7 @@ public class UserReceiver(IServiceProvider serviceProvider) : IUserReceiver
         return users.Count;
     }
 
-    public async Task<User> ReceiveUserAsync(ClaimsPrincipal userClaims)
+    public async Task<Models.Auth.User> ReceiveUserAsync(ClaimsPrincipal userClaims)
     {
         var currentId = int.Parse(userClaims.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         using var scope = serviceProvider.CreateScope();
@@ -25,7 +24,7 @@ public class UserReceiver(IServiceProvider serviceProvider) : IUserReceiver
         return user;
     }
 
-    public async Task<User> ReceiveUserAsync(int id)
+    public async Task<Models.Auth.User> ReceiveUserAsync(int id)
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -33,7 +32,7 @@ public class UserReceiver(IServiceProvider serviceProvider) : IUserReceiver
         return user;
     }
 
-    public async Task<User> ReceiveUserAsync(string username)
+    public async Task<Models.Auth.User> ReceiveUserAsync(string username)
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -41,7 +40,7 @@ public class UserReceiver(IServiceProvider serviceProvider) : IUserReceiver
         return user;
     }
 
-    public List<User> ReceiveAllUserAsync(int page, int size)
+    public List<Models.Auth.User> ReceiveAllUserAsync(int page, int size)
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();

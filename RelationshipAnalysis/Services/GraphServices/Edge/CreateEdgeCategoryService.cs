@@ -3,29 +3,22 @@ using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph.Edge;
 using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Models.Graph.Edge;
+using RelationshipAnalysis.Services.Abstraction;
 using RelationshipAnalysis.Services.GraphServices.Edge.Abstraction;
 
 namespace RelationshipAnalysis.Services.GraphServices.Edge;
 
-public class CreateEdgeCategoryService(IServiceProvider serviceProvider) : ICreateEdgeCategoryService
+public class CreateEdgeCategoryService(IServiceProvider serviceProvider, IMessageResponseCreator responseCreator) : ICreateEdgeCategoryService
 {
     public async Task<ActionResponse<MessageDto>> CreateEdgeCategory(CreateEdgeCategoryDto createEdgeCategoryDto)
     {
-        if (createEdgeCategoryDto is null) return BadRequestResult(Resources.NullDtoErrorMessage);
+        if (createEdgeCategoryDto is null) return responseCreator.Create(StatusCodeType.BadRequest, Resources.NullDtoErrorMessage);
         if (IsNotUniqueCategoryName(createEdgeCategoryDto))
-            return BadRequestResult(Resources.NotUniqueCategoryNameErrorMessage);
+            return responseCreator.Create(StatusCodeType.BadRequest,Resources.NotUniqueCategoryNameErrorMessage);
         await AddCategory(createEdgeCategoryDto);
-        return SuccessfulResult(Resources.SuccessfulCreateCategory);
+        return responseCreator.Create(StatusCodeType.Success, Resources.SuccessfulCreateCategory);
     }
 
-    private ActionResponse<MessageDto> SuccessfulResult(string message)
-    {
-        return new ActionResponse<MessageDto>
-        {
-            Data = new MessageDto(message),
-            StatusCode = StatusCodeType.Success
-        };
-    }
 
     private async Task AddCategory(CreateEdgeCategoryDto createEdgeCategoryDto)
     {
@@ -45,12 +38,4 @@ public class CreateEdgeCategoryService(IServiceProvider serviceProvider) : ICrea
         return context.EdgeCategories.Any(c => c.EdgeCategoryName == dto.EdgeCategoryName);
     }
 
-    private ActionResponse<MessageDto> BadRequestResult(string message)
-    {
-        return new ActionResponse<MessageDto>
-        {
-            Data = new MessageDto(message),
-            StatusCode = StatusCodeType.BadRequest
-        };
-    }
 }

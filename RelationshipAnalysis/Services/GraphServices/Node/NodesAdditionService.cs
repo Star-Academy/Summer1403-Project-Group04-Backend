@@ -3,6 +3,7 @@ using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph.Node;
 using RelationshipAnalysis.Enums;
+using RelationshipAnalysis.Services.Abstraction;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
 using RelationshipAnalysis.Services.GraphServices.Node.Abstraction;
 using INodesAdditionService = RelationshipAnalysis.Services.GraphServices.Node.Abstraction.INodesAdditionService;
@@ -14,7 +15,8 @@ public class NodesAdditionService(
     IServiceProvider serviceProvider,
     ICsvValidatorService csvValidatorService,
     ICsvProcessorService csvProcessorService,
-    ISingleNodeAdditionService singleNodeAdditionService) : INodesAdditionService
+    IMessageResponseCreator responseCreator,
+    IContextNodesAdditionService contextAdditionService) : INodesAdditionService
 {
     public async Task<ActionResponse<MessageDto>> AddNodes(UploadNodeDto uploadNodeDto)
     {
@@ -23,54 +25,22 @@ public class NodesAdditionService(
 
         var nodeCategory = await context.NodeCategories.SingleOrDefaultAsync(nc =>
             nc.NodeCategoryName == uploadNodeDto.NodeCategoryName);
-        var file = uploadNodeDto.File;
-        var uniqueHeader = uploadNodeDto.UniqueKeyHeaderName;
 
         if (nodeCategory == null)
-            return BadRequestResult(Resources.InvalidNodeCategory);
-
-        var validationResult = csvValidatorService.Validate(file, uniqueHeader);
-        if (validationResult.StatusCode == StatusCodeType.BadRequest)
-            return validationResult;
-
-        var objects = await csvProcessorService.ProcessCsvAsync(file);
-
-        await using (var transaction = await context.Database.BeginTransactionAsync())
         {
-            try
-            {
-                foreach (var obj in objects)
-                    await singleNodeAdditionService.AddSingleNode(context, (IDictionary<string, object>)obj,
-                        uniqueHeader,
-                        nodeCategory.NodeCategoryId);
-                await transaction.CommitAsync();
-            }
-            catch (Exception e)
-            {
-                await transaction.RollbackAsync();
-                return BadRequestResult(e.Message);
-            }
+            return responseCreator.Create(StatusCodeType.BadRequest, Resources.InvalidNodeCategory);
         }
 
-        return SuccessResult();
-    }
-
-
-    private ActionResponse<MessageDto> BadRequestResult(string message)
-    {
-        return new ActionResponse<MessageDto>
+        var validationResult = csvValidatorService.Validate(uploadNodeDto.File, uploadNodeDto.UniqueKeyHeaderName);
+        
+        if (validationResult.StatusCode == StatusCodeType.BadRequest)
         {
-            Data = new MessageDto(message),
-            StatusCode = StatusCodeType.BadRequest
-        };
+            return validationResult;
+        }
+
+        var objects = await csvProcessorService.ProcessCsvAsync(uploadNodeDto.File);
+
+        return await contextAdditionService.AddToContext(uploadNodeDto.UniqueKeyHeaderName, context, objects, nodeCategory);
     }
 
-    private ActionResponse<MessageDto> SuccessResult()
-    {
-        return new ActionResponse<MessageDto>
-        {
-            Data = new MessageDto(Resources.SuccessfulNodeAdditionMessage),
-            StatusCode = StatusCodeType.Success
-        };
-    }
 }

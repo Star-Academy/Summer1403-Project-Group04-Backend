@@ -1,8 +1,6 @@
-﻿using RelationshipAnalysis.Models.Auth;
-
-namespace RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
+﻿namespace RelationshipAnalysis.Services.CRUD.User.Abstraction;
 
 public interface IUserDeleter
 {
-    Task DeleteUserAsync(User user);
+    Task DeleteUserAsync(Models.Auth.User user);
 }

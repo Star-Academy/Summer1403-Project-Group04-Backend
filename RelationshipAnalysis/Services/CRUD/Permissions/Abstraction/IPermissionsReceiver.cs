@@ -1,6 +1,4 @@
-﻿using RelationshipAnalysis.Models.Auth;
-
-namespace RelationshipAnalysis.Services.CRUD.Permissions;
+﻿namespace RelationshipAnalysis.Services.CRUD.Permissions.Abstraction;
 
 public interface IPermissionsReceiver
 {

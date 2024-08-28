@@ -1,6 +1,4 @@
-using RelationshipAnalysis.Models.Auth;
-
-namespace RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
+namespace RelationshipAnalysis.Services.CRUD.Role.Abstraction;
 
 public interface IRoleReceiver
 {
@@ -8,5 +6,5 @@ public interface IRoleReceiver
 
     Task<List<string>> ReceiveAllRolesAsync();
 
-    Task<List<Role>> ReceiveRolesListAsync(List<string> roleNames);
+    Task<List<Models.Auth.Role>> ReceiveRolesListAsync(List<string> roleNames);
 }

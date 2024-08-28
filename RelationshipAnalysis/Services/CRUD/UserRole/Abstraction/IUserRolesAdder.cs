@@ -1,8 +1,6 @@
-﻿using RelationshipAnalysis.Models.Auth;
-
-namespace RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
+﻿namespace RelationshipAnalysis.Services.CRUD.UserRole.Abstraction;
 
 public interface IUserRolesAdder
 {
-    Task AddUserRoles(List<Role> roles, User user);
+    Task AddUserRoles(List<Models.Auth.Role> roles, Models.Auth.User user);
 }

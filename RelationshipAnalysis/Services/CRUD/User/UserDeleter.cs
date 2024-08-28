@@ -1,12 +1,11 @@
 ﻿using RelationshipAnalysis.Context;
-using RelationshipAnalysis.Models.Auth;
-using RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
+using RelationshipAnalysis.Services.CRUD.User.Abstraction;
 
-namespace RelationshipAnalysis.Services.Panel.AdminPanelServices;
+namespace RelationshipAnalysis.Services.CRUD.User;
 
 public class UserDeleter(IServiceProvider serviceProvider) : IUserDeleter
 {
-    public async Task DeleteUserAsync(User user)
+    public async Task DeleteUserAsync(Models.Auth.User user)
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();

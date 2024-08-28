@@ -1,13 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RelationshipAnalysis.Context;
-using RelationshipAnalysis.Models.Auth;
-using RelationshipAnalysis.Services.Panel.AdminPanelServices.Abstraction;
+using RelationshipAnalysis.Services.CRUD.UserRole.Abstraction;
 
-namespace RelationshipAnalysis.Services.Panel.AdminPanelServices;
+namespace RelationshipAnalysis.Services.CRUD.UserRole;
 
 public class UserRolesRemover(IServiceProvider serviceProvider) : IUserRolesRemover
 {
-    public async Task RemoveUserRoles(User user)
+    public async Task RemoveUserRoles(Models.Auth.User user)
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
