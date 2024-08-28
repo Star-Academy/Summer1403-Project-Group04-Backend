@@ -108,7 +108,7 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<INodeValueAdditionService, NodeValueAdditionService>()
     .AddSingleton<IEdgeValueAdditionService, EdgeValueAdditionService>()
     .AddSingleton<IContextEdgesAdditionService, ContextEdgesAdditionService>()
-    .AddSingleton<IContextNodesAdditionService, ContextNodesAdditionService>();
+    .AddSingleton<IContextNodesAdditionService, ContextNodesAdditionService>()
     .AddSingleton<ICsvValidatorService, CsvValidatorService>()
     .AddSingleton<IExpansionGraphReceiver, ExpansionGraphReceiver>()
     .AddSingleton<IGraphDtoCreator, GraphDtoCreator>()

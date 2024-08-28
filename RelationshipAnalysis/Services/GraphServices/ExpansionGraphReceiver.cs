@@ -3,6 +3,7 @@ using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto.Graph;
 using RelationshipAnalysis.Models.Graph;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
+using RelationshipAnalysis.Services.GraphServices.Graph.Abstraction;
 
 namespace RelationshipAnalysis.Services.GraphServices;
 
@@ -20,8 +21,8 @@ public class ExpansionGraphReceiver(IServiceProvider serviceProvider, IGraphDtoC
         return graphDtoCreator.CreateResultGraphDto(inputNodes.Union(outputNodes).ToList(), validEdges);
     }
 
-    private async Task<List<Edge>> GetValidEdges(string edgeCategoryName, ApplicationDbContext context, List<Node> inputNodes,
-        List<Node> outputNodes)
+    private async Task<List<Models.Graph.Edge.Edge>> GetValidEdges(string edgeCategoryName, ApplicationDbContext context, List<Models.Graph.Node.Node> inputNodes,
+        List<Models.Graph.Node.Node> outputNodes)
     {
         var validEdges = await context.Edges.Where(e =>
             e.EdgeCategory.EdgeCategoryName == edgeCategoryName &&
@@ -30,14 +31,14 @@ public class ExpansionGraphReceiver(IServiceProvider serviceProvider, IGraphDtoC
         return validEdges;
     }
 
-    private async Task<List<Node>> GetOutputNodes(string targetCategoryName, ApplicationDbContext context)
+    private async Task<List<Models.Graph.Node.Node>> GetOutputNodes(string targetCategoryName, ApplicationDbContext context)
     {
         var outputNodes =
             await context.Nodes.Where(n => n.NodeCategory.NodeCategoryName == targetCategoryName).ToListAsync();
         return outputNodes;
     }
 
-    private async Task<List<Node>> GetInputNodes(string sourceCategoryName, ApplicationDbContext context)
+    private async Task<List<Models.Graph.Node.Node>> GetInputNodes(string sourceCategoryName, ApplicationDbContext context)
     {
         var inputNodes =
             await context.Nodes.Where(n => n.NodeCategory.NodeCategoryName == sourceCategoryName).ToListAsync();
