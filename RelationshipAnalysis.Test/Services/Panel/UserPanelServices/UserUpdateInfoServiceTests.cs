@@ -39,7 +39,7 @@
 //
 //         _serviceProvider = serviceCollection.BuildServiceProvider();
 //
-//         var mapper = _serviceProvider.GetRequiredService<IMapper>();
+//         var mapper = _serviceProvider.GetRequiredService<IMapper>();I
 //         _sut = new UserUpdateInfoService(_serviceProvider, mapper);
 //
 //         SeedDatabase();

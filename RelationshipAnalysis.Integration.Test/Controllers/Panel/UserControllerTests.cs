@@ -225,6 +225,7 @@ public class UserControllerTests : IClassFixture<CustomWebApplicationFactory<Pro
 
         var user = new User
         {
+            Id = 1,
             Username = "Test",
             UserRoles = new List<UserRole> { new() { Role = new Role { Name = "admin" } } }
         };

@@ -46,6 +46,7 @@ public class SingleNodeAdditionService(INodeValueAdditionService nodeValueAdditi
                 NodeCategoryId = nodeCategoryId
             };
 
+            
             await context.AddAsync(newNode);
             await context.SaveChangesAsync();
         }

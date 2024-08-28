@@ -36,7 +36,12 @@ public class UserReceiver(IServiceProvider serviceProvider) : IUserReceiver
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var user = await context.Users.SingleOrDefaultAsync(u => u.Username == username);
+        var user = await context.Users
+            .Include(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
+            .SingleOrDefaultAsync(u => u.Username == username);
+                
+    
         return user;
     }
 
