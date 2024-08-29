@@ -46,9 +46,4 @@
         </Compile>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Services\Panel\AdminPanelServices\UserDeleteService\" />
-      <Folder Include="Services\Panel\AdminPanelServices\UserUpdateRolesService\" />
-    </ItemGroup>
-
 </Project>
