@@ -7,18 +7,17 @@ using Microsoft.Extensions.DependencyInjection;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
 
-namespace RelationshipAnalysis.Services.GraphServices;
+namespace RelationshipAnalysis.Services.GraphServices.Node;
 
-public class EdgeAttributesReceiver(IServiceProvider serviceProvider) : IAttributesReceiver
+public class NodeAttributesReceiver(IServiceProvider serviceProvider) : IAttributesReceiver
 {
-    public async Task<List<string>> GetAllAttributes(int id)
+    public async Task<List<string>> GetAllAttributes(string name)
     {
-        
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        return await context.EdgeAttributes
-            .Where(ea => ea.EdgeValues.Any(v => v.Edge.EdgeCategoryId == id))
-            .Select(ea => ea.EdgeAttributeName).ToListAsync();
+        return await context.NodeAttributes
+            .Where(na => na.Values.Any(v => v.Node.NodeCategory.NodeCategoryName == name))
+            .Select(na => na.NodeAttributeName).ToListAsync();
     }
 }

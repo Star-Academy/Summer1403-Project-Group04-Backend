@@ -48,9 +48,8 @@ using RelationshipAnalysis.Services.Panel.UserPanelServices.UserUpdateInfoServic
 using RelationshipAnalysis.Services.Panel.UserPanelServices.UserUpdatePasswordService;
 using RelationshipAnalysis.Services.Panel.UserPanelServices.UserUpdatePasswordService.Abstraction;
 using RelationshipAnalysis.Settings.JWT;
-using Abstraction_IAttributesReceiver = RelationshipAnalysis.Services.GraphServices.Abstraction.IAttributesReceiver;
-using NodeAttributesReceiver = RelationshipAnalysis.Services.GraphServices.NodeAttributesReceiver;
-using EdgeAttributesReceiver = RelationshipAnalysis.Services.GraphServices.EdgeAttributesReceiver;
+using EdgeAttributesReceiver = RelationshipAnalysis.Services.GraphServices.Edge.EdgeAttributesReceiver;
+using NodeAttributesReceiver = RelationshipAnalysis.Services.GraphServices.Node.NodeAttributesReceiver;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
@@ -120,10 +119,12 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddSingleton<ICsvValidatorService, CsvValidatorService>()
     .AddSingleton<IExpansionGraphReceiver, ExpansionGraphReceiver>()
     .AddSingleton<IGraphDtoCreator, GraphDtoCreator>()
+    .AddSingleton<IGraphSearcherService, GraphSearcherService>()
     .AddKeyedSingleton<IInfoReceiver, NodeInfoReceiver>("node")
     .AddKeyedSingleton<IInfoReceiver, EdgeInfoReceiver>("edge")
     .AddKeyedSingleton<IAttributesReceiver, NodeAttributesReceiver>("node")
     .AddKeyedSingleton<IAttributesReceiver, EdgeAttributesReceiver>("edge");
+    
 
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));

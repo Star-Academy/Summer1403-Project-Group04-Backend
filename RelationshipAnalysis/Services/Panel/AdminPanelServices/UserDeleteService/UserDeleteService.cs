@@ -10,7 +10,6 @@ namespace RelationshipAnalysis.Services.Panel.AdminPanelServices.UserDeleteServi
 
 public class UserDeleteService(
     IUserDeleteServiceValidator validator,
-    IMessageResponseCreator messageResponseCreator,
     IUserDeleter userDeleter)
     : IUserDeleteService
 {
