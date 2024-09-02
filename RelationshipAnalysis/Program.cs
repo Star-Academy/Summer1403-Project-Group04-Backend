@@ -1,6 +1,11 @@
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Middlewares;
@@ -43,6 +48,9 @@ using RelationshipAnalysis.Services.Panel.UserPanelServices.UserUpdateInfoServic
 using RelationshipAnalysis.Services.Panel.UserPanelServices.UserUpdatePasswordService;
 using RelationshipAnalysis.Services.Panel.UserPanelServices.UserUpdatePasswordService.Abstraction;
 using RelationshipAnalysis.Settings.JWT;
+using Abstraction_IAttributesReceiver = RelationshipAnalysis.Services.GraphServices.Abstraction.IAttributesReceiver;
+using NodeAttributesReceiver = RelationshipAnalysis.Services.GraphServices.NodeAttributesReceiver;
+using EdgeAttributesReceiver = RelationshipAnalysis.Services.GraphServices.EdgeAttributesReceiver;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
@@ -116,7 +124,6 @@ builder.Services.AddSingleton<ICookieSetter, CookieSetter>()
     .AddKeyedSingleton<IInfoReceiver, EdgeInfoReceiver>("edge")
     .AddKeyedSingleton<IAttributesReceiver, NodeAttributesReceiver>("node")
     .AddKeyedSingleton<IAttributesReceiver, EdgeAttributesReceiver>("edge");
-    
 
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
