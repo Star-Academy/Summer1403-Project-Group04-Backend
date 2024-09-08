@@ -1,8 +1,6 @@
-using System.Threading.Tasks;
-using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Dto.Graph;
 
-namespace RelationshipAnalysis.Services.GraphServices.Abstraction;
+namespace RelationshipAnalysis.Services.GraphServices.Graph.Abstraction;
 
 public interface IExpansionGraphReceiver
 {

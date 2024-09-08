@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Dto;
 using RelationshipAnalysis.Enums;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
 
-namespace RelationshipAnalysis.Services.GraphServices;
+namespace RelationshipAnalysis.Services.GraphServices.Node;
 
 public class NodeInfoReceiver(IServiceProvider serviceProvider) : IInfoReceiver
 {
@@ -20,28 +14,25 @@ public class NodeInfoReceiver(IServiceProvider serviceProvider) : IInfoReceiver
 
         var result = new Dictionary<string, string>();
         var selectedNode = context.Nodes.SingleOrDefault(n => n.NodeId == nodeId);
-        if (selectedNode == null)
-        {
-            return NotFoundResult();
-        }
+        if (selectedNode == null) return NotFoundResult();
         selectedNode.Values.ToList().ForEach(v => result.Add(v.NodeAttribute.NodeAttributeName, v.ValueData));
         return SuccessResult(result);
     }
 
     private async Task<ActionResponse<IDictionary<string, string>>> NotFoundResult()
     {
-        return new ActionResponse<IDictionary<string, string>>()
+        return new ActionResponse<IDictionary<string, string>>
         {
             StatusCode = StatusCodeType.NotFound
         };
     }
-    
+
     private async Task<ActionResponse<IDictionary<string, string>>> SuccessResult(Dictionary<string, string> result)
     {
-        return new ActionResponse<IDictionary<string, string>>()
+        return new ActionResponse<IDictionary<string, string>>
         {
             StatusCode = StatusCodeType.Success,
-            Data =  result
+            Data = result
         };
     }
 }
