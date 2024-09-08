@@ -4,6 +4,7 @@ using RelationshipAnalysis.Dto.Graph;
 using RelationshipAnalysis.Services.GraphServices.Abstraction;
 using RelationshipAnalysis.Services.GraphServices.Graph.Abstraction;
 
+
 namespace RelationshipAnalysis.Services.GraphServices.Graph
 {
     public class ExpansionGraphReceiver(IServiceProvider serviceProvider, IGraphDtoCreator graphDtoCreator,
@@ -14,6 +15,7 @@ namespace RelationshipAnalysis.Services.GraphServices.Graph
         {
             using var scope = serviceProvider.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
 
             var (isValid, graphDto) = await expansionCategoriesValidator.ValidateCategories(sourceCategoryName, targetCategoryName, edgeCategoryName);
             if (!isValid)
