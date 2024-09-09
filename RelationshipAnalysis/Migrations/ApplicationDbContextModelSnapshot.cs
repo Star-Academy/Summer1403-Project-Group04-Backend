@@ -114,7 +114,7 @@ namespace RelationshipAnalysis.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Edge", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Edge.Edge", b =>
                 {
                     b.Property<int>("EdgeId")
                         .ValueGeneratedOnAdd()
@@ -147,7 +147,7 @@ namespace RelationshipAnalysis.Migrations
                     b.ToTable("Edges");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.EdgeAttribute", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Edge.EdgeAttribute", b =>
                 {
                     b.Property<int>("EdgeAttributeId")
                         .ValueGeneratedOnAdd()
@@ -167,7 +167,7 @@ namespace RelationshipAnalysis.Migrations
                     b.ToTable("EdgeAttributes");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.EdgeCategory", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Edge.EdgeCategory", b =>
                 {
                     b.Property<int>("EdgeCategoryId")
                         .ValueGeneratedOnAdd()
@@ -187,7 +187,7 @@ namespace RelationshipAnalysis.Migrations
                     b.ToTable("EdgeCategories");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.EdgeValue", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Edge.EdgeValue", b =>
                 {
                     b.Property<int>("ValueId")
                         .ValueGeneratedOnAdd()
@@ -215,7 +215,7 @@ namespace RelationshipAnalysis.Migrations
                     b.ToTable("EdgeValues");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Node", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Node.Node", b =>
                 {
                     b.Property<int>("NodeId")
                         .ValueGeneratedOnAdd()
@@ -240,7 +240,7 @@ namespace RelationshipAnalysis.Migrations
                     b.ToTable("Nodes");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.NodeAttribute", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Node.NodeAttribute", b =>
                 {
                     b.Property<int>("NodeAttributeId")
                         .ValueGeneratedOnAdd()
@@ -260,7 +260,7 @@ namespace RelationshipAnalysis.Migrations
                     b.ToTable("NodeAttributes");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.NodeCategory", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Node.NodeCategory", b =>
                 {
                     b.Property<int>("NodeCategoryId")
                         .ValueGeneratedOnAdd()
@@ -280,7 +280,7 @@ namespace RelationshipAnalysis.Migrations
                     b.ToTable("NodeCategories");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.NodeValue", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Node.NodeValue", b =>
                 {
                     b.Property<int>("ValueId")
                         .ValueGeneratedOnAdd()
@@ -327,21 +327,21 @@ namespace RelationshipAnalysis.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Edge", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Edge.Edge", b =>
                 {
-                    b.HasOne("RelationshipAnalysis.Models.Graph.EdgeCategory", "EdgeCategory")
+                    b.HasOne("RelationshipAnalysis.Models.Graph.Edge.EdgeCategory", "EdgeCategory")
                         .WithMany("Edges")
                         .HasForeignKey("EdgeCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RelationshipAnalysis.Models.Graph.Node", "NodeDestination")
+                    b.HasOne("RelationshipAnalysis.Models.Graph.Node.Node", "NodeDestination")
                         .WithMany("DestinationEdges")
                         .HasForeignKey("EdgeDestinationNodeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("RelationshipAnalysis.Models.Graph.Node", "NodeSource")
+                    b.HasOne("RelationshipAnalysis.Models.Graph.Node.Node", "NodeSource")
                         .WithMany("SourceEdges")
                         .HasForeignKey("EdgeSourceNodeId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -354,15 +354,15 @@ namespace RelationshipAnalysis.Migrations
                     b.Navigation("NodeSource");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.EdgeValue", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Edge.EdgeValue", b =>
                 {
-                    b.HasOne("RelationshipAnalysis.Models.Graph.EdgeAttribute", "EdgeAttribute")
+                    b.HasOne("RelationshipAnalysis.Models.Graph.Edge.EdgeAttribute", "EdgeAttribute")
                         .WithMany("EdgeValues")
                         .HasForeignKey("EdgeAttributeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RelationshipAnalysis.Models.Graph.Edge", "Edge")
+                    b.HasOne("RelationshipAnalysis.Models.Graph.Edge.Edge", "Edge")
                         .WithMany("EdgeValues")
                         .HasForeignKey("EdgeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -373,9 +373,9 @@ namespace RelationshipAnalysis.Migrations
                     b.Navigation("EdgeAttribute");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Node", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Node.Node", b =>
                 {
-                    b.HasOne("RelationshipAnalysis.Models.Graph.NodeCategory", "NodeCategory")
+                    b.HasOne("RelationshipAnalysis.Models.Graph.Node.NodeCategory", "NodeCategory")
                         .WithMany("Nodes")
                         .HasForeignKey("NodeCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -384,15 +384,15 @@ namespace RelationshipAnalysis.Migrations
                     b.Navigation("NodeCategory");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.NodeValue", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Node.NodeValue", b =>
                 {
-                    b.HasOne("RelationshipAnalysis.Models.Graph.NodeAttribute", "NodeAttribute")
+                    b.HasOne("RelationshipAnalysis.Models.Graph.Node.NodeAttribute", "NodeAttribute")
                         .WithMany("Values")
                         .HasForeignKey("NodeAttributeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RelationshipAnalysis.Models.Graph.Node", "Node")
+                    b.HasOne("RelationshipAnalysis.Models.Graph.Node.Node", "Node")
                         .WithMany("Values")
                         .HasForeignKey("NodeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -413,22 +413,22 @@ namespace RelationshipAnalysis.Migrations
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Edge", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Edge.Edge", b =>
                 {
                     b.Navigation("EdgeValues");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.EdgeAttribute", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Edge.EdgeAttribute", b =>
                 {
                     b.Navigation("EdgeValues");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.EdgeCategory", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Edge.EdgeCategory", b =>
                 {
                     b.Navigation("Edges");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Node", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Node.Node", b =>
                 {
                     b.Navigation("DestinationEdges");
 
@@ -437,12 +437,12 @@ namespace RelationshipAnalysis.Migrations
                     b.Navigation("Values");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.NodeAttribute", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Node.NodeAttribute", b =>
                 {
                     b.Navigation("Values");
                 });
 
-            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.NodeCategory", b =>
+            modelBuilder.Entity("RelationshipAnalysis.Models.Graph.Node.NodeCategory", b =>
                 {
                     b.Navigation("Nodes");
                 });
