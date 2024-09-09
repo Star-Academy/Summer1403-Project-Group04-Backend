@@ -11,8 +11,8 @@ using RelationshipAnalysis.Context;
 namespace RelationshipAnalysis.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240907090417_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240909094032_MigrationName")]
+    partial class MigrationName
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,6 +45,9 @@ namespace RelationshipAnalysis.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Roles");
                 });
@@ -81,6 +84,12 @@ namespace RelationshipAnalysis.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Username")
+                        .IsUnique();
+
                     b.ToTable("Users");
                 });
 
@@ -102,7 +111,8 @@ namespace RelationshipAnalysis.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "RoleId")
+                        .IsUnique();
 
                     b.ToTable("UserRoles");
                 });

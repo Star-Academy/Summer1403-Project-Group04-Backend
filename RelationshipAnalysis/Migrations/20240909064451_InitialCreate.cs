@@ -269,14 +269,33 @@ namespace RelationshipAnalysis.Migrations
                 column: "NodeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Roles_Name",
+                table: "Roles",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
                 table: "UserRoles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRoles_UserId",
+                name: "IX_UserRoles_UserId_RoleId",
                 table: "UserRoles",
-                column: "UserId");
+                columns: new[] { "UserId", "RoleId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         /// <inheritdoc />
