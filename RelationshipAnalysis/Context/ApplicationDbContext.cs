@@ -15,10 +15,6 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
-        LastNode = Nodes?.Count() ?? 0;
-        LastNodeAttribute = NodeAttributes?.Count() ?? 0;
-        LastEdge = Edges?.Count() ?? 0;
-        LastEdgeAttribute = EdgeAttributes?.Count() ?? 0;
     }
 
 
