@@ -13,28 +13,43 @@ public class SingleEdgeAdditionService(IEdgeValueAdditionService edgeValueAdditi
         string uniqueSourceHeaderName,
         string uniqueTargetHeaderName, int edgeCategoryId, int sourceNodeCategoryId, int targetNodeCategoryId)
     {
-        if (((string)record[uniqueHeaderName]).IsNullOrEmpty()) throw new Exception(Resources.FailedAddRecordsMessage);
+        if (((string)record[uniqueHeaderName]).IsNullOrEmpty())
+        {
+            return;
+            //throw new Exception(Resources.FailedAddRecordsMessage);
+        }
+
         if (((string)record[uniqueSourceHeaderName]).IsNullOrEmpty())
-            throw new Exception(Resources.FailedAddRecordsMessage);
+        {
+            return;
+            //throw new Exception(Resources.FailedAddRecordsMessage);
+        }
+
         if (((string)record[uniqueTargetHeaderName]).IsNullOrEmpty())
-            throw new Exception(Resources.FailedAddRecordsMessage);
+        {
+            return;
+            //throw new Exception(Resources.FailedAddRecordsMessage);
+        }
 
         var source = await GetSourceNode(context, record, uniqueSourceHeaderName, sourceNodeCategoryId);
         if (source == null)
         {
-            throw new Exception(Resources.FailedAddRecordsMessage);
+            return;
+            //throw new Exception(Resources.FailedAddRecordsMessage);
         }
 
         var target = await GetTargetNode(context, record, uniqueTargetHeaderName, targetNodeCategoryId);
         if (target == null)
         {
-            throw new Exception(Resources.FailedAddRecordsMessage);
+            return;
+            //throw new Exception(Resources.FailedAddRecordsMessage);
         }
 
         var newEdge = await GetNewEdge(context, edgeCategoryId, uniqueHeaderName, source, target, record);
         if (newEdge.EdgeSourceNodeId != source.NodeId || newEdge.EdgeDestinationNodeId != target.NodeId)
         {
-            throw new Exception(Resources.FailedAddRecordsMessage);
+            return;
+            //throw new Exception(Resources.FailedAddRecordsMessage);
         }
 
         foreach (var kvp in record)
