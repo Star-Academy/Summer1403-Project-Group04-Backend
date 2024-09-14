@@ -54,11 +54,11 @@ builder.Configuration
     .AddEnvironmentVariables();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.Services.AddSwaggerGen();\
 
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddCustomServices();
+
 
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
