@@ -1,3 +1,5 @@
+using AngleSharp.Common;
+using RelationshipAnalysis.Context;
 using RelationshipAnalysis.Middlewares;
 using RelationshipAnalysis.Services.Panel.UserPanelServices.UserUpdateInfoService;
 using RelationshipAnalysis.Settings.Authentication;
@@ -37,6 +39,7 @@ app.UseCors(x => x.AllowCredentials().AllowAnyHeader().AllowAnyMethod()
     .SetIsOriginAllowed(x => true));
 app.UseMiddleware<SanitizationMiddleware>();
 app.Run();
+app.SetContextCounts();
 
 namespace RelationshipAnalysis
 {
