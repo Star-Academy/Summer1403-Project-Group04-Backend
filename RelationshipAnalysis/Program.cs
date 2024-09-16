@@ -38,8 +38,9 @@ app.MapControllers();
 app.UseCors(x => x.AllowCredentials().AllowAnyHeader().AllowAnyMethod()
     .SetIsOriginAllowed(x => true));
 app.UseMiddleware<SanitizationMiddleware>();
+
 app.Run();
-app.SetContextCounts();
+
 
 namespace RelationshipAnalysis
 {

@@ -15,41 +15,35 @@ public class SingleEdgeAdditionService(IEdgeValueAdditionService edgeValueAdditi
     {
         if (((string)record[uniqueHeaderName]).IsNullOrEmpty())
         {
-            return;
-            //throw new Exception(Resources.FailedAddRecordsMessage);
+            throw new Exception(Resources.FailedAddRecordsMessage);
         }
 
         if (((string)record[uniqueSourceHeaderName]).IsNullOrEmpty())
         {
-            return;
-            //throw new Exception(Resources.FailedAddRecordsMessage);
+            throw new Exception(Resources.FailedAddRecordsMessage);
         }
 
         if (((string)record[uniqueTargetHeaderName]).IsNullOrEmpty())
         {
-            return;
-            //throw new Exception(Resources.FailedAddRecordsMessage);
+            throw new Exception(Resources.FailedAddRecordsMessage);
         }
 
         var source = await GetSourceNode(context, record, uniqueSourceHeaderName, sourceNodeCategoryId);
         if (source == null)
         {
-            return;
-            //throw new Exception(Resources.FailedAddRecordsMessage);
+            throw new Exception(Resources.FailedAddRecordsMessage);
         }
 
         var target = await GetTargetNode(context, record, uniqueTargetHeaderName, targetNodeCategoryId);
         if (target == null)
         {
-            return;
-            //throw new Exception(Resources.FailedAddRecordsMessage);
+            throw new Exception(Resources.FailedAddRecordsMessage);
         }
 
         var newEdge = await GetNewEdge(context, edgeCategoryId, uniqueHeaderName, source, target, record);
         if (newEdge.EdgeSourceNodeId != source.NodeId || newEdge.EdgeDestinationNodeId != target.NodeId)
         {
-            return;
-            //throw new Exception(Resources.FailedAddRecordsMessage);
+            throw new Exception(Resources.FailedAddRecordsMessage);
         }
 
         foreach (var kvp in record)
@@ -75,7 +69,7 @@ public class SingleEdgeAdditionService(IEdgeValueAdditionService edgeValueAdditi
         {
             newEdge = new Models.Graph.Edge.Edge
             {
-                EdgeId = ++context.LastEdge,
+                EdgeId = context.LastEdge + 1,
                 EdgeUniqueString = (string)record[uniqueHeaderName],
                 EdgeSourceNodeId = source.NodeId,
                 EdgeDestinationNodeId = target.NodeId,

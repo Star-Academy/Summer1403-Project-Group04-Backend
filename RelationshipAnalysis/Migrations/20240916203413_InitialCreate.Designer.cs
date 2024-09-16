@@ -11,7 +11,7 @@ using RelationshipAnalysis.Context;
 namespace RelationshipAnalysis.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240915092233_InitialCreate")]
+    [Migration("20240916203413_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
